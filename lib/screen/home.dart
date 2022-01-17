@@ -1,7 +1,17 @@
+import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/screen/profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+final db = FirebaseFirestore.instance;
+final userCollection = db.collection('user');
+late UserModel currentUser;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,7 +34,7 @@ class _HomeState extends State<Home> {
     final List<Widget> _children = [
       const Chat(),
       const People(),
-      const Profile(), 
+      const Profile(),
     ];
 
     return Scaffold(
