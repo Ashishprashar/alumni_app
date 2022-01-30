@@ -12,7 +12,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           'Chat',
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -21,6 +21,9 @@ class _ChatState extends State<Chat> {
         elevation: 1,
         toolbarHeight: 50,
       ),
+      body: const Center(
+        child:  Text('Hello'),
+      )
     );
   }
 }
