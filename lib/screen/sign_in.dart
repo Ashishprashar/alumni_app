@@ -16,7 +16,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).cardColor,
-        body: Container(
+        body: SizedBox(
           height: SizeData.screenHeight,
           width: SizeData.screenWidth,
           child: Column(
