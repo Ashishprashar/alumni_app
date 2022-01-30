@@ -33,7 +33,7 @@ class UserModel {
   Map linkToSocial;
   String name;
   String profilePic;
-  List<dynamic> techStack;
+  List techStack;
   String type;
   Timestamp updatedAt;
 

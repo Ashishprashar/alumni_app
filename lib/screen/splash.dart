@@ -2,6 +2,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/sign_in.dart';
 import 'package:alumni_app/services/auth.dart';
+import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _SplashState extends State<Splash> {
   late User user;
   late UserModel userModel;
   AuthServices authServices = AuthServices();
+  DatabaseService databaseService = DatabaseService();
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _SplashState extends State<Splash> {
     } else {
       setState(() {
         isAuth = "AUTH";
+        databaseService.getUserData(context, _user.uid);
       });
     }
   }

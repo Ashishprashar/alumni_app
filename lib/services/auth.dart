@@ -22,27 +22,31 @@ class AuthServices {
 
       //variable just to store bio and teckStack
 
-      const String bio = "Just a bio here. Just a bio here.";
-      const String teckStack = 'Flutter, React, Firebase, html';
+      // const String bio = "Just a bio here. Just a bio here.";
+      // const String teckStack = 'Flutter, React, Firebase, html';
 
       //create a new document in firestore for the user with the current uid
       //Problem:  This code executes everytime the user logs in. It should
       //only execute the first time the user signs up.
-      //you can try this out by changing your user bio manually in firebase, 
+      //you can try this out by changing your user bio manually in firebase,
       //after that logout and login in the app. your bio will be overitten by the below
       //code.
 
-      await DatabaseService(uid: _currentUser!.uid)
-          .updateUserData(_currentUser.displayName!, bio, teckStack);
+      // await DatabaseService(uid: _currentUser!.uid)
+      //     .updateUserData(_currentUser.displayName!, bio, teckStack);
 
       print(_user?.email);
-      if (_user?.uid == _currentUser.uid) {
+      if (_user?.uid == _currentUser?.uid) {
         DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
 
         if (doc.exists) {
           UserModel _userModel = UserModel.fromJson(doc);
-        } else {
+          currentUser = _userModel;
+
           navigatorService.navigateToHome(context);
+        } else {
+          navigatorService.navigateToOnBoarding(context);
+          // userCollection.doc(_user?.uid).set({"data": "daat"});
         }
       }
     }

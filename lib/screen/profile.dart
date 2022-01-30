@@ -1,3 +1,5 @@
+import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,56 +20,39 @@ class _ProfileState extends State<Profile> {
   //using the temporary userBoy collection for me to experiment on.
 
   final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('userBoy').snapshots();
+      FirebaseFirestore.instance.collection('user').snapshots();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: Theme.of(context).textTheme.headline6,
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          actions: [
+            GestureDetector(
+                onTap: () {},
+                child: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: const Icon(Icons.edit))),
+            GestureDetector(
+                onTap: () async => await authServices.signOut(context),
+                child: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: const Icon(Icons.login_rounded))),
+          ],
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 1,
+          toolbarHeight: 50,
         ),
-        actions: [
-          GestureDetector(
-              onTap: () {},
-              child: Container(
-                  margin: const EdgeInsets.only(right: 20.0),
-                  child: const Icon(Icons.edit))),
-          GestureDetector(
-              onTap: () async => await authServices.signOut(context),
-              child: Container(
-                  margin: const EdgeInsets.only(right: 20.0),
-                  child: const Icon(Icons.login_rounded))),
-        ],
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 1,
-        toolbarHeight: 50,
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _usersStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
-              return UserProfile(
-                  user: user, data: data); // scroll down for the widget
-            }).toList(),
-          );
-        },
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              UserProfile(user: currentUser) // scroll down for the widget
+            ],
+          ),
+        ));
   }
 }
 
@@ -75,11 +60,9 @@ class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
     required this.user,
-    required this.data,
   }) : super(key: key);
 
-  final User user;
-  final Map<String, dynamic> data;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +78,7 @@ class UserProfile extends StatelessWidget {
               backgroundColor: Colors.black,
               child: CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(user.photoURL!),
+                backgroundImage: NetworkImage(user.profilePic!),
               ),
             ),
           ),
@@ -108,7 +91,7 @@ class UserProfile extends StatelessWidget {
               'Name: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(data['name']),
+            Text(user.name),
           ],
         ),
         const SizedBox(
@@ -121,7 +104,7 @@ class UserProfile extends StatelessWidget {
               'Bio: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(data['bio']),
+            Text(user.bio),
           ],
         ),
         const SizedBox(height: 52),
@@ -155,7 +138,7 @@ class UserProfile extends StatelessWidget {
             child: Text('Teck Stack',
                 style: TextStyle(fontWeight: FontWeight.bold))),
         const SizedBox(height: 16),
-        Center(child: Text(data['teckStack'])),
+        Center(child: Text(user.techStack.toString())),
       ],
     );
   }
