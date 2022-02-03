@@ -1,14 +1,13 @@
-import 'package:alumni_app/services/media_query.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  TextEditingController controller;
-  double height;
-  String hint;
-  String title;
-  Widget? suffix;
+  final TextEditingController controller;
+  final double height;
+  final String hint;
+  final String title;
+  final Widget? suffix;
 
-  CustomTextField(
+  const CustomTextField(
       {Key? key,
       required this.title,
       required this.controller,

@@ -8,14 +8,22 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       //color: Colors.blue[900],
       color: Colors.white,
-      
+
       iconTheme: const IconThemeData(
         color: Colors.black,
-      ), toolbarTextStyle: TextTheme(
-          headline1: GoogleFonts.openSans(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)).bodyText2, titleTextStyle: TextTheme(
-          headline1: GoogleFonts.openSans(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)).headline6,
+      ),
+      toolbarTextStyle: TextTheme(
+              headline1: GoogleFonts.openSans(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600))
+          .bodyText2,
+      titleTextStyle: TextTheme(
+              headline1: GoogleFonts.openSans(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600))
+          .headline6,
     ),
     primaryColor: Colors.white,
     brightness: Brightness.light,
@@ -25,7 +33,7 @@ class AppTheme {
       color: Colors.black,
     ),
     hintColor: Colors.grey,
-    cardColor: Colors.white, 
+    cardColor: Colors.white,
     textTheme: TextTheme(
       headline1: GoogleFonts.openSans(color: Colors.black, fontSize: 30),
       headline2: GoogleFonts.openSans(color: Colors.white, fontSize: 20),
@@ -37,16 +45,25 @@ class AppTheme {
       bodyText2: GoogleFonts.openSans(color: Colors.black, fontSize: 20),
       headline3: GoogleFonts.openSans(
           color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold),
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+    ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
   );
 
   static final ThemeData darkTheme = ThemeData(
     appBarTheme: AppBarTheme(
-      color: Colors.grey[800], toolbarTextStyle: TextTheme(
-          headline1: GoogleFonts.openSans(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600)).bodyText2, titleTextStyle: TextTheme(
-          headline1: GoogleFonts.openSans(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600)).headline6,
+      color: Colors.grey[800],
+      toolbarTextStyle: TextTheme(
+              headline1: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600))
+          .bodyText2,
+      titleTextStyle: TextTheme(
+              headline1: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600))
+          .headline6,
     ),
     hintColor: Colors.grey,
     cardColor: Colors.black,
@@ -69,6 +86,7 @@ class AppTheme {
       bodyText2: GoogleFonts.openSans(color: Colors.white, fontSize: 20),
       headline3: GoogleFonts.openSans(
           color: Colors.grey, fontSize: 20, fontWeight: FontWeight.bold),
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
+    ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
   );
 }

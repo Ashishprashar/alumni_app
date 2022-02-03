@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'database_service.dart';
 
 class AuthServices {
   NavigatorService navigatorService = NavigatorService();
@@ -18,27 +17,16 @@ class AuthServices {
         idToken: googleAuth.idToken,
       );
       final User? _user = (await auth.signInWithCredential(credential)).user;
-      final User? _currentUser = auth.currentUser;
+      // final User? _currentUser = auth.currentUser;
 
-      //variable just to store bio and teckStack
+      // print(_user?.email);
 
-      // const String bio = "Just a bio here. Just a bio here.";
-      // const String teckStack = 'Flutter, React, Firebase, html';
+      // I dont think the If statement is need here. works fine without it.
+      // If im missing something, feel free to change.
 
-      //create a new document in firestore for the user with the current uid
-      //Problem:  This code executes everytime the user logs in. It should
-      //only execute the first time the user signs up.
-      //you can try this out by changing your user bio manually in firebase,
-      //after that logout and login in the app. your bio will be overitten by the below
-      //code.
-
-      // await DatabaseService(uid: _currentUser!.uid)
-      //     .updateUserData(_currentUser.displayName!, bio, teckStack);
-
-      print(_user?.email);
-      if (_user?.uid == _currentUser?.uid) {
+      // if (_user?.uid == _currentUser?.uid) {
         DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
-
+ 
         if (doc.exists) {
           UserModel _userModel = UserModel.fromJson(doc);
           currentUser = _userModel;
@@ -46,9 +34,10 @@ class AuthServices {
           navigatorService.navigateToHome(context);
         } else {
           navigatorService.navigateToOnBoarding(context);
+          
           // userCollection.doc(_user?.uid).set({"data": "daat"});
         }
-      }
+      // }
     }
   }
 
