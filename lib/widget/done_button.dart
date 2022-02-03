@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DoneButton extends StatelessWidget {
-  Function onTap;
-  double height;
-  double width;
-  String text;
-  DoneButton({
+  final Function onTap;
+  final double height;
+  final double width;
+  final String text;
+  const DoneButton({
     Key? key,
     required this.height,
     required this.width,

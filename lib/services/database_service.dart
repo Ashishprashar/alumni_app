@@ -12,12 +12,6 @@ class DatabaseService {
 
   DatabaseService({this.uid});
 
-  // The collection userBoy is temporary for me to test firebase. Did not want
-  // to mess with the user collection you created. Feel free to change
-
-  // final CollectionReference userCollection =
-  //     FirebaseFirestore.instance.collection('userBoy');
-
   Future createAccount(
     String name,
     List teckStack,

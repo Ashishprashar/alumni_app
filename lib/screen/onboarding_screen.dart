@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/services/navigator_services.dart';
-import 'package:alumni_app/widget/customTextField.dart';
+import 'package:alumni_app/widget/custom_text_field.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -85,7 +84,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               for (int i = 0; i < techStack.length; i += 2)
-                                Container(
+                                SizedBox(
                                   width: SizeData.screenWidth * .4,
                                   child: Row(
                                     mainAxisAlignment:
@@ -108,7 +107,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               for (int i = 1; i < techStack.length; i += 2)
-                                Container(
+                                SizedBox(
                                   width: SizeData.screenWidth * .4,
                                   child: Row(
                                     mainAxisAlignment:
@@ -165,7 +164,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   imagePickOptions() {
     return Dialog(
-      child: Container(
+      child: SizedBox(
         height: 70,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

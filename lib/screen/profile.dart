@@ -1,8 +1,6 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -15,12 +13,11 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   AuthServices authServices = AuthServices();
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
 
-  //using the temporary userBoy collection for me to experiment on.
 
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('user').snapshots();
+  // final Stream<QuerySnapshot> _usersStream =
+  //     FirebaseFirestore.instance.collection('user').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +75,7 @@ class UserProfile extends StatelessWidget {
               backgroundColor: Colors.black,
               child: CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(user.profilePic!),
+                backgroundImage: NetworkImage(user.profilePic),
               ),
             ),
           ),
