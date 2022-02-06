@@ -7,12 +7,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
- 
+  
 final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
 late UserModel currentUser;
+late UserModel individualUser;
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 final Reference storageRef = FirebaseStorage.instance.ref();
  
@@ -35,7 +36,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _children = [
+    final List<Widget> _children = [ 
       const Chat(),
       const People(),
       const Profile(),

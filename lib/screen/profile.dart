@@ -15,7 +15,6 @@ class _ProfileState extends State<Profile> {
   AuthServices authServices = AuthServices();
   // final user = FirebaseAuth.instance.currentUser!;
 
-
   // final Stream<QuerySnapshot> _usersStream =
   //     FirebaseFirestore.instance.collection('user').snapshots();
 
@@ -63,16 +62,17 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(user.toJson());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           padding: const EdgeInsets.all(52),
-          color: Colors.blue,
+          color: Theme.of(context).splashColor,
           child: Center(
             child: CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.black,
+              backgroundColor: Theme.of(context).primaryColor,
               child: CircleAvatar(
                 radius: 40,
                 backgroundImage: NetworkImage(user.profilePic),
@@ -84,11 +84,14 @@ class UserProfile extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Name: ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2,
             ),
-            Text(user.name),
+            Text(
+              user.name,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
           ],
         ),
         const SizedBox(
@@ -97,17 +100,23 @@ class UserProfile extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Bio: ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2,
             ),
-            Text(user.bio),
+            Text(
+              user.bio,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
           ],
         ),
         const SizedBox(height: 52),
-        const Center(
-            child:
-                Text('Socials', style: TextStyle(fontWeight: FontWeight.bold))),
+        Center(
+          child: Text(
+            'Socials',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+        ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -131,11 +140,17 @@ class UserProfile extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 32),
-        const Center(
-            child: Text('Teck Stack',
-                style: TextStyle(fontWeight: FontWeight.bold))),
+        Center(
+            child: Text(
+          'Teck Stack',
+          style: Theme.of(context).textTheme.headline2,
+        )),
         const SizedBox(height: 16),
-        Center(child: Text(user.techStack.toString())),
+        Center(
+            child: Text(
+          user.techStack.toString(),
+          style: Theme.of(context).textTheme.bodyText2,
+        )),
       ],
     );
   }

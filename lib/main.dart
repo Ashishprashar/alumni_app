@@ -1,9 +1,11 @@
+import 'package:alumni_app/provider/people_to_profile.dart';
 import 'package:alumni_app/screen/splash.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/utilites/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,10 +25,15 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     SizeData();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: const Splash(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: PeopleToProfile()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: const Splash(),
+      ),
     );
   }
 }

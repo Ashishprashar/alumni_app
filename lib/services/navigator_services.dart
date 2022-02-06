@@ -18,5 +18,5 @@ class NavigatorService {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => const SignInScreen()));
   }
-
+  
 }
