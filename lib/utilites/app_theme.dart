@@ -6,9 +6,7 @@ class AppTheme {
 
   static final ThemeData lightTheme = ThemeData(
     appBarTheme: AppBarTheme(
-      //color: Colors.blue[900],
       color: Colors.white,
-
       iconTheme: const IconThemeData(
         color: Colors.black,
       ),
@@ -25,10 +23,10 @@ class AppTheme {
                   fontWeight: FontWeight.w600))
           .headline6,
     ),
-    primaryColor: Colors.white,
+    primaryColor: Colors.black,
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
-    splashColor: Colors.grey,
+    splashColor: Colors.blue,
     iconTheme: const IconThemeData(
       color: Colors.black,
     ),
@@ -36,12 +34,13 @@ class AppTheme {
     cardColor: Colors.white,
     textTheme: TextTheme(
       headline1: GoogleFonts.openSans(color: Colors.black, fontSize: 30),
-      headline2: GoogleFonts.openSans(color: Colors.white, fontSize: 20),
-      bodyText1: GoogleFonts.openSans(color: Colors.black, fontSize: 16),
+      headline2: GoogleFonts.openSans(
+          color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+      bodyText1: GoogleFonts.openSans(color: Colors.grey[600], fontSize: 20),
       subtitle1: GoogleFonts.openSans(
           color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
       subtitle2: GoogleFonts.openSans(
-          color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+          color: Colors.black, fontSize: 20, fontWeight: FontWeight.w300),
       bodyText2: GoogleFonts.openSans(color: Colors.black, fontSize: 20),
       headline3: GoogleFonts.openSans(
           color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold),

@@ -31,7 +31,7 @@ class _SplashState extends State<Splash> {
   checkSignIn() async {
     // await authServices.signInWith(context, " type");
     User? _user = auth.currentUser;
-    print(_user);
+    //print(_user);
     if (_user == null) {
       setState(() {
         isAuth = "UNAUTH";

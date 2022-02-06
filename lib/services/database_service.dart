@@ -39,7 +39,7 @@ class DatabaseService {
     Map<String, dynamic> data = (user.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
     currentUser = user;
-    print("yess");
+    //print("yess");
   }
 
   getUserData(context, String id) async {
