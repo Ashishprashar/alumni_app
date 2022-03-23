@@ -1,6 +1,4 @@
-import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/people_to_profile.dart';
-import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/splash.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/utilites/app_theme.dart';
@@ -18,6 +16,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -28,11 +28,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: PeopleToProfile()),
-        ChangeNotifierProvider(create: (context) => CurrentUserProvider()),
       ],
       child: MaterialApp(
-        // this is needed to provide providers to places where there is no build context
-        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const Splash(),

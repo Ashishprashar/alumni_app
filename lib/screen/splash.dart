@@ -29,8 +29,9 @@ class _SplashState extends State<Splash> {
   bool get wantKeepAlive => true;
 
   checkSignIn() async {
+    // await authServices.signInWith(context, " type");
     User? _user = auth.currentUser;
-
+    //print(_user);
     if (_user == null) {
       setState(() {
         isAuth = "UNAUTH";
