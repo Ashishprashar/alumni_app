@@ -1,10 +1,12 @@
 import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class AuthServices {
   NavigatorService navigatorService = NavigatorService();
@@ -17,27 +19,19 @@ class AuthServices {
         idToken: googleAuth.idToken,
       );
       final User? _user = (await auth.signInWithCredential(credential)).user;
-      // final User? _currentUser = auth.currentUser;
 
-      // print(_user?.email);
+      DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
 
-      // I dont think the If statement is need here. works fine without it.
-      // If im missing something, feel free to change.
+      if (doc.exists) {
+        UserModel _userModel = UserModel.fromJson(doc);
 
-      // if (_user?.uid == _currentUser?.uid) {
-        DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
- 
-        if (doc.exists) {
-          UserModel _userModel = UserModel.fromJson(doc);
-          currentUser = _userModel;
+        Provider.of<CurrentUserProvider>(context, listen: false)
+            .updateCurrentUser(_userModel);
 
-          navigatorService.navigateToHome(context);
-        } else {
-          navigatorService.navigateToOnBoarding(context);
-          
-          // userCollection.doc(_user?.uid).set({"data": "daat"});
-        }
-      // }
+        navigatorService.navigateToHome(context);
+      } else {
+        navigatorService.navigateToOnBoarding(context);
+      }
     }
   }
 

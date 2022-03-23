@@ -23,6 +23,9 @@ class UserModel {
     required this.techStack,
     required this.type,
     required this.updatedAt,
+    required this.admin,
+    required this.semester,
+    required this.branch,
   });
 
   String bio;
@@ -36,6 +39,9 @@ class UserModel {
   List techStack;
   String type;
   Timestamp updatedAt;
+  bool admin;
+  String semester;
+  String branch;
 
   factory UserModel.fromJson(DocumentSnapshot json) => UserModel(
         bio: json["bio"] ?? "",
@@ -49,6 +55,9 @@ class UserModel {
         techStack: List<dynamic>.from(json["tech_stack"].map((x) => x)),
         type: json["type"] ?? "student",
         updatedAt: json["updated_at"],
+        admin: json["admin"] ?? false,
+        semester: json["semester"] ?? "8",
+        branch: json["branch"] ?? "CSE",
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,5 +72,27 @@ class UserModel {
         "tech_stack": List<dynamic>.from(techStack.map((x) => x)),
         "type": type,
         "updated_at": updatedAt,
+        "admin": admin,
+        "semester": semester,
+        "branch": branch,
       };
 }
+
+
+
+/*
+
+things to be added to user schema
+
+1. Semester
+3. email social icon?
+
+
+
+
+
+
+
+
+
+*/
