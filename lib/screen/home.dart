@@ -12,10 +12,10 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
+late UserModel currentUser;
 late UserModel individualUser;
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 final Reference storageRef = FirebaseStorage.instance.ref();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
  
 
 class Home extends StatefulWidget {
@@ -32,13 +32,6 @@ class _HomeState extends State<Home> {
     setState(() {
       _currentIndex = index;
     });
-    
-  }
-
-  @override
-  void initState() {
-    
-    super.initState();
   }
 
   @override

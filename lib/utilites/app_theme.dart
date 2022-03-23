@@ -32,7 +32,6 @@ class AppTheme {
     ),
     hintColor: Colors.grey,
     cardColor: Colors.white,
-    highlightColor: Colors.grey[700],
     textTheme: TextTheme(
       headline1: GoogleFonts.openSans(color: Colors.black, fontSize: 30),
       headline2: GoogleFonts.openSans(
@@ -66,7 +65,6 @@ class AppTheme {
           .headline6,
     ),
     hintColor: Colors.grey,
-    highlightColor: Colors.white,
     cardColor: Colors.black,
     splashColor: Colors.grey,
     //primaryColor: Colors.blue[900],

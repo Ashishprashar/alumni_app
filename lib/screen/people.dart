@@ -18,41 +18,35 @@ class _PeopleState extends State<People> {
   Widget build(BuildContext context) {
     bool enabled = Provider.of<PeopleToProfile>(context).getEnabled();
     return Scaffold(
-      appBar: enabled
-          ? AppBar(
-              title: Text(
-                'People',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              iconTheme: Theme.of(context).appBarTheme.iconTheme,
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              elevation: 1,
-              toolbarHeight: 50,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Provider.of<PeopleToProfile>(context, listen: false)
-                      .changeEnabled();
-                },
-              ),
-            )
-          : AppBar(
-              title: Text(
-                'People',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              iconTheme: Theme.of(context).appBarTheme.iconTheme,
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              elevation: 1,
-              toolbarHeight: 50,
-            ),
-      body: const SafeArea(
-        child: Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: UserList(),
-          ),
+      appBar: AppBar(
+        title: Text(
+          'People',
+          style: Theme.of(context).textTheme.headline6,
         ),
+        // iconTheme: const IconThemeData(),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        elevation: 1,
+        toolbarHeight: 50,
+        actions: [
+          enabled
+              ? GestureDetector(
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: const Icon(
+                      Icons.arrow_back,
+                    ),
+                  ),
+                  onTap: () {
+                    Provider.of<PeopleToProfile>(context, listen: false)
+                        .changeEnabled();
+                  },
+                )
+              : Container(),
+        ],
+      ),
+      body: const SingleChildScrollView(
+        child: UserList(),
       ),
     );
   }
@@ -155,8 +149,7 @@ class _UserListState extends State<UserList> {
           style: Theme.of(context).textTheme.subtitle1),
       subtitle: Text(individualUser.techStack.toString(),
           style: Theme.of(context).textTheme.bodyText1),
-      trailing: Text(individualUser.type,
-          style: Theme.of(context).textTheme.bodyText1),
+      trailing: Text(individualUser.type, style: Theme.of(context).textTheme.bodyText1),
     );
   }
 }

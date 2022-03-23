@@ -1,10 +1,8 @@
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/provider/current_user_provider.dart';
-import 'package:alumni_app/screen/edit_screen.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -15,52 +13,42 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   AuthServices authServices = AuthServices();
-  late UserModel? currentUser;
+  // final user = FirebaseAuth.instance.currentUser!;
+
+  // final Stream<QuerySnapshot> _usersStream =
+  //     FirebaseFirestore.instance.collection('user').snapshots();
 
   @override
   Widget build(BuildContext context) {
-    currentUser = Provider.of<CurrentUserProvider>(context).getCurrentUser();
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: Theme.of(context).textTheme.headline6,
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          actions: [
+            GestureDetector(
+                onTap: () {},
+                child: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: const Icon(Icons.edit))),
+            GestureDetector(
+                onTap: () async => await authServices.signOut(context),
+                child: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: const Icon(Icons.login_rounded))),
+          ],
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 1,
+          toolbarHeight: 50,
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditScreen()));
-              },
-              icon: const Icon(Icons.edit)),
-          IconButton(
-            onPressed: () async => await authServices.signOut(context),
-            icon: const Icon(Icons.login_rounded),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              UserProfile(user: currentUser) // scroll down for the widget
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.only(right: 10),
-          ),
-        ],
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 1,
-        toolbarHeight: 50,
-      ),
-      body: SafeArea(
-        child: Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                UserProfile(user: currentUser!) // scroll down for the widget
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -74,6 +62,7 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(user.toJson());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -132,12 +121,22 @@ class UserProfile extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SocialIconButton(user: user, socialName: 'email'),
-            SocialIconButton(user: user, socialName: 'twitter'),
-            SocialIconButton(user: user, socialName: 'linkedin'),
-            SocialIconButton(user: user, socialName: 'facebook'),
-            SocialIconButton(user: user, socialName: 'instagram'),
-            SocialIconButton(user: user, socialName: 'github'),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.twitter),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.linkedin),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.facebook),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.instagram),
+              onPressed: () {},
+            ),
           ],
         ),
         const SizedBox(height: 32),
@@ -152,63 +151,6 @@ class UserProfile extends StatelessWidget {
           user.techStack.toString(),
           style: Theme.of(context).textTheme.bodyText2,
         )),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Semester: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.semester.toString(),
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'privelage: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.admin ? "Admin" : "Normal User",
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Branch: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.branch,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'type: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.type,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
       ],
     );
   }
