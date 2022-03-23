@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 // This widget is only for icons in the profile page, there is a different widget
 // for the  edit page icons
 
@@ -42,7 +43,7 @@ class SocialIconButton extends StatelessWidget {
     }
     return socialName == 'email'
         ?
-        // code specifically for email (since it has a different on pressed functionality)
+        // code is specifically for email (since it has a different on pressed functionality)
         IconButton(
             icon: FaIcon(theicon),
             color: user.linkToSocial[socialName] == ''
@@ -65,4 +66,5 @@ class SocialIconButton extends StatelessWidget {
             },
           );
   }
+
 }
