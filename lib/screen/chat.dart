@@ -14,14 +14,18 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    // initializing _userStream here itself. the User stram in chat provider has a bug
+    // its always stuck in connection state waiting on launching the app for the first time.
+
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('user')
+      .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
+      .snapshots();
+      
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -34,7 +38,8 @@ class _ChatState extends State<Chat> {
           toolbarHeight: 50,
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: Provider.of<ChatProvider>(context, listen: false).usersStream,
+          // stream: Provider.of<ChatProvider>(context,listen: false).usersStream,
+          stream: _usersStream,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {

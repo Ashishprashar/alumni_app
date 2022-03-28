@@ -26,6 +26,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   bool isLoading = false;
 
   @override
+  void dispose() {
+    controller.dispose();
+    techController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: isLoading

@@ -37,34 +37,32 @@ class _EditScreenState extends State<EditScreen> {
 
   late TextEditingController nameController;
   late TextEditingController bioController;
+  late TextEditingController techStackController;
 
   final _formKey = GlobalKey<FormState>();
 
   String? defaultSemesterValue;
   String? defaultBranchValue;
-  var possibleSemesters = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-  ];
-  var possibleBranches = [
-    'CSE',
-    'ECE',
-    'EEE',
-    'MECH',
-    'CIVIL',
-    'ARCH',
-  ];
+  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
 
   @override
   void initState() {
     techStackList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    twitterController.dispose();
+    linkedinController.dispose();
+    instagramController.dispose();
+    facebookController.dispose();
+    githubController.dispose();
+    nameController.dispose();
+    bioController.dispose();
+    techStackController.dispose();
+    super.dispose();
   }
 
   @override
@@ -142,6 +140,28 @@ class _EditScreenState extends State<EditScreen> {
                                 title: "Bio",
                                 hint: "Tell us about you",
                               ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(10.0),
+                              //       border: Border.all(
+                              //           color: Theme.of(context).focusColor)),
+                              //   padding: const EdgeInsets.all(20),
+                              //   child: Center(
+                              //     child: TextFormField(
+                              //       minLines: 1,
+                              //       maxLines:
+                              //           5, // allow user to enter 5 line in textfield
+                              //       keyboardType: TextInputType
+                              //           .multiline, // user keyboard will have a button to move cursor to next line
+                              //       controller: bioController,
+                              //       decoration: const InputDecoration(
+                              //           border: OutlineInputBorder(
+                              //         borderRadius:
+                              //             BorderRadius.all(Radius.circular(10)),
+                              //       )),
+                              //     ),
+                              //   ),
+                              // ),
                               CustomTextField(
                                 controller: techStackController,
                                 title: "Tech Stack",
@@ -534,30 +554,19 @@ class _EditScreenState extends State<EditScreen> {
                               if (_formKey.currentState!.validate()) {
                                 switch (socialName) {
                                   case 'twitter':
-                                    {
-                                      twitterController = temporaryController;
-                                    }
+                                    twitterController = temporaryController;
                                     break;
-
                                   case 'linkedin':
-                                    {
-                                      linkedinController = temporaryController;
-                                    }
+                                    linkedinController = temporaryController;
                                     break;
                                   case 'facebook':
-                                    {
-                                      facebookController = temporaryController;
-                                    }
+                                    facebookController = temporaryController;
                                     break;
                                   case 'instagram':
-                                    {
-                                      instagramController = temporaryController;
-                                    }
+                                    instagramController = temporaryController;
                                     break;
                                   case 'github':
-                                    {
-                                      githubController = temporaryController;
-                                    }
+                                    githubController = temporaryController;
                                     break;
                                 }
                                 Navigator.pop(context);
