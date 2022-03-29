@@ -14,18 +14,18 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-
   @override
   Widget build(BuildContext context) {
-
     // initializing _userStream here itself. the User stram in chat provider has a bug
     // its always stuck in connection state waiting on launching the app for the first time.
 
     final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('user')
-      .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
-      .snapshots();
-      
+        .collection('user')
+        .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
+        .snapshots();
+
+    // final Stream<QuerySnapshot> _usersStream = Provider.of<ChatProvider>(context).usersStream;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -86,9 +86,12 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
     DocumentSnapshot document = widget.snapshot.data!.docs[widget.index];
     individualUser = UserModel.fromJson(document);
     Future.delayed(Duration.zero).then((value) async {
-      final _lastMessage =
-          await Provider.of<ChatProvider>(context, listen: false)
-              .getLastMessage(individualUser.id);
+      // final _lastMessage =
+      //     await Provider.of<ChatProvider>(context, listen: false)
+      //         .getLastMessage(individualUser.id);
+      final _lastMessage = await navigatorKey.currentContext
+          ?.read<ChatProvider>()
+          .getLastMessage(individualUser.id);
       if (mounted) {
         setState(() {
           lastMessage = _lastMessage;

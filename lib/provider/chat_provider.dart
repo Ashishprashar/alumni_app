@@ -7,10 +7,10 @@ import '../services/auth.dart';
 class ChatProvider with ChangeNotifier {
   TextEditingController messageController = TextEditingController();
   AuthServices authServices = AuthServices();
-  // final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
-  //     .collection('user')
-  //     .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
-  //     .snapshots();
+  final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
+      .collection('user')
+      .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
+      .snapshots();
   String getConversationID(String userID, String peerID) {
     return userID.hashCode <= peerID.hashCode
         ? userID + '_' + peerID

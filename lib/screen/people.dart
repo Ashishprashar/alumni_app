@@ -210,5 +210,4 @@ class _UserListState extends State<UserList> {
     searchResultsList();
     return "complete";
   }
-
 }

@@ -2,6 +2,9 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/widget/done_button.dart';
+import 'package:alumni_app/widget/editable_social_icons.dart';
+import 'package:alumni_app/widget/image_picker_widget.dart';
+import 'package:alumni_app/widget/teck_stack_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:alumni_app/services/database_service.dart';
@@ -37,9 +40,8 @@ class _EditScreenState extends State<EditScreen> {
 
   late TextEditingController nameController;
   late TextEditingController bioController;
-  late TextEditingController techStackController;
 
-  final _formKey = GlobalKey<FormState>();
+  late TextEditingController techStackController;
 
   String? defaultSemesterValue;
   String? defaultBranchValue;
@@ -48,25 +50,9 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   void initState() {
+
     techStackList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
-    super.initState();
-  }
 
-  @override
-  void dispose() {
-    twitterController.dispose();
-    linkedinController.dispose();
-    instagramController.dispose();
-    facebookController.dispose();
-    githubController.dispose();
-    nameController.dispose();
-    bioController.dispose();
-    techStackController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     twitterController =
         TextEditingController(text: currentUser!.linkToSocial['twitter']);
     linkedinController =
@@ -79,9 +65,25 @@ class _EditScreenState extends State<EditScreen> {
         TextEditingController(text: currentUser!.linkToSocial['github']);
 
     nameController = TextEditingController(text: currentUser!.name);
-    TextEditingController techStackController = TextEditingController();
     bioController = TextEditingController(text: currentUser!.bio);
+    techStackController = TextEditingController();
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    twitterController.dispose();
+    linkedinController.dispose();
+    instagramController.dispose();
+    facebookController.dispose();
+    githubController.dispose();
+    nameController.dispose();
+    bioController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => clearUnsavedData(currentUser!),
       child: GestureDetector(
@@ -113,7 +115,12 @@ class _EditScreenState extends State<EditScreen> {
                                   await showDialog(
                                       context: context,
                                       builder: (ctx) {
-                                        return imagePickOptions();
+                                        return ImagePickerWidget(
+                                            onProfileChanged: (File? image) {
+                                          setState(() {
+                                            profileImage = image;
+                                          });
+                                        });
                                       });
                                 },
                                 child: Container(
@@ -140,28 +147,6 @@ class _EditScreenState extends State<EditScreen> {
                                 title: "Bio",
                                 hint: "Tell us about you",
                               ),
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //       borderRadius: BorderRadius.circular(10.0),
-                              //       border: Border.all(
-                              //           color: Theme.of(context).focusColor)),
-                              //   padding: const EdgeInsets.all(20),
-                              //   child: Center(
-                              //     child: TextFormField(
-                              //       minLines: 1,
-                              //       maxLines:
-                              //           5, // allow user to enter 5 line in textfield
-                              //       keyboardType: TextInputType
-                              //           .multiline, // user keyboard will have a button to move cursor to next line
-                              //       controller: bioController,
-                              //       decoration: const InputDecoration(
-                              //           border: OutlineInputBorder(
-                              //         borderRadius:
-                              //             BorderRadius.all(Radius.circular(10)),
-                              //       )),
-                              //     ),
-                              //   ),
-                              // ),
                               CustomTextField(
                                 controller: techStackController,
                                 title: "Tech Stack",
@@ -178,75 +163,13 @@ class _EditScreenState extends State<EditScreen> {
                                     },
                                     child: const Icon(Icons.add_box_outlined)),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    top: 20.0, bottom: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        for (int i = 0;
-                                            i < techStackList.length;
-                                            i += 2)
-                                          SizedBox(
-                                            width: SizeData.screenWidth * .4,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(techStackList[i]),
-                                                GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        techStackList
-                                                            .removeAt(i);
-                                                      });
-                                                    },
-                                                    child:
-                                                        const Icon(Icons.close))
-                                              ],
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        for (int i = 1;
-                                            i < techStackList.length;
-                                            i += 2)
-                                          SizedBox(
-                                            width: SizeData.screenWidth * .4,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(techStackList[i]),
-                                                GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        techStackList
-                                                            .removeAt(i);
-                                                      });
-                                                    },
-                                                    child:
-                                                        const Icon(Icons.close))
-                                              ],
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              TechStackWidget(
+                                  techStackList: techStackList,
+                                  removeTechElement: (int i) {
+                                    setState(() {
+                                      techStackList.removeAt(i);
+                                    });
+                                  }),
                               Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 25),
@@ -317,16 +240,59 @@ class _EditScreenState extends State<EditScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  editableSocialIcon(
-                                      twitterController, 'twitter'),
-                                  editableSocialIcon(
-                                      linkedinController, 'linkedin'),
-                                  editableSocialIcon(
-                                      facebookController, 'facebook'),
-                                  editableSocialIcon(
-                                      instagramController, 'instagram'),
-                                  editableSocialIcon(
-                                      githubController, 'github'),
+                                  EditableSocialIcons(
+                                    controllerText: twitterController.text,
+                                    socialName: 'twitter',
+                                    onControllerChanged: (TextEditingController
+                                        temporaryController) {
+                                      setState(() {
+                                        twitterController = temporaryController;
+                                      });
+                                    },
+                                  ),
+                                  EditableSocialIcons(
+                                    controllerText: linkedinController.text,
+                                    socialName: 'linkedin',
+                                    onControllerChanged: (TextEditingController
+                                        temporaryController) {
+                                      setState(() {
+                                        linkedinController =
+                                            temporaryController;
+                                      });
+                                    },
+                                  ),
+                                  EditableSocialIcons(
+                                    controllerText: facebookController.text,
+                                    socialName: 'facebook',
+                                    onControllerChanged: (TextEditingController
+                                        temporaryController) {
+                                      setState(() {
+                                        facebookController =
+                                            temporaryController;
+                                      });
+                                    },
+                                  ),
+                                  EditableSocialIcons(
+                                    controllerText: instagramController.text,
+                                    socialName: 'instagram',
+                                    onControllerChanged: (TextEditingController
+                                        temporaryController) {
+                                      setState(() {
+                                        instagramController =
+                                            temporaryController;
+                                      });
+                                    },
+                                  ),
+                                  EditableSocialIcons(
+                                    controllerText: githubController.text,
+                                    socialName: 'github',
+                                    onControllerChanged: (TextEditingController
+                                        temporaryController) {
+                                      setState(() {
+                                        githubController = temporaryController;
+                                      });
+                                    },
+                                  ),
                                 ],
                               ),
                               const SizedBox(
@@ -395,57 +361,6 @@ class _EditScreenState extends State<EditScreen> {
         currentUser!.email);
   }
 
-  imagePickOptions() {
-    return Dialog(
-      child: SizedBox(
-        height: 70,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            GestureDetector(
-              onTap: () async {
-                XFile? image =
-                    await imagePicker.pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  setState(() {
-                    profileImage = File(image.path);
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  FaIcon(FontAwesomeIcons.camera),
-                  Text("Camera")
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {
-                XFile? image =
-                    await imagePicker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  setState(() {
-                    profileImage = File(image.path);
-                  });
-                }
-                Navigator.of(context).pop();
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  FaIcon(FontAwesomeIcons.camera),
-                  Text("Gallery")
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<bool> clearUnsavedData(UserModel currentUser) {
     setState(() {
       profileImage = null;
@@ -454,134 +369,5 @@ class _EditScreenState extends State<EditScreen> {
     // will pop scope requires me to return a Future<bool> value,
     // hence i am returning this random future bool value.
     return Future.value(true);
-  }
-
-  Widget editableSocialIcon(
-    TextEditingController controller,
-    String socialName,
-  ) {
-    late IconData theicon;
-
-    switch (socialName) {
-      case 'email':
-        theicon = Icons.email;
-        break;
-      case 'twitter':
-        theicon = FontAwesomeIcons.twitter;
-        break;
-      case 'linkedin':
-        theicon = FontAwesomeIcons.linkedin;
-        break;
-      case 'facebook':
-        theicon = FontAwesomeIcons.facebook;
-        break;
-      case 'instagram':
-        theicon = FontAwesomeIcons.instagram;
-        break;
-      case 'github':
-        theicon = FontAwesomeIcons.github;
-        break;
-    }
-    return IconButton(
-      icon: FaIcon(theicon),
-      color: controller.text == '' ? Colors.grey : Colors.black,
-      onPressed: () {
-        socialLink(controller, socialName);
-      },
-    );
-  }
-
-  dynamic socialLink(
-    TextEditingController controller,
-    String socialName,
-  ) {
-    TextEditingController temporaryController =
-        TextEditingController(text: controller.text);
-    return showModalBottomSheet<dynamic>(
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
-        context: context,
-        builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Add your $socialName profile link",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(color: Colors.black),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  color: Theme.of(context).focusColor)),
-                          child: TextFormField(
-                            controller: temporaryController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "paste the link here",
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return null;
-                              }
-                              if (!(Uri.parse(value).isAbsolute)) {
-                                return 'invalid url';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                switch (socialName) {
-                                  case 'twitter':
-                                    twitterController = temporaryController;
-                                    break;
-                                  case 'linkedin':
-                                    linkedinController = temporaryController;
-                                    break;
-                                  case 'facebook':
-                                    facebookController = temporaryController;
-                                    break;
-                                  case 'instagram':
-                                    instagramController = temporaryController;
-                                    break;
-                                  case 'github':
-                                    githubController = temporaryController;
-                                    break;
-                                }
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: const Text('Submit'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 }
