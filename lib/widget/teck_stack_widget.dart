@@ -28,7 +28,18 @@ class TechStackWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(techStackList[i]),
+                      SizedBox(
+                        width: SizeData.screenWidth * .4 - 25,
+                        child: Text(
+                          techStackList[i],
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(fontSize: 16),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
                       GestureDetector(
                           onTap: () {
                             // setState(() {
@@ -52,7 +63,18 @@ class TechStackWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(techStackList[i]),
+                      SizedBox(
+                        width: SizeData.screenWidth * .4 - 25,
+                        child: Text(
+                          techStackList[i],
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(fontSize: 16),
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                        ),
+                      ),
                       GestureDetector(
                           onTap: () {
                             removeTechElement(i);

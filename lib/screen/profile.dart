@@ -3,6 +3,7 @@ import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/edit_screen.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
+import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,39 @@ class _ProfileState extends State<Profile> {
               },
               icon: const Icon(Icons.edit)),
           IconButton(
-            onPressed: () async => await authServices.signOut(context),
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Are you sure?"),
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          DoneButton(
+                            height: 30,
+                            width: 70,
+                            text: "Yes",
+                            onTap: () async {
+                              await authServices.signOut(context);
+                            },
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          DoneButton(
+                            height: 30,
+                            width: 70,
+                            text: "No",
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
             icon: const Icon(Icons.login_rounded),
           ),
           Container(
@@ -172,6 +205,7 @@ class UserProfile extends StatelessWidget {
         Center(
             child: Text(
           user.techStack.toString(),
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyText2,
         )),
         const SizedBox(height: 32),
