@@ -158,9 +158,28 @@ class _UserListState extends State<UserList> {
         //to notify that we need to open the profile of the individualUser.
         Provider.of<PeopleToProfile>(context, listen: false).changeEnabled();
       },
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundImage: NetworkImage(individualUser.profilePic),
+      leading: Hero(
+        tag: "profile-pic",
+        placeholderBuilder: ((ctx, size, widget) {
+          return CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(individualUser.profilePic),
+          );
+        }),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(HeroDialogRoute(
+                builder: ((context) => Center(
+                      child: ProfilePicDialog(
+                        image: individualUser.profilePic,
+                      ),
+                    ))));
+          },
+          child: CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(individualUser.profilePic),
+          ),
+        ),
       ),
       title: Text(individualUser.name,
           style: Theme.of(context).textTheme.subtitle1),
@@ -210,4 +229,65 @@ class _UserListState extends State<UserList> {
     searchResultsList();
     return "complete";
   }
+}
+
+class ProfilePicDialog extends StatefulWidget {
+  final String image;
+  const ProfilePicDialog({
+    Key? key,
+    required this.image,
+  }) : super(key: key);
+
+  @override
+  State<ProfilePicDialog> createState() => _ProfilePicDialogState();
+}
+
+class _ProfilePicDialogState extends State<ProfilePicDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return
+        // insetAnimationDuration: const Duration(milliseconds: 1000),
+        Dialog(
+      child: Hero(tag: "profile-pic", child: Image.network(widget.image)),
+    );
+  }
+}
+
+class HeroDialogRoute<T> extends PageRoute<T> {
+  HeroDialogRoute({required this.builder}) : super();
+
+  final WidgetBuilder builder;
+
+  @override
+  bool get opaque => false;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 300);
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  Color get barrierColor => Colors.black54;
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return FadeTransition(
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+        child: child);
+  }
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return builder(context);
+  }
+
+  @override
+  // TODO: implement barrierLabel
+  String? get barrierLabel => "";
 }

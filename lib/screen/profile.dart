@@ -1,6 +1,7 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/edit_screen.dart';
+import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -81,13 +82,34 @@ class UserProfile extends StatelessWidget {
           padding: const EdgeInsets.all(52),
           color: Theme.of(context).splashColor,
           child: Center(
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: CircleAvatar(
-                radius: 40,
-                backgroundImage: NetworkImage(user.profilePic),
-              ),
+            child: Hero(
+              tag: "profile-pic",
+              placeholderBuilder: ((ctx, size, widget) {
+                return CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(user.profilePic),
+                    ));
+              }),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(HeroDialogRoute(
+                        builder: ((context) => Center(
+                              child: ProfilePicDialog(
+                                image: user.profilePic,
+                              ),
+                            ))));
+                  },
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(user.profilePic),
+                    ),
+                  )),
             ),
           ),
         ),

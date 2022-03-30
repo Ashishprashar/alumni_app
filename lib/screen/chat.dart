@@ -2,6 +2,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/screen/people.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -111,9 +112,28 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
                   chatWithUser: individualUser,
                 )));
       },
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundImage: NetworkImage(individualUser.profilePic),
+      leading: Hero(
+        tag: "profile-pic",
+        placeholderBuilder: ((ctx, size, widget) {
+          return CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(individualUser.profilePic),
+          );
+        }),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(HeroDialogRoute(
+                builder: ((context) => Center(
+                      child: ProfilePicDialog(
+                        image: individualUser.profilePic,
+                      ),
+                    ))));
+          },
+          child: CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(individualUser.profilePic),
+          ),
+        ),
       ),
       title: Text(individualUser.name,
           style: Theme.of(context).textTheme.subtitle1),

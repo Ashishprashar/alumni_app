@@ -1,6 +1,7 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,9 +43,29 @@ class _ChatScreenState extends State<ChatScreen> {
           leadingWidth: 30,
           title: Row(
             children: [
-              CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(widget.chatWithUser.profilePic)),
+              Hero(
+                tag: "profile-pic",
+                placeholderBuilder: ((ctx, size, widget) {
+                  return CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage(individualUser.profilePic),
+                  );
+                }),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(HeroDialogRoute(
+                        builder: ((context) => Center(
+                              child: ProfilePicDialog(
+                                image: individualUser.profilePic,
+                              ),
+                            ))));
+                  },
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage(individualUser.profilePic),
+                  ),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.only(left: 8),
                 child: Column(
