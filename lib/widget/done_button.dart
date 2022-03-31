@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 
 class DoneButton extends StatelessWidget {
   final Function onTap;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final String text;
   const DoneButton({
     Key? key,
-    required this.height,
-    required this.width,
+    this.height,
+    this.width,
     required this.onTap,
     required this.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => onTap(),
       child: Container(
         height: height,
         width: width,
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(context).primaryColorLight,

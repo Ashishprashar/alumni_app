@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -94,12 +95,16 @@ class DatabaseService {
         .updateCurrentUser(updatedUser);
   }
 
+  uploadPost({required PostModel postModel}) async {
+    await postCollection.doc(postModel.id).set(postModel.toJson());
+  }
+
   getUserData(context, String id) async {
     DocumentSnapshot doc = await userCollection.doc(id).get();
 
     if (doc.exists) {
       UserModel _userModel = UserModel.fromJson(doc);
- 
+
       navigatorKey.currentContext
           ?.read<CurrentUserProvider>()
           .updateCurrentUser(_userModel);
