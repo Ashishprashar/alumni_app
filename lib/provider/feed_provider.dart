@@ -77,4 +77,11 @@ class FeedProvider with ChangeNotifier {
     isUploading = false;
     notifyListeners();
   }
+
+  addLike({required String postId}) async {
+    await postCollection.doc(postId).update({
+      "likes": FieldValue.arrayUnion([firebaseCurrentUser?.uid]),
+      "like_countlikes": FieldValue.increment(1)
+    });
+  }
 }

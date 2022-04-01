@@ -1,3 +1,4 @@
+import 'package:alumni_app/utilites/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,7 +26,10 @@ class ImagePickerWidget extends StatelessWidget {
                 XFile? image =
                     await imagePicker.pickImage(source: ImageSource.camera);
                 if (image != null) {
-                  onProfileChanged!(File(image.path));
+                  final compressedImage =
+                      await compressImage(filePath: image.path);
+
+                  onProfileChanged!(File(compressedImage.path));
                   Navigator.of(context).pop();
                 }
               },
@@ -42,7 +46,10 @@ class ImagePickerWidget extends StatelessWidget {
                 XFile? image =
                     await imagePicker.pickImage(source: ImageSource.gallery);
                 if (image != null) {
-                  onProfileChanged!(File(image.path));
+                  final compressedImage =
+                      await compressImage(filePath: image.path);
+
+                  onProfileChanged!(File(compressedImage.path));
                 }
                 Navigator.of(context).pop();
               },

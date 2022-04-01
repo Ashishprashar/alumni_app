@@ -1,16 +1,14 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:alumni_app/models/post_model.dart';
+import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/media_query.dart';
-import 'package:alumni_app/utilites/common_utils.dart';
 import 'package:alumni_app/widget/done_button.dart';
-import 'package:alumni_app/widget/video_player_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -47,19 +45,12 @@ class _FeedScreenState extends State<FeedScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return SizedBox(
-                          height: SizeData.screenHeight,
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, i) {
-                                PostModel postModel = PostModel.fromJson(
-                                    snapshot.data!.docs[i].data()
-                                        as Map<String, dynamic>);
-                                return Container(
-                                  child: Text(
-                                      snapshot.data!.docs.length.toString()),
-                                );
-                              }),
-                        );
+                            child: Column(
+                          children: [
+                            for (var i = 0; i < snapshot.data!.docs.length; i++)
+                              getPostList(snapshot, i)
+                          ],
+                        ));
                       }
                       return Container();
                     })
@@ -70,6 +61,134 @@ class _FeedScreenState extends State<FeedScreen> {
       );
     });
   }
+
+  getPostList(snapshot, int i) {
+    PostModel postModel = PostModel.fromJson(
+        snapshot.data!.docs[i].data() as Map<String, dynamic>);
+
+    return PostWidget(postModel: postModel);
+  }
+}
+
+class PostWidget extends StatefulWidget {
+  const PostWidget({
+    Key? key,
+    required this.postModel,
+  }) : super(key: key);
+
+  final PostModel postModel;
+
+  @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  bool isLike = false;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
+      return FutureBuilder<DocumentSnapshot>(
+          future: userCollection.doc(widget.postModel.ownerId).get(),
+          builder: (context, futureSnap) {
+            // if(widget.postModel.)
+            if (futureSnap.hasData) {
+              UserModel user =
+                  UserModel.fromJson(futureSnap.data as DocumentSnapshot);
+              log(widget.postModel.attachments.length.toString());
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Theme.of(context).hoverColor,
+                    border: Border.all(
+                        color:
+                            Theme.of(context).highlightColor.withOpacity(.2))),
+                child: Column(
+                  children: [
+                    Container(
+                      child: Row(children: [
+                        CircleAvatar(
+                            radius: 20,
+                            backgroundImage: NetworkImage(user.profilePic)),
+                        Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Text(user.name))
+                      ]),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 8),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.postModel.textContent,
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                    ),
+                    // if (widget.postModel.attachments.isNotEmpty)
+                    //   SizedBox(
+                    //     height: 300,
+                    //     width: SizeData.screenWidth,
+                    //     child: ListView.builder(
+                    //         scrollDirection: Axis.horizontal,
+                    //         itemCount: widget.postModel.attachments.length,
+                    //         itemBuilder: (context, index) {
+                    //           return SizedBox(
+                    //             // margin: const EdgeInsets.all(10),
+                    //             height: 280,
+                    //             width: SizeData.screenWidth * .9,
+                    //             child: (widget.postModel.attachments[index]
+                    //                     .endsWith(".mp4"))
+                    //                 ? VideoPlayerBox(
+                    //                     path:
+                    //                         widget.postModel.attachments[index])
+                    //                 : Image(
+                    //                     image: NetworkImage(
+                    //                       widget.postModel.attachments[index],
+                    //                     ),
+                    //                     fit: BoxFit.cover,
+                    //                   ),
+                    //           );
+                    //         }),
+                    //   ),
+
+                    Container(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isLike = !isLike;
+                                });
+                                feedProvider.addLike(
+                                    postId: widget.postModel.id);
+                              },
+                              child: Icon(
+                                isLike
+                                    ? Icons.thumb_up_alt_rounded
+                                    : Icons.thumb_up_alt_outlined,
+                                size: 30,
+                              )),
+                          Text(
+                            DateFormat("dd-MM-yyyy h:mma")
+                                .format(widget.postModel.updatedAt.toDate()),
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+
+            return Container();
+          });
+    });
+  }
 }
 
 class UploadPostWidget extends StatelessWidget {
@@ -77,7 +196,7 @@ class UploadPostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ImagePicker imagePicker = ImagePicker();
+    // ImagePicker imagePicker = ImagePicker();
 
     return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
       return Container(
@@ -107,119 +226,128 @@ class UploadPostWidget extends StatelessWidget {
                         border: InputBorder.none),
                   ),
                 ),
-                if (feedProvider.getUploadFiles != null)
-                  SizedBox(
-                    height: 300,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: feedProvider.getUploadFiles!.length,
-                        itemBuilder: (context, i) {
-                          List<XFile>? file = feedProvider.getUploadFiles;
-                          log(file![i].path);
-                          return Container(
-                            margin: const EdgeInsets.all(10),
-                            height: 280,
-                            // width: double.infinity,
-                            child: Stack(
-                              children: [
-                                if (file[i].path.endsWith(".mp4"))
-                                  VideoPlayerBox(path: file[i].path)
-                                else
-                                  Image(image: FileImage(File(file[i].path))),
-                                Positioned(
-                                  right: 10,
-                                  top: 10,
-                                  child: InkWell(
-                                    onTap: () {
-                                      feedProvider.removeImageAtPosition(i);
-                                    },
-                                    child: Icon(
-                                      Icons.close,
-                                      color: Theme.of(context).errorColor,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
+                // if (feedProvider.getUploadFiles != null)
+                //   SizedBox(
+                //     height: 300,
+                //     width: double.infinity,
+                //     child: ListView.builder(
+                //         scrollDirection: Axis.horizontal,
+                //         itemCount: feedProvider.getUploadFiles!.length,
+                //         itemBuilder: (context, i) {
+                //           List<XFile>? file = feedProvider.getUploadFiles;
+                //           log(file![i].path);
+                //           return Container(
+                //             margin: const EdgeInsets.all(10),
+                //             height: 280,
+                //             // width: double.infinity,
+                //             child: Stack(
+                //               children: [
+                //                 if (file[i].path.endsWith(".mp4"))
+                //                   VideoPlayerBox(path: file[i].path)
+                //                 else
+                //                   Image(image: FileImage(File(file[i].path))),
+                //                 Positioned(
+                //                   right: 10,
+                //                   top: 10,
+                //                   child: InkWell(
+                //                     onTap: () {
+                //                       feedProvider.removeImageAtPosition(i);
+                //                     },
+                //                     child: Icon(
+                //                       Icons.close,
+                //                       color: Theme.of(context).errorColor,
+                //                     ),
+                //                   ),
+                //                 )
+                //               ],
+                //             ),
+                //           );
+                //         }),
+                //   ),
+
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      width: SizeData.screenWidth / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              XFile? image = await imagePicker.pickImage(
-                                  source: ImageSource.camera);
-                              if (image != null) {
-                                log((await image.length()).toString());
-                                final compressedImage =
-                                    await compressImage(filePath: image.path);
-                                // log((await image.length()).toString());
+                    // SizedBox(
+                    //   width: SizeData.screenWidth / 3,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //     children: [
+                    //       InkWell(
+                    //         onTap: () async {
+                    //           XFile? image = await imagePicker.pickImage(
+                    //               source: ImageSource.camera);
+                    //           if (image != null) {
+                    //             log((await image.length()).toString());
+                    //             final compressedImage =
+                    //                 await compressImage(filePath: image.path);
+                    //             // log((await image.length()).toString());
 
-                                image = compressedImage;
-                                log((await image.length()).toString());
+                    //             image = compressedImage;
+                    //             log((await image.length()).toString());
 
-                                // feedProvider.addSingleFile(file: image);
-                                feedProvider.addSingleFile(file: image);
-                              }
-                            },
-                            child: Icon(
-                              Icons.camera_alt_outlined,
-                              color: Theme.of(context).errorColor,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              List<XFile>? images =
-                                  await imagePicker.pickMultiImage();
-                              if (images != null) {
-                                List<XFile>? compressedImage = [];
-                                log((await images[0].length()).toString());
-                                for (var i = 0; i < images.length; i++) {
-                                  compressedImage.add(await compressImage(
-                                      filePath: images[i].path));
-                                }
-                                log((await compressedImage[0].length())
-                                    .toString());
-                                images = compressedImage;
-                              }
-                              feedProvider.addMultiFileToUploadList(
-                                  files: images);
-                            },
-                            child: Icon(
-                              Icons.photo,
-                              color: Theme.of(context).errorColor,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              XFile? image = await imagePicker.pickVideo(
-                                  source: ImageSource.gallery);
-                              if (image != null) {
-                                feedProvider.addSingleFile(file: image);
-                              }
-                            },
-                            child: Icon(
-                              Icons.video_camera_back_rounded,
-                              color: Theme.of(context).errorColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    //             // feedProvider.addSingleFile(file: image);
+                    //             feedProvider.addSingleFile(file: image);
+                    //           }
+                    //         },
+                    //         child: Icon(
+                    //           Icons.camera_alt_outlined,
+                    //           color: Theme.of(context).errorColor,
+                    //         ),
+                    //       ),
+                    //       InkWell(
+                    //         onTap: () async {
+                    //           List<XFile>? images =
+                    //               await imagePicker.pickMultiImage();
+                    //           if (images != null) {
+                    //             List<XFile>? compressedImage = [];
+                    //             log((await images[0].length()).toString());
+                    //             for (var i = 0; i < images.length; i++) {
+                    //               compressedImage.add(await compressImage(
+                    //                   filePath: images[i].path));
+                    //             }
+                    //             log((await compressedImage[0].length())
+                    //                 .toString());
+                    //             images = compressedImage;
+                    //           }
+                    //           feedProvider.addMultiFileToUploadList(
+                    //               files: images);
+                    //         },
+                    //         child: Icon(
+                    //           Icons.photo,
+                    //           color: Theme.of(context).errorColor,
+                    //         ),
+                    //       ),
+                    //       InkWell(
+                    //         onTap: () async {
+                    //           XFile? image = await imagePicker.pickVideo(
+                    //               source: ImageSource.gallery);
+                    //           if (image != null) {
+                    //             feedProvider.addSingleFile(file: image);
+                    //           }
+                    //         },
+                    //         child: Icon(
+                    //           Icons.video_camera_back_rounded,
+                    //           color: Theme.of(context).errorColor,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+
+                    // DoneButton(
+                    //     onTap: () async {
+                    //       feedProvider.postTextContent.selection
+                    //           .("**");
+                    //     },
+                    //     width: SizeData.screenWidth * .2,
+                    //     text: "format"),
                     DoneButton(
                         onTap: () async {
                           await feedProvider.handlePostButton();
                         },
                         width: SizeData.screenWidth * .2,
-                        text: "Post")
+                        text: "Post"),
                   ],
                 ),
               ]),

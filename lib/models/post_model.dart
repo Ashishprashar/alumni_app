@@ -12,8 +12,8 @@ String postModelToJson(PostModel data) => json.encode(data.toJson());
 
 class PostModel {
   PostModel({
-    this.attachments,
-    this.id,
+    required this.attachments,
+    required this.id,
     required this.ownerId,
     this.likes,
     required this.updatedAt,
@@ -22,8 +22,8 @@ class PostModel {
     this.tags,
   });
 
-  List? attachments;
-  String? id;
+  List attachments;
+  String id;
   String ownerId;
   List? likes;
   int? likeCount;
@@ -43,7 +43,7 @@ class PostModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "atachments": attachments ?? [],
+        "atachments": attachments,
         "id": id,
         "updated_at": updatedAt,
         "owner_id": ownerId,

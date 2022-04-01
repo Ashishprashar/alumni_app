@@ -18,10 +18,17 @@ class _VideoPlayerBoxState extends State<VideoPlayerBox> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      _videoPlayerController = VideoPlayerController.file(File(widget.path))
-        ..initialize().then((value) {
-          setState(() {});
-        });
+      if (widget.path.startsWith("https")) {
+        _videoPlayerController = VideoPlayerController.network(widget.path)
+          ..initialize().then((value) {
+            setState(() {});
+          });
+      } else {
+        _videoPlayerController = VideoPlayerController.file(File(widget.path))
+          ..initialize().then((value) {
+            setState(() {});
+          });
+      }
     });
     // _videoPlayerController.play();
   }

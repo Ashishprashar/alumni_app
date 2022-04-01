@@ -250,7 +250,23 @@ class _ProfilePicDialogState extends State<ProfilePicDialog> {
     return
         // insetAnimationDuration: const Duration(milliseconds: 1000),
         Dialog(
-      child: Hero(tag: "profile-pic", child: Image.network(widget.image)),
+      backgroundColor: Colors.transparent,
+      child: Hero(
+          tag: "profile-pic",
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                widget.image,
+                fit: BoxFit.cover,
+                height: SizeData.screenHeight * .3,
+                width: SizeData.screenWidth * .8,
+              ),
+            ),
+          )),
     );
   }
 }
