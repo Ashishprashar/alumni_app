@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:alumni_app/models/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,6 +10,7 @@ import '../services/auth.dart';
 class ChatProvider with ChangeNotifier {
   TextEditingController messageController = TextEditingController();
   AuthServices authServices = AuthServices();
+  List<ChatModel> _chatList = [];
   final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
       .collection('user')
       .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
@@ -18,12 +22,39 @@ class ChatProvider with ChangeNotifier {
   }
 
   getLastMessage(String peerId) async {
-    final _lastMessage = await FirebaseFirestore.instance
-        .collection('messages')
+    final _lastMessage = await chatCollection
         .doc(getConversationID(firebaseCurrentUser!.uid, peerId))
         .get();
 
     return _lastMessage.data()!["lastMessage"]["content"];
+  }
+
+  fetchChatList() async {
+    final docRef = await chatCollection
+        .where("users", arrayContains: firebaseCurrentUser?.uid)
+        .get();
+    final docs = docRef.docs;
+    List<ChatModel> chatList = [];
+    for (var chatDoc in docs) {
+      final chatData = chatDoc.data();
+      final userRef = await userCollection
+          .doc((chatData["users"] as List)
+              .where((element) => element != firebaseCurrentUser?.uid)
+              .toList()[0])
+          .get();
+      chatData["user"] = userRef.data();
+      log(chatData.toString());
+
+      ChatModel chatModel = ChatModel.fromJson(chatData);
+      chatList.add(chatModel);
+    }
+    log(chatList[0].toString());
+    _chatList = chatList;
+    notifyListeners();
+  }
+
+  List<ChatModel> get chatList {
+    return [..._chatList];
   }
 
   sendMessage(
@@ -33,8 +64,7 @@ class ChatProvider with ChangeNotifier {
     String content,
     String timestamp,
   ) {
-    final DocumentReference convoDoc =
-        FirebaseFirestore.instance.collection('messages').doc(convoID);
+    final DocumentReference convoDoc = chatCollection.doc(convoID);
 
     convoDoc.set(<String, dynamic>{
       'lastMessage': <String, dynamic>{
@@ -46,11 +76,8 @@ class ChatProvider with ChangeNotifier {
       },
       'users': <String>[id, pid]
     }).then((dynamic success) {
-      final DocumentReference messageDoc = FirebaseFirestore.instance
-          .collection('messages')
-          .doc(convoID)
-          .collection(convoID)
-          .doc(timestamp);
+      final DocumentReference messageDoc =
+          chatCollection.doc(convoID).collection(convoID).doc(timestamp);
 
       FirebaseFirestore.instance
           .runTransaction((Transaction transaction) async {

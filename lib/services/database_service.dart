@@ -23,7 +23,7 @@ class DatabaseService {
   ) async {
     Timestamp now = Timestamp.now();
     UploadTask uploadTask = storageRef
-        .child('profile/${firebaseCurrentUser?.uid}.mp3')
+        .child('profile/${firebaseCurrentUser?.uid}.jpg')
         .putFile(image);
     TaskSnapshot storageSnap = await uploadTask;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
@@ -66,7 +66,7 @@ class DatabaseService {
 
     if (image != null) {
       UploadTask uploadTask = storageRef
-          .child('profile/${firebaseCurrentUser?.uid}.mp3')
+          .child('profile/${firebaseCurrentUser?.uid}.jpg')
           .putFile(image);
       TaskSnapshot storageSnap = await uploadTask;
       downloadUrl = await storageSnap.ref.getDownloadURL();
