@@ -59,6 +59,24 @@ class UserModel {
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
       );
+  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
+        bio: json["bio"] ?? "",
+        connection: List<String>.from((json["connection"] ?? []).map((x) => x)),
+        createdAt: json["created_at"],
+        email: json["email"],
+        id: json["id"],
+        linkToSocial: json["link_to_social"] ?? {},
+        name: json["name"],
+        profilePic: json["profile_pic"],
+        techStack: json["tech_stack"] == null
+            ? []
+            : List<dynamic>.from(json["tech_stack"].map((x) => x)),
+        type: json["type"] ?? "student",
+        updatedAt: json["updated_at"],
+        admin: json["admin"] ?? false,
+        semester: json["semester"] ?? "8",
+        branch: json["branch"] ?? "CSE",
+      );
 
   Map<String, dynamic> toJson() => {
         "bio": bio,

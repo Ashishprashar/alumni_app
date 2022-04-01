@@ -1,6 +1,8 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/edit_screen.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/widget/done_button.dart';
@@ -23,78 +25,121 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     currentUser = Provider.of<CurrentUserProvider>(context).getCurrentUser();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditScreen()));
+    return Consumer<CurrentUserProvider>(
+        builder: (context, currentUserProvider, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text(
+                              "You will loose all your data after this action!!!\nAre you sure?"),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              DoneButton(
+                                height: 30,
+                                width: 70,
+                                text: "Yes",
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  currentUserProvider.setDeleting();
+                                  await authServices.deleteAccount(context);
+                                },
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              DoneButton(
+                                height: 30,
+                                width: 70,
+                                text: "No",
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+
+                  // currentUserProvider.setDeleting();
+                },
+                icon: const Icon(Icons.delete)),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EditScreen()));
+                },
+                icon: const Icon(Icons.edit)),
+            IconButton(
+              onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Are you sure?"),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            DoneButton(
+                              height: 30,
+                              width: 70,
+                              text: "Yes",
+                              onTap: () async {
+                                await authServices.signOut(context);
+                              },
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            DoneButton(
+                              height: 30,
+                              width: 70,
+                              text: "No",
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    });
               },
-              icon: const Icon(Icons.edit)),
-          IconButton(
-            onPressed: () async {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Are you sure?"),
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          DoneButton(
-                            height: 30,
-                            width: 70,
-                            text: "Yes",
-                            onTap: () async {
-                              await authServices.signOut(context);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          DoneButton(
-                            height: 30,
-                            width: 70,
-                            text: "No",
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-            },
-            icon: const Icon(Icons.login_rounded),
-          ),
-          Container(
-            padding: const EdgeInsets.only(right: 10),
-          ),
-        ],
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 1,
-        toolbarHeight: 50,
-      ),
-      body: SafeArea(
-        child: Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                UserProfile(user: currentUser!) // scroll down for the widget
-              ],
+              icon: const Icon(Icons.login_rounded),
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+            ),
+          ],
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 1,
+          toolbarHeight: 50,
+        ),
+        body: SafeArea(
+          child: Scrollbar(
+            isAlwaysShown: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  UserProfile(user: currentUser!) // scroll down for the widget
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -146,6 +191,26 @@ class UserProfile extends StatelessWidget {
             ),
           ),
         ),
+        if (user.id != firebaseCurrentUser?.uid)
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => ChatScreen(
+                            chatWithUser: user,
+                          )));
+                },
+                child: Center(
+                  child: SizedBox(
+                    width: 120,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [Icon(Icons.message), Text("Message")],
+                    ),
+                  ),
+                )),
+          ),
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

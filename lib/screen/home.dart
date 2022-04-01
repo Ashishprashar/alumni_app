@@ -1,4 +1,5 @@
 import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/feed_screen.dart';
 import 'package:alumni_app/screen/people.dart';
@@ -8,13 +9,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
 final postCollection = db.collection('post');
+final chatCollection = db.collection('chat');
 late UserModel individualUser;
+// bool isDeleting = false;
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 final Reference storageRef = FirebaseStorage.instance.ref();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -49,36 +53,43 @@ class _HomeState extends State<Home> {
       const Profile(),
     ];
 
-    return Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 12,
-        // backgroundColor: Theme.of(context).secondaryHeaderColor,
-        backgroundColor: Colors.blue,
-        elevation: 0,
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feed),
-            label: 'Feed',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'People',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    );
+    return Consumer<CurrentUserProvider>(
+        builder: (context, currentUserProvider, child) {
+      return Scaffold(
+        body: currentUserProvider.isDeleting
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : _children[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          selectedFontSize: 12,
+          // backgroundColor: Theme.of(context).secondaryHeaderColor,
+          backgroundColor: Colors.blue,
+          elevation: 0,
+          onTap: onTabTapped,
+          currentIndex: _currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.feed),
+              label: 'Feed',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              label: 'People',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

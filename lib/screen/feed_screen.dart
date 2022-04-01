@@ -48,7 +48,9 @@ class _FeedScreenState extends State<FeedScreen> {
               children: [
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: postCollection.orderBy("updated_at").snapshots(),
+                      stream: postCollection
+                          .orderBy("updated_at", descending: false)
+                          .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(

@@ -26,8 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
     uid = firebaseCurrentUser!.uid;
     convoID = Provider.of<ChatProvider>(context, listen: false)
         .getConversationID(uid, widget.chatWithUser.id);
-    _usersStream = FirebaseFirestore.instance
-        .collection('messages')
+    _usersStream = chatCollection
         .doc(convoID)
         .collection(convoID)
         .orderBy('timestamp', descending: true)
