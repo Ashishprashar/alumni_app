@@ -19,6 +19,14 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  ScrollController scrollController = ScrollController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // scrollController.addListener();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
@@ -34,29 +42,37 @@ class _FeedScreenState extends State<FeedScreen> {
           toolbarHeight: 50,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-              child: SizedBox(
+          child: SizedBox(
             height: SizeData.screenHeight,
             child: Column(
               children: [
-                const UploadPostWidget(),
-                StreamBuilder<QuerySnapshot>(
-                    stream: postCollection.orderBy("updated_at").snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return SizedBox(
-                            child: Column(
-                          children: [
-                            for (var i = 0; i < snapshot.data!.docs.length; i++)
-                              getPostList(snapshot, i)
-                          ],
-                        ));
-                      }
-                      return Container();
-                    })
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: postCollection.orderBy("updated_at").snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              controller: scrollController,
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: snapshot.data!.docs.length + 1,
+                              itemBuilder: ((context, index) => index == 0
+                                  ? const UploadPostWidget()
+                                  : getPostList(snapshot, index - 1))
+                              //      Column(
+                              //   children: [
+                              //     for (var i = 0; i < snapshot.data!.docs.length; i++)
+
+                              //   ],
+                              // )
+                              );
+                        }
+                        return Container();
+                      }),
+                )
               ],
             ),
-          )),
+          ),
         ),
       );
     });
