@@ -119,7 +119,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             });
                           },
                           text: "Create Account"),
-                    )
+                    ),
+                    const SizedBox(height: 50,),
+                    DoneButton(
+                      height: 50,
+                      width: 200,
+                      onTap: () {
+                        navigatorService.navigateToIntroductionPage(context);
+                      },
+                      text: "go back",
+                    ),
                   ],
                 ),
               ),

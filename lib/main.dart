@@ -3,7 +3,7 @@ import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/provider/people_to_profile.dart';
 import 'package:alumni_app/screen/home.dart';
-import 'package:alumni_app/screen/splash.dart';
+import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/utilites/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        home: const Splash(),
+        home: const Wrapper(),
       ),
     );
   }

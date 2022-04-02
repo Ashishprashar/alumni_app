@@ -7,13 +7,13 @@ import 'package:alumni_app/services/media_query.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+class Wrapper extends StatefulWidget {
+  const Wrapper({Key? key}) : super(key: key);
   @override
-  State<Splash> createState() => _SplashState();
+  State<Wrapper> createState() => _WrapperState();
 }
 
-class _SplashState extends State<Splash> {
+class _WrapperState extends State<Wrapper> {
   String isAuth = 'loading';
   late User user;
   late UserModel userModel;

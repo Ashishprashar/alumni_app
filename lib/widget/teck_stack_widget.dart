@@ -33,9 +33,10 @@ class TechStackWidget extends StatelessWidget {
                         child: Text(
                           techStackList[i],
                           style: Theme.of(context)
-                              .textTheme
-                              .displayMedium!
-                              .copyWith(fontSize: 16),
+                              .textTheme.bodyText1
+                              // .displayMedium!
+                              
+                              ?.copyWith(fontSize: 16),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -68,9 +69,9 @@ class TechStackWidget extends StatelessWidget {
                         child: Text(
                           techStackList[i],
                           style: Theme.of(context)
-                              .textTheme
-                              .displayMedium!
-                              .copyWith(fontSize: 16),
+                              .textTheme.bodyText1
+                              // .displayMedium!
+                              ?.copyWith(fontSize: 16),
                           overflow: TextOverflow.fade,
                           maxLines: 1,
                         ),

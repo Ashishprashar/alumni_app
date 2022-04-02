@@ -27,6 +27,7 @@ class AppTheme {
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     splashColor: Colors.blue,
+    // splashColor: const Color(0xFFA866EE),
     iconTheme: const IconThemeData(
       color: Colors.black,
     ),

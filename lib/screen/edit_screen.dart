@@ -50,7 +50,6 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   void initState() {
-
     techStackList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
 
     twitterController =
@@ -126,16 +125,16 @@ class _EditScreenState extends State<EditScreen> {
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 20.0),
                                   child: CircleAvatar(
-                                      radius: 50.0,
-                                      backgroundColor:
-                                          Theme.of(context).highlightColor,
-                                      backgroundImage: profileImage == null
-                                          ? NetworkImage(
-                                              currentUser!.profilePic)
-                                          : FileImage(profileImage!)
-                                              as ImageProvider,
-                                      child: const FaIcon(
-                                          FontAwesomeIcons.camera)),
+                                    radius: 50.0,
+                                    backgroundColor:
+                                        Theme.of(context).highlightColor,
+                                    backgroundImage: profileImage == null
+                                        ? NetworkImage(currentUser!.profilePic)
+                                        : FileImage(profileImage!)
+                                            as ImageProvider,
+                                    child:
+                                        const FaIcon(FontAwesomeIcons.camera),
+                                  ),
                                 ),
                               ),
                               CustomTextField(
@@ -170,6 +169,7 @@ class _EditScreenState extends State<EditScreen> {
                                       techStackList.removeAt(i);
                                     });
                                   }),
+                              //branch
                               Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 25),
@@ -200,6 +200,7 @@ class _EditScreenState extends State<EditScreen> {
                                   ],
                                 ),
                               ),
+                              //Sem
                               Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 25),
@@ -237,6 +238,7 @@ class _EditScreenState extends State<EditScreen> {
                                 ),
                               ),
                               const SizedBox(height: 16),
+                              //Social Icons
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -295,9 +297,8 @@ class _EditScreenState extends State<EditScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const SizedBox(height: 20),
+                              //save button
                               Container(
                                 margin: const EdgeInsets.only(top: 30),
                                 child: DoneButton(

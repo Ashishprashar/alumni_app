@@ -27,13 +27,23 @@ class DatabaseService {
         .putFile(image);
     TaskSnapshot storageSnap = await uploadTask;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
+
+     Map _linkToSocial = {
+      'email': firebaseCurrentUser!.email,
+      'twitter': '',
+      'linkedin': '',
+      'facebook': '',
+      'instagram': '',
+      'github': '',
+    };
+
     UserModel user = UserModel(
         bio: "",
         connection: [],
         createdAt: now,
         email: firebaseCurrentUser!.email ?? "",
         id: firebaseCurrentUser!.uid,
-        linkToSocial: {},
+        linkToSocial: _linkToSocial,
         name: name,
         profilePic: downloadUrl,
         techStack: teckStack,

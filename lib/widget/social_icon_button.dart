@@ -61,7 +61,7 @@ class SocialIconButton extends StatelessWidget {
                 ? Colors.grey
                 : Colors.black,
             onPressed: () async {
-              String socialurl = user.linkToSocial[socialName];
+              String socialurl = user.linkToSocial[socialName] ?? '';
               if (await canLaunch(socialurl)) launch(socialurl);
             },
           );

@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
           title: Row(
             children: [
               Hero(
-                tag: "profile-pic",
+                tag: "profile-pic1",
                 placeholderBuilder: ((ctx, size, widget) {
                   return CircleAvatar(
                     radius: 25,
@@ -55,6 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Navigator.of(context).push(HeroDialogRoute(
                         builder: ((context) => Center(
                               child: ProfilePicDialog(
+                                index: 1,
                                 image: individualUser.profilePic,
                               ),
                             ))));
@@ -157,6 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 convoID,
                                 uid,
                                 widget.chatWithUser.id);
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                           child: const Icon(Icons.send)),
                       border: InputBorder.none),

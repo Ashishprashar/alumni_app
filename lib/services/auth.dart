@@ -35,7 +35,8 @@ class AuthServices {
 
         navigatorService.navigateToHome(context);
       } else {
-        navigatorService.navigateToOnBoarding(context);
+        // navigatorService.navigateToOnBoarding(context);
+        navigatorService.navigateToIntroductionPage(context);
       }
     }
   }

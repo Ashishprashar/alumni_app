@@ -26,7 +26,7 @@ class ChatProvider with ChangeNotifier {
         .doc(getConversationID(firebaseCurrentUser!.uid, peerId))
         .get();
 
-    return _lastMessage.data()!["lastMessage"]["content"];
+    return await _lastMessage.data()?["lastMessage"]["content"];
   }
 
   fetchChatList() async {

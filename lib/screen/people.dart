@@ -159,7 +159,7 @@ class _UserListState extends State<UserList> {
         Provider.of<PeopleToProfile>(context, listen: false).changeEnabled();
       },
       leading: Hero(
-        tag: "profile-pic",
+        tag: "profile-pic$index",
         placeholderBuilder: ((ctx, size, widget) {
           return CircleAvatar(
             radius: 30,
@@ -171,6 +171,7 @@ class _UserListState extends State<UserList> {
             Navigator.of(context).push(HeroDialogRoute(
                 builder: ((context) => Center(
                       child: ProfilePicDialog(
+                        index: index,
                         image: individualUser.profilePic,
                       ),
                     ))));
@@ -210,9 +211,11 @@ class _UserListState extends State<UserList> {
     } else {
       showResults = List.from(_allResults);
     }
-    setState(() {
-      _resultsList = showResults;
-    });
+    if (mounted) {
+      setState(() {
+        _resultsList = showResults;
+      });
+    }
   }
 
   getUsersPastTripsStreamSnapshots() async {
@@ -225,9 +228,9 @@ class _UserListState extends State<UserList> {
         data.add(item);
       }
     });
-    setState(() {
-      _allResults = data;
-    });
+    // setState(() {
+    _allResults = data;
+    // });
     searchResultsList();
     return "complete";
   }
@@ -235,9 +238,11 @@ class _UserListState extends State<UserList> {
 
 class ProfilePicDialog extends StatefulWidget {
   final String image;
+  final int? index;
   const ProfilePicDialog({
     Key? key,
     required this.image,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -306,6 +311,5 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   }
 
   @override
-  // TODO: implement barrierLabel
   String? get barrierLabel => "";
 }

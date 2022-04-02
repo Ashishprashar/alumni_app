@@ -161,7 +161,7 @@ class UserProfile extends StatelessWidget {
           color: Theme.of(context).splashColor,
           child: Center(
             child: Hero(
-              tag: "profile-pic",
+              tag: "profile-pic1",
               placeholderBuilder: ((ctx, size, widget) {
                 return CircleAvatar(
                     radius: 50,
@@ -176,6 +176,7 @@ class UserProfile extends StatelessWidget {
                     Navigator.of(context).push(HeroDialogRoute(
                         builder: ((context) => Center(
                               child: ProfilePicDialog(
+                                index: 1,
                                 image: user.profilePic,
                               ),
                             ))));
