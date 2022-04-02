@@ -62,12 +62,16 @@ class AuthServices {
       await FirebaseStorage.instance
           .ref("profile/${firebaseCurrentUser?.uid}.mp3")
           .delete();
-    } catch (e) {}
+    } catch (e) {
+      return null;
+    }
     try {
       await FirebaseStorage.instance
           .ref("profile/${firebaseCurrentUser?.uid}.jpg")
           .delete();
-    } catch (e) {}
+    } catch (e) {
+      return null;
+    }
     // await FirebaseStorage.instance
     //     .ref("post/${firebaseCurrentUser?.uid}")
     //     .delete();

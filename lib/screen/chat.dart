@@ -18,7 +18,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     Future.delayed(Duration.zero).then((value) {
       Provider.of<ChatProvider>(context, listen: false).fetchChatList();
@@ -66,7 +66,8 @@ class _ChatState extends State<Chat> {
 
 class ChatUserWidget extends StatefulWidget {
   final ChatModel chatModel;
-  const ChatUserWidget({Key? key, required this.chatModel}) : super(key: key);
+  final int? index;
+  const ChatUserWidget({Key? key, required this.chatModel, this.index}) : super(key: key);
 
   @override
   State<ChatUserWidget> createState() => _ChatUserWidgetState();
@@ -93,7 +94,7 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
                 )));
       },
       leading: Hero(
-        tag: "profile-pic",
+        tag: "profile-pic${widget.index}",
         placeholderBuilder: ((ctx, size, child) {
           return CircleAvatar(
             radius: 30,
@@ -105,6 +106,7 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
             Navigator.of(context).push(HeroDialogRoute(
                 builder: ((context) => Center(
                       child: ProfilePicDialog(
+                        index: widget.index,
                         image: widget.chatModel.user.profilePic,
                       ),
                     ))));

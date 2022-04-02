@@ -22,7 +22,7 @@ class _FeedScreenState extends State<FeedScreen> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     // scrollController.addListener();
   }
@@ -124,23 +124,21 @@ class _PostWidgetState extends State<PostWidget> {
                             Theme.of(context).highlightColor.withOpacity(.2))),
                 child: Column(
                   children: [
-                    Container(
-                      child: Row(children: [
-                        CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(user.profilePic)),
-                        Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: Text(user.name))
-                      ]),
-                    ),
+                    Row(children: [
+                      CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(user.profilePic)),
+                      Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: Text(user.name))
+                    ]),
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 8, horizontal: 8),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         widget.postModel.textContent,
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                     // if (widget.postModel.attachments.isNotEmpty)

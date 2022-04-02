@@ -48,7 +48,7 @@ class ChatProvider with ChangeNotifier {
       ChatModel chatModel = ChatModel.fromJson(chatData);
       chatList.add(chatModel);
     }
-    log(chatList[0].toString());
+    // log(chatList[0].toString());
     _chatList = chatList;
     notifyListeners();
   }

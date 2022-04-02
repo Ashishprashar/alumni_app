@@ -121,7 +121,7 @@ class DatabaseService {
 
       navigatorService.navigateToHome(context);
     } else {
-      navigatorService.navigateToOnBoarding(context);
+      navigatorService.navigateToIntroductionPage(context);
     }
   }
 }

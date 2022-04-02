@@ -62,8 +62,9 @@ class _HomeState extends State<Home> {
               )
             : _children[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
           selectedFontSize: 12,
           // backgroundColor: Theme.of(context).secondaryHeaderColor,
           backgroundColor: Colors.blue,

@@ -163,7 +163,8 @@ class _UserListState extends State<UserList> {
         placeholderBuilder: ((ctx, size, widget) {
           return CircleAvatar(
             radius: 30,
-            backgroundImage: NetworkImage(individualUser.profilePic),
+            // backgroundImage: NetworkImage(individualUser.profilePic),
+            backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           );
         }),
         child: GestureDetector(
@@ -172,13 +173,15 @@ class _UserListState extends State<UserList> {
                 builder: ((context) => Center(
                       child: ProfilePicDialog(
                         index: index,
-                        image: individualUser.profilePic,
+                        // image: individualUser.profilePic,
+                        image: UserModel.fromJson(snapshot[index]).profilePic,
                       ),
                     ))));
           },
           child: CircleAvatar(
             radius: 30,
             backgroundImage: NetworkImage(individualUser.profilePic),
+            // backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           ),
         ),
       ),
@@ -257,18 +260,21 @@ class _ProfilePicDialogState extends State<ProfilePicDialog> {
         Dialog(
       backgroundColor: Colors.transparent,
       child: Hero(
-          tag: "profile-pic",
+          tag: "profile-pic${widget.index}",
           child: Container(
+            // alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              // borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 widget.image,
                 fit: BoxFit.cover,
-                height: SizeData.screenHeight * .3,
-                width: SizeData.screenWidth * .8,
+                // height: SizeData.screenHeight * .3,
+                // width: SizeData.screenWidth * .8,
+                height: 300,
+                width: 150,
               ),
             ),
           )),

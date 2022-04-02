@@ -147,9 +147,11 @@ class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
     required this.user,
+
   }) : super(key: key);
 
   final UserModel user;
+
 
   @override
   Widget build(BuildContext context) {

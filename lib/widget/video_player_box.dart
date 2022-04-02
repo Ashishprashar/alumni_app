@@ -15,7 +15,6 @@ class _VideoPlayerBoxState extends State<VideoPlayerBox> {
   late VideoPlayerController _videoPlayerController;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       if (widget.path.startsWith("https")) {
