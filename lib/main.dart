@@ -1,7 +1,6 @@
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
-import 'package:alumni_app/provider/people_to_profile.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/media_query.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
     SizeData();
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: PeopleToProfile()),
         ChangeNotifierProvider(create: (context) => CurrentUserProvider()),
         ChangeNotifierProvider(create: (context) => FeedProvider()),
         ChangeNotifierProvider(create: (context) => ChatProvider()),

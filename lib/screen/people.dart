@@ -1,10 +1,8 @@
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/provider/people_to_profile.dart';
-import 'package:alumni_app/screen/profile.dart';
+import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'home.dart';
 
 class People extends StatefulWidget {
@@ -17,38 +15,19 @@ class People extends StatefulWidget {
 class _PeopleState extends State<People> {
   @override
   Widget build(BuildContext context) {
-    bool enabled = Provider.of<PeopleToProfile>(context).getEnabled();
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: enabled
-            ? AppBar(
-                title: Text(
-                  'People',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                iconTheme: Theme.of(context).appBarTheme.iconTheme,
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                elevation: 1,
-                toolbarHeight: 50,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Provider.of<PeopleToProfile>(context, listen: false)
-                        .changeEnabled();
-                  },
-                ),
-              )
-            : AppBar(
-                title: Text(
-                  'People',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                iconTheme: Theme.of(context).appBarTheme.iconTheme,
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                elevation: 1,
-                toolbarHeight: 50,
-              ),
+        appBar: AppBar(
+          title: Text(
+            'People',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          iconTheme: Theme.of(context).appBarTheme.iconTheme,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 1,
+          toolbarHeight: 50,
+        ),
         body: const SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,
@@ -97,55 +76,59 @@ class _UserListState extends State<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    bool enabled = Provider.of<PeopleToProfile>(context).getEnabled();
-
-    return enabled
-        ? UserProfile(user: individualUser)
-        : Column(
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: SizeData.screenWidth * 0.7,
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.search),
-                            hintText: 'Search by name'),
+              SizedBox(
+                width: SizeData.screenWidth * 0.7,
+                child: TextField(
+                  controller: _searchController,
+                  decoration:  InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: InkWell(
+                        child: const Icon(Icons.close),
+                        onTap: (){
+                          setState(() {
+                            _searchController.clear();
+                          });
+                        },
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Text(_allResults.length.toString(),
-                            style: Theme.of(context).textTheme.bodyText2),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Icon(Icons.people),
-                      ],
-                    ),
-                  ],
+                      hintText: 'Search by name'),
                 ),
               ),
-              const Divider(
-                color: Colors.black,
-                thickness: 0.1,
+              Row(
+                children: [
+                  Text(_allResults.length.toString(),
+                      style: Theme.of(context).textTheme.bodyText2),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Icon(Icons.people),
+                ],
               ),
-              _resultsList.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _resultsList.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          userCard(index, _resultsList),
-                    )
-                  : const Center(
-                      child: Text("No users found"),
-                    ),
             ],
-          );
+          ),
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: 0.1,
+        ),
+        _resultsList.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: _resultsList.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    userCard(index, _resultsList),
+              )
+            : const Center(
+                child: Text("No users found"),
+              ),
+      ],
+    );
   }
 
   Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {
@@ -155,14 +138,18 @@ class _UserListState extends State<UserList> {
       onTap: () {
         individualUser = UserModel.fromJson(snapshot[index]);
         _searchController.clear();
-        //to notify that we need to open the profile of the individualUser.
-        Provider.of<PeopleToProfile>(context, listen: false).changeEnabled();
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) => IndividualProfile(
+                  user: individualUser,
+                  index: index,
+                )));
       },
       leading: Hero(
         tag: "profile-pic$index",
         placeholderBuilder: ((ctx, size, widget) {
           return CircleAvatar(
             radius: 30,
+
             // backgroundImage: NetworkImage(individualUser.profilePic),
             backgroundImage:
                 NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),

@@ -141,10 +141,52 @@ class _EditScreenState extends State<EditScreen> {
                                 controller: nameController,
                                 title: "Name",
                               ),
-                              CustomTextField(
-                                controller: bioController,
-                                title: "Bio",
-                                hint: "Tell us about you",
+                              // CustomTextField(
+                              //   controller: bioController,
+                              //   title: "Bio",
+                              //   hint: "Tell us about you",
+                              // ),
+                              Container(
+                                // height: height + 30,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'bio',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(color: Colors.black),
+                                    ),
+                                    Container(
+                                      // height: height,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .focusColor)),
+                                      child: Center(
+                                        child: TextField(
+                                          controller: bioController,
+                                          keyboardType: TextInputType.multiline,
+                                          minLines: 1,
+                                          maxLines: 5,
+                                          maxLength: 200,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: 'Tell us about you',
+                                            // suffixIcon: suffix,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               CustomTextField(
                                 controller: techStackController,
@@ -309,9 +351,18 @@ class _EditScreenState extends State<EditScreen> {
                                         isLoading = true;
                                       });
                                       try {
+                                        nameController.text =
+                                            nameController.text.trim();
+                                        bioController.text =
+                                            bioController.text.trim();
                                         await updateUserDetails().then(
                                             (value) =>
                                                 Navigator.of(context).pop());
+                                        const _snackBar = SnackBar(
+                                          content: Text('Profile Updated!'),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(_snackBar);
                                       } catch (e) {
                                         setState(() {
                                           isLoading = false;
