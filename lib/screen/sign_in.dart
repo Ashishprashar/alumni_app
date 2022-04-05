@@ -21,7 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
           width: SizeData.screenWidth,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 height: SizeData.screenHeight * .4,
@@ -38,12 +38,42 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              DoneButton(
-                text: "SignIn With Google",
-                height: 40,
+              // Container(
+              //   child: DoneButton(
+              //     text: "SignIn With Google",
+              //     height: 40,
+              //     width: 200,
+              //     onTap: () async => await authServices.signInWith(context, ""),
+              //   ),
+              // ),
+              SizedBox(height:50,),
+              Container(
+                height:45,
                 width: 200,
-                onTap: () async => await authServices.signInWith(context, ""),
-              ),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      primary:Theme.of(context).primaryColor,
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)),),
+                      side: BorderSide(color: Colors.blueGrey,width:2)
+                  ),
+                  onPressed: ()  async => await authServices.signInWith(context, ""),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10,bottom: 10),
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AssetImage("assets/images/google_image.png"),
+                          fit: BoxFit.cover,
+                          height:30,
+                        ),
+                        SizedBox(width:8,),
+                        //Image.asset("assets/images/google_image.jpg"),
+                        Text("SignIn With Google"),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ));
