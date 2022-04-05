@@ -112,6 +112,11 @@ class _PostWidgetState extends State<PostWidget> {
             if (futureSnap.hasData) {
               UserModel user =
                   UserModel.fromJson(futureSnap.data as DocumentSnapshot);
+              // setState(() {
+              isLike = widget.postModel.likes == null
+                  ? false
+                  : widget.postModel.likes!.contains(firebaseCurrentUser?.uid);
+              // });
               log(widget.postModel.attachments.length.toString());
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -188,8 +193,13 @@ class _PostWidgetState extends State<PostWidget> {
                                 setState(() {
                                   isLike = !isLike;
                                 });
-                                feedProvider.addLike(
-                                    postId: widget.postModel.id);
+                                if (isLike) {
+                                  feedProvider.addLike(
+                                      postId: widget.postModel.id);
+                                } else {
+                                  feedProvider.removeLike(
+                                      postId: widget.postModel.id);
+                                }
                               },
                               child: Icon(
                                 isLike

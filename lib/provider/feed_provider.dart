@@ -81,7 +81,14 @@ class FeedProvider with ChangeNotifier {
   addLike({required String postId}) async {
     await postCollection.doc(postId).update({
       "likes": FieldValue.arrayUnion([firebaseCurrentUser?.uid]),
-      "like_countlikes": FieldValue.increment(1)
+      "like_count": FieldValue.increment(1)
+    });
+  }
+
+  removeLike({required String postId}) async {
+    await postCollection.doc(postId).update({
+      "likes": FieldValue.arrayRemove([firebaseCurrentUser?.uid]),
+      "like_count": FieldValue.increment(-1)
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/chat.dart';
@@ -32,6 +34,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  int backTaps = 0;
 
   void onTabTapped(int index) {
     setState(() {
@@ -55,40 +58,62 @@ class _HomeState extends State<Home> {
 
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
-      return Scaffold(
-        body: currentUserProvider.isDeleting
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : _children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          selectedFontSize: 12,
-          // backgroundColor: Theme.of(context).secondaryHeaderColor,
-          backgroundColor: Colors.blue,
-          elevation: 0,
-          onTap: onTabTapped,
-          currentIndex: _currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.feed),
-              label: 'Feed',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.group),
-              label: 'People',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
+      return WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            backTaps += 1;
+          });
+          if (backTaps == 1) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                duration: Duration(seconds: 2),
+                content: Text("Press back again to exit app")));
+          }
+          Timer.periodic(const Duration(seconds: 2), (timer) {
+            setState(() {
+              backTaps = 0;
+            });
+            timer.cancel();
+          });
+          if (backTaps == 2) {
+            return true;
+          }
+          return false;
+        },
+        child: Scaffold(
+          body: currentUserProvider.isDeleting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : _children[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            selectedFontSize: 12,
+            // backgroundColor: Theme.of(context).secondaryHeaderColor,
+            backgroundColor: Colors.blue,
+            elevation: 0,
+            onTap: onTabTapped,
+            currentIndex: _currentIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.feed),
+                label: 'Feed',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'Chat',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.group),
+                label: 'People',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
       );
     });
