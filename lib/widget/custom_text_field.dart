@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -26,7 +27,7 @@ class CustomTextField extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context)
+            style: Theme.of(context) 
                 .textTheme
                 .bodyText1
                 ?.copyWith(color: Colors.black),
@@ -40,6 +41,9 @@ class CustomTextField extends StatelessWidget {
             child: Center(
               child: TextField(
                 controller: controller,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(30),
+                ],
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hint,

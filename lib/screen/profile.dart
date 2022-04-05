@@ -147,11 +147,11 @@ class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
     required this.user,
-
+    this.index = 1,
   }) : super(key: key);
 
   final UserModel user;
-
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class UserProfile extends StatelessWidget {
           color: Theme.of(context).splashColor,
           child: Center(
             child: Hero(
-              tag: "profile-pic1",
+              tag: "profile-pic$index",
               placeholderBuilder: ((ctx, size, widget) {
                 return CircleAvatar(
                     radius: 50,
@@ -178,7 +178,7 @@ class UserProfile extends StatelessWidget {
                     Navigator.of(context).push(HeroDialogRoute(
                         builder: ((context) => Center(
                               child: ProfilePicDialog(
-                                index: 1,
+                                index: index,
                                 image: user.profilePic,
                               ),
                             ))));
@@ -231,16 +231,27 @@ class UserProfile extends StatelessWidget {
         const SizedBox(
           height: 50,
         ),
+        Center(
+          child: Text(
+            'Bio: ',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Bio: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.bio,
-              style: Theme.of(context).textTheme.bodyText2,
+            Expanded(
+              child: Container(
+                padding: const  EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  user.bio,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.justify,
+                ),
+              ),
             ),
           ],
         ),
@@ -271,13 +282,13 @@ class UserProfile extends StatelessWidget {
         )),
         const SizedBox(height: 16),
         Center(
-            child: user.techStack.isNotEmpty?Text(
-          user.techStack.toString(),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-
-        ):Text("no skills added yet")),
-
+            child: user.techStack.isNotEmpty
+                ? Text(
+                    user.techStack.toString(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                : const Text("no skills added yet")),
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

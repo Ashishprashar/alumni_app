@@ -4,6 +4,7 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -128,21 +129,30 @@ class _PostWidgetState extends State<PostWidget> {
                             Theme.of(context).highlightColor.withOpacity(.2))),
                 child: Column(
                   children: [
-                    Row(children: [
-                      CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(user.profilePic)),
-                      Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Text(user.name))
-                    ]),
+                    InkWell(
+                      onTap: () {
+                        // individualUser = user;
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => IndividualProfile(
+                                  user: user,
+                                )));
+                      },
+                      child: Row(children: [
+                        CircleAvatar(
+                            radius: 20,
+                            backgroundImage: NetworkImage(user.profilePic)),
+                        Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Text(user.name))
+                      ]),
+                    ),
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 8, horizontal: 8),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         widget.postModel.textContent,
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                     // if (widget.postModel.attachments.isNotEmpty)
@@ -370,6 +380,10 @@ class UploadPostWidget extends StatelessWidget {
                     DoneButton(
                         onTap: () async {
                           await feedProvider.handlePostButton();
+                          const _snackBar = SnackBar(
+                            content: Text('Post has been published!'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
                         },
                         width: SizeData.screenWidth * .2,
                         text: "Post"),
