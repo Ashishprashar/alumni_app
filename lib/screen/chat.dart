@@ -18,7 +18,6 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   void initState() {
-   
     super.initState();
     Future.delayed(Duration.zero).then((value) {
       Provider.of<ChatProvider>(context, listen: false).fetchChatList();
@@ -67,7 +66,8 @@ class _ChatState extends State<Chat> {
 class ChatUserWidget extends StatefulWidget {
   final ChatModel chatModel;
   final int? index;
-  const ChatUserWidget({Key? key, required this.chatModel, this.index}) : super(key: key);
+  const ChatUserWidget({Key? key, required this.chatModel, this.index})
+      : super(key: key);
 
   @override
   State<ChatUserWidget> createState() => _ChatUserWidgetState();
@@ -119,10 +119,10 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
       ),
       title: Text(widget.chatModel.user.name,
           style: Theme.of(context).textTheme.subtitle1),
-      subtitle: Text(widget.chatModel.lasMessage.content,
-          style: Theme.of(context).textTheme.bodyText1),
+      subtitle: Text(widget.chatModel.lasMessage ?? "",
+          maxLines: 1, style: Theme.of(context).textTheme.bodyText1),
       trailing: Text(widget.chatModel.user.type,
-          style: Theme.of(context).textTheme.bodyText1),
+          maxLines: 1, style: Theme.of(context).textTheme.bodyText1),
     );
   }
 }
