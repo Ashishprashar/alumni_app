@@ -147,11 +147,9 @@ class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
     required this.user,
-
   }) : super(key: key);
 
   final UserModel user;
-
 
   @override
   Widget build(BuildContext context) {
@@ -271,11 +269,13 @@ class UserProfile extends StatelessWidget {
         )),
         const SizedBox(height: 16),
         Center(
-            child: Text(
-          user.techStack.toString(),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ):Text("no skills added yet")),
+            child: user.techStack.isNotEmpty
+                ? Text(
+                    user.techStack.toString(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                : const Text("no skills added yet")),
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

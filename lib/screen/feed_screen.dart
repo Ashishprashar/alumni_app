@@ -138,7 +138,7 @@ class _PostWidgetState extends State<PostWidget> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         widget.postModel.textContent,
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                     // if (widget.postModel.attachments.isNotEmpty)
