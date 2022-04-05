@@ -275,7 +275,9 @@ class UserProfile extends StatelessWidget {
           user.techStack.toString(),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyText2,
-        ):Text("[no skills added yet]")),
+
+        ):Text("no skills added yet")),
+
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

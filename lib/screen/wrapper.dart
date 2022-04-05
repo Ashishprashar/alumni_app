@@ -24,6 +24,7 @@ class _WrapperState extends State<Wrapper> {
   void initState() {
     checkSignIn();
     super.initState();
+    navigateToMainPage();
   }
 
   bool get wantKeepAlive => true;
@@ -43,9 +44,27 @@ class _WrapperState extends State<Wrapper> {
     }
   }
 
+  navigateToMainPage() async{
+    await Future.delayed(Duration(milliseconds: 2000),(){});
+    if(isAuth=="Auth"){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+    }else{
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
+    }
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeData().init(context);
-    return (isAuth == "AUTH" ? const Home() : const SignInScreen());
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: Text("Splash Screen",
+            style:TextStyle(color:Theme.of(context).primaryColor,fontSize: 20,fontWeight:FontWeight.bold))
+        ),
+      ),
+    );
+    //return (isAuth == "AUTH" ? const Home() : const SignInScreen());
   }
 }
