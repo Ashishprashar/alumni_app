@@ -45,11 +45,11 @@ class _WrapperState extends State<Wrapper> {
   }
 
   navigateToMainPage() async{
-    await Future.delayed(Duration(milliseconds: 2000),(){});
+    await Future.delayed(const Duration(milliseconds: 2000),(){});
     if(isAuth=="Auth"){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Home()));
     }else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SignInScreen()));
     }
     
   }

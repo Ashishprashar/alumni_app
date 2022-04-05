@@ -46,21 +46,21 @@ class _SignInScreenState extends State<SignInScreen> {
               //     onTap: () async => await authServices.signInWith(context, ""),
               //   ),
               // ),
-              SizedBox(height:50,),
-              Container(
+              const SizedBox(height:50,),
+              SizedBox(
                 height:45,
                 width: 200,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                       primary:Theme.of(context).primaryColor,
                       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)),),
-                      side: BorderSide(color: Colors.blueGrey,width:2)
+                      side: const BorderSide(color: Colors.blueGrey,width:2)
                   ),
                   onPressed: ()  async => await authServices.signInWith(context, ""),
                   child: Container(
-                    padding: EdgeInsets.only(top: 10,bottom: 10),
+                    padding: const EdgeInsets.only(top: 10,bottom: 10),
                     child: Row(
-                      children: [
+                      children: const [
                         Image(
                           image: AssetImage("assets/images/google_image.png"),
                           fit: BoxFit.cover,

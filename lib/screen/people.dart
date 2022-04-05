@@ -164,7 +164,8 @@ class _UserListState extends State<UserList> {
           return CircleAvatar(
             radius: 30,
             // backgroundImage: NetworkImage(individualUser.profilePic),
-            backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
+            backgroundImage:
+                NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           );
         }),
         child: GestureDetector(
@@ -187,10 +188,12 @@ class _UserListState extends State<UserList> {
       ),
       title: Text(individualUser.name,
           style: Theme.of(context).textTheme.subtitle1),
-      subtitle: individualUser.techStack.isNotEmpty?Text(individualUser.techStack.toString(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyText1):Text("[no skills added yet]"),
+      subtitle: individualUser.techStack.isNotEmpty
+          ? Text(individualUser.techStack.toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyText1)
+          : const Text("[no skills added yet]"),
       trailing: Text(individualUser.type,
           style: Theme.of(context).textTheme.bodyText1),
     );
