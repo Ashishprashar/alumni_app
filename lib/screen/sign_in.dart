@@ -29,7 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColorLight,
-                    border: 
+                    border:
                         Border.all(color: Theme.of(context).primaryColorDark)),
                 child: Center(
                   child: Text(
@@ -47,5 +47,6 @@ class _SignInScreenState extends State<SignInScreen> {
             ],
           ),
         ));
+
   }
 }
