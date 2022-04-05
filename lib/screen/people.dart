@@ -187,10 +187,10 @@ class _UserListState extends State<UserList> {
       ),
       title: Text(individualUser.name,
           style: Theme.of(context).textTheme.subtitle1),
-      subtitle: Text(individualUser.techStack.toString(),
+      subtitle: individualUser.techStack.isNotEmpty?Text(individualUser.techStack.toString(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyText1),
+          style: Theme.of(context).textTheme.bodyText1):Text("[no skills added yet]"),
       trailing: Text(individualUser.type,
           style: Theme.of(context).textTheme.bodyText1),
     );
