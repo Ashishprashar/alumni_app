@@ -29,6 +29,18 @@ class ChatProvider with ChangeNotifier {
     return await _lastMessage.data()?["lastMessage"]["content"];
   }
 
+  deleteMessage(
+    String convoID,
+    String timestamp,
+  ) async {
+    DocumentReference convoDoc = chatCollection.doc(convoID);
+    await convoDoc.update({"lastMessage": "This message was deleted"});
+    final DocumentReference messageDoc =
+        chatCollection.doc(convoID).collection(convoID).doc(timestamp);
+    await messageDoc
+        .update({"content": "This message was deleted", "deleted": true});
+  }
+
   fetchChatList() async {
     final docRef = await chatCollection
         .where("users", arrayContains: firebaseCurrentUser?.uid)
@@ -67,13 +79,7 @@ class ChatProvider with ChangeNotifier {
     final DocumentReference convoDoc = chatCollection.doc(convoID);
 
     convoDoc.set(<String, dynamic>{
-      'lastMessage': <String, dynamic>{
-        'idFrom': id,
-        'idTo': pid,
-        'timestamp': timestamp,
-        'content': content,
-        'read': false
-      },
+      "lastMessage": content,
       'users': <String>[id, pid]
     }).then((dynamic success) {
       final DocumentReference messageDoc =
@@ -86,7 +92,8 @@ class ChatProvider with ChangeNotifier {
           <String, dynamic>{
             'idFrom': id,
             'idTo': pid,
-            'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+            'deleted': false,
+            'timestamp': timestamp,
             'content': content,
             'read': false
           },
