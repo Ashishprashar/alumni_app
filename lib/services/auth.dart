@@ -63,14 +63,14 @@ class AuthServices {
           .ref("profile/${firebaseCurrentUser?.uid}.mp3")
           .delete();
     } catch (e) {
-      return null;
+      // return null;
     }
     try {
       await FirebaseStorage.instance
           .ref("profile/${firebaseCurrentUser?.uid}.jpg")
           .delete();
     } catch (e) {
-      return null;
+      // return null;
     }
     // await FirebaseStorage.instance
     //     .ref("post/${firebaseCurrentUser?.uid}")
@@ -86,7 +86,7 @@ class AuthServices {
       );
       final User? _user = (await auth.signInWithCredential(credential)).user;
       await firebaseCurrentUser!.delete();
-      await signOut(context);
+      // await signOut(context);
       await googleSignIn.signOut();
       await auth.signOut();
       Navigator.of(navigatorKey.currentContext!).pushReplacement(

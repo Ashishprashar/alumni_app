@@ -193,6 +193,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     )),
                     Container(
                         height: 60,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                             color: Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: BorderRadius.circular(35.0),
