@@ -2,7 +2,6 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
-import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     const Icon(Icons.arrow_back),
                     CircleAvatar(
                       radius: 25,
-                      backgroundImage: NetworkImage(individualUser.profilePic),
+                      backgroundImage: NetworkImage(widget.chatWithUser.profilePic),
                     ),
                   ],
                 ),
@@ -86,7 +85,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => IndividualProfile(
-                            user: individualUser,
+                            user: widget.chatWithUser,
+                            index: 1,
                           )));
                 },
                 child: Container(

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class IndividualProfile extends StatelessWidget {
   final UserModel user;
-  final int? index;
+  final int index;
 
   const IndividualProfile({
     Key? key,
     required this.user,
-    this.index = 1,
+    required this.index,
   }) : super(key: key);
 
   @override

@@ -57,7 +57,7 @@ class _ChatState extends State<Chat> {
                         itemCount: chatProvider.chatList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ChatUserWidget(
-                              chatModel: chatProvider.chatList[index]);
+                              chatModel: chatProvider.chatList[index], index: index,);
                         }),
                   )));
     });
@@ -66,8 +66,8 @@ class _ChatState extends State<Chat> {
 
 class ChatUserWidget extends StatefulWidget {
   final ChatModel chatModel;
-  final int? index;
-  const ChatUserWidget({Key? key, required this.chatModel, this.index}) : super(key: key);
+  final int index;
+  const ChatUserWidget({Key? key, required this.chatModel, required this.index}) : super(key: key);
 
   @override
   State<ChatUserWidget> createState() => _ChatUserWidgetState();
