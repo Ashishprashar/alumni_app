@@ -347,6 +347,7 @@ class UploadPostWidget extends StatelessWidget {
                     minLines: 2,
                     maxLines: 4,
                     controller: feedProvider.postTextContent,
+                    maxLength: 200,
                     decoration: const InputDecoration(
                         hintText: "What is in your mind?",
                         border: InputBorder.none),

@@ -40,8 +40,10 @@ class FeedProvider with ChangeNotifier {
   }
 
   updatePost(PostModel postModel) async {
-    await postCollection.doc(postModel.id).update(
-        {"text_content": postTextContent.text, "update_at": Timestamp.now()});
+    await postCollection.doc(postModel.id).update({
+      "text_content": postTextContent.text.trim(),
+      "update_at": Timestamp.now()
+    });
     postTextContent.text = "";
     notifyListeners();
   }
