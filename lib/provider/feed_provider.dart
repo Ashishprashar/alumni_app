@@ -39,6 +39,18 @@ class FeedProvider with ChangeNotifier {
     return _filesToUpload;
   }
 
+  updatePost(PostModel postModel) async {
+    await postCollection.doc(postModel.id).update(
+        {"text_content": postTextContent.text, "update_at": Timestamp.now()});
+    postTextContent.text = "";
+    notifyListeners();
+  }
+
+  putTextInController(String text) {
+    postTextContent.text = text;
+    notifyListeners();
+  }
+
   removeImageAtPosition(int pos) {
     _filesToUpload!.removeAt(pos);
     if (_filesToUpload!.isEmpty) {
@@ -90,5 +102,9 @@ class FeedProvider with ChangeNotifier {
       "likes": FieldValue.arrayRemove([firebaseCurrentUser?.uid]),
       "like_count": FieldValue.increment(-1)
     });
+  }
+
+  deletePost({required String postId}) async {
+    await postCollection.doc(postId).delete();
   }
 }

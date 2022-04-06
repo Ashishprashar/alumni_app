@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
@@ -29,55 +30,60 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Feed',
-            style: Theme.of(context).textTheme.headline6,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Consumer<FeedProvider>(builder: (context, feedProvider, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Feed',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            iconTheme: const IconThemeData(color: Colors.white),
+            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            elevation: 1,
+            toolbarHeight: 50,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          elevation: 1,
-          toolbarHeight: 50,
-        ),
-        body: SafeArea(
-          child: SizedBox(
-            height: SizeData.screenHeight,
-            child: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: postCollection
-                          .orderBy("updated_at", descending: true)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                              controller: scrollController,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data!.docs.length + 1,
-                              itemBuilder: ((context, index) => index == 0
-                                  ? const UploadPostWidget()
-                                  : getPostList(snapshot, index - 1))
-                              //      Column(
-                              //   children: [
-                              //     for (var i = 0; i < snapshot.data!.docs.length; i++)
+          body: SafeArea(
+            child: SizedBox(
+              height: SizeData.screenHeight,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: postCollection
+                            .orderBy("updated_at", descending: true)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                controller: scrollController,
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: snapshot.data!.docs.length + 1,
+                                itemBuilder: ((context, index) => index == 0
+                                    ? const UploadPostWidget()
+                                    : getPostList(snapshot, index - 1))
+                                //      Column(
+                                //   children: [
+                                //     for (var i = 0; i < snapshot.data!.docs.length; i++)
 
-                              //   ],
-                              // )
-                              );
-                        }
-                        return Container();
-                      }),
-                )
-              ],
+                                //   ],
+                                // )
+                                );
+                          }
+                          return Container();
+                        }),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
   getPostList(snapshot, int i) {
@@ -129,22 +135,41 @@ class _PostWidgetState extends State<PostWidget> {
                             Theme.of(context).highlightColor.withOpacity(.2))),
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        // individualUser = user;
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => IndividualProfile(
-                                  user: user,
-                                )));
-                      },
-                      child: Row(children: [
-                        CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(user.profilePic)),
-                        Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: Text(user.name))
-                      ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            // individualUser = user;
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => IndividualProfile(
+                                      user: user,
+                                    )));
+                          },
+                          child: Row(children: [
+                            CircleAvatar(
+                                radius: 20,
+                                backgroundImage: NetworkImage(user.profilePic)),
+                            Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Text(user.name))
+                          ]),
+                        ),
+                        if (firebaseCurrentUser?.uid ==
+                            widget.postModel.ownerId)
+                          GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (ctx) {
+                                      return MorePostOptionBottomSheet(
+                                        postModel: widget.postModel,
+                                      );
+                                    });
+                              },
+                              child: const Icon(Icons.more_vert))
+                      ],
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -188,27 +213,35 @@ class _PostWidgetState extends State<PostWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isLike = !isLike;
-                                });
-                                if (isLike) {
-                                  feedProvider.addLike(
-                                      postId: widget.postModel.id);
-                                } else {
-                                  feedProvider.removeLike(
-                                      postId: widget.postModel.id);
-                                }
-                              },
-                              child: Icon(
-                                isLike
-                                    ? Icons.thumb_up_alt_rounded
-                                    : Icons.thumb_up_alt_outlined,
-                                size: 30,
-                              )),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isLike = !isLike;
+                                    });
+                                    if (isLike) {
+                                      feedProvider.addLike(
+                                          postId: widget.postModel.id);
+                                    } else {
+                                      feedProvider.removeLike(
+                                          postId: widget.postModel.id);
+                                    }
+                                  },
+                                  child: Icon(
+                                    isLike
+                                        ? Icons.thumb_up_alt_rounded
+                                        : Icons.thumb_up_alt_outlined,
+                                    size: 30,
+                                  )),
+                              Container(
+                                  margin: const EdgeInsets.only(left: 10),
+                                  child: Text((widget.postModel.likeCount ?? 0)
+                                      .toString()))
+                            ],
+                          ),
                           Text(
-                            DateFormat("dd-MM-yyyy h:mma")
+                            DateFormat("dd-MM-yyyy hh:mma")
                                 .format(widget.postModel.updatedAt.toDate()),
                             style: Theme.of(context).textTheme.caption,
                           )
@@ -222,6 +255,64 @@ class _PostWidgetState extends State<PostWidget> {
 
             return Container();
           });
+    });
+  }
+}
+
+class MorePostOptionBottomSheet extends StatelessWidget {
+  final PostModel postModel;
+  const MorePostOptionBottomSheet({Key? key, required this.postModel})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(builder: (context, onStateChange) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        height: SizeData.screenHeight * .2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () async {
+                await Provider.of<FeedProvider>(context, listen: false)
+                    .deletePost(postId: postModel.id);
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.delete),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text("Delete Post"),
+                    ],
+                  )),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => EditPostScreen(
+                          postModel: postModel,
+                        )));
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.edit),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text("Edit Post"),
+                    ],
+                  )),
+            ),
+          ],
+        ),
+      );
     });
   }
 }
