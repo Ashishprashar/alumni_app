@@ -60,6 +60,12 @@ class _HomeState extends State<Home> {
         builder: (context, currentUserProvider, child) {
       return WillPopScope(
         onWillPop: () async {
+          if (_currentIndex != 0) {
+            setState(() {
+              _currentIndex = 0;
+            });
+            return false;
+          }
           setState(() {
             backTaps += 1;
           });
