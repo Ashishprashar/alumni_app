@@ -137,6 +137,7 @@ class _UserListState extends State<UserList> {
     individualUser = UserModel.fromJson(document);
     return ListTile(
       onTap: () {
+        FocusScope.of(context).unfocus();
         individualUser = UserModel.fromJson(snapshot[index]);
         _searchController.clear();
         Navigator.of(context).push(MaterialPageRoute(
