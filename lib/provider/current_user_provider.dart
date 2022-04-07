@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class CurrentUserProvider extends ChangeNotifier {
   late UserModel _currentUser;
   bool isDeleting = false;
+  
   UserModel getCurrentUser() {
     return _currentUser;
   }

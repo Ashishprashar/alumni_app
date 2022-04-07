@@ -32,6 +32,7 @@ class _FeedScreenState extends State<FeedScreen> {
     return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Feed',
             style: Theme.of(context).textTheme.headline6,

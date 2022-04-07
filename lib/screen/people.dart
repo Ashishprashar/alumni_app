@@ -19,6 +19,7 @@ class _PeopleState extends State<People> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'People',
             style: Theme.of(context).textTheme.headline6,

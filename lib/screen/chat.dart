@@ -34,6 +34,7 @@ class _ChatState extends State<Chat> {
     return Consumer<ChatProvider>(builder: (context, chatProvider, child) {
       return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'Chat',
               style: Theme.of(context).textTheme.headline6,
