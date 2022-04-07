@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/feed_screen.dart';
 import 'package:alumni_app/screen/people.dart';
@@ -40,6 +42,12 @@ class _HomeState extends State<Home> {
     setState(() {
       _currentIndex = index;
     });
+    if (index == 0) {
+      Provider.of<FeedProvider>(context, listen: false).scrollUp();
+    }
+    if (index == 2) {
+      Provider.of<PeopleProvider>(context, listen: false).scrollUp();
+    }
   }
 
   @override

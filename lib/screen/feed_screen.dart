@@ -21,7 +21,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -59,7 +58,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.builder(
-                                controller: scrollController,
+                                controller: feedProvider.feedScroller,
                                 shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: snapshot.data!.docs.length + 1,

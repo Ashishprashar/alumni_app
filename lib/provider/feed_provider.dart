@@ -14,6 +14,7 @@ class FeedProvider with ChangeNotifier {
   List<XFile>? _filesToUpload;
   final List<PostModel> _allPosts = [];
   DatabaseService databaseService = DatabaseService();
+  ScrollController feedScroller = ScrollController();
   TextEditingController postTextContent = TextEditingController();
   bool isUploading = false;
   addSingleFile({required XFile? file}) {
@@ -23,6 +24,14 @@ class FeedProvider with ChangeNotifier {
       _filesToUpload!.add(file!);
     }
     notifyListeners();
+  }
+
+  scrollUp() {
+    feedScroller.animateTo(
+      feedScroller.position.minScrollExtent,
+      duration: const Duration(seconds: 5),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   addMultiFileToUploadList({required List<XFile>? files}) {
