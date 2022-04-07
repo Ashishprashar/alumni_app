@@ -29,6 +29,7 @@ class _ProfileState extends State<Profile> {
         builder: (context, currentUserProvider, child) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Profile',
             style: Theme.of(context).textTheme.headline6,

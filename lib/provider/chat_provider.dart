@@ -41,14 +41,21 @@ class ChatProvider with ChangeNotifier {
         .update({"content": "This message was deleted", "deleted": true});
   }
 
+  
+
   fetchChatList() async {
     final docRef = await chatCollection
         .where("users", arrayContains: firebaseCurrentUser?.uid)
         .get();
     final docs = docRef.docs;
+
     List<ChatModel> chatList = [];
     for (var chatDoc in docs) {
       final chatData = chatDoc.data();
+
+
+    // not able to understand this code
+
       final userRef = await userCollection
           .doc((chatData["users"] as List)
               .where((element) => element != firebaseCurrentUser?.uid)
@@ -59,6 +66,7 @@ class ChatProvider with ChangeNotifier {
 
       ChatModel chatModel = ChatModel.fromJson(chatData);
       chatList.add(chatModel);
+
     }
     // log(chatList[0].toString());
     _chatList = chatList;

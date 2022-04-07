@@ -91,7 +91,7 @@ class FeedProvider with ChangeNotifier {
         attachments: postLinks,
         ownerId: firebaseCurrentUser?.uid ?? "",
         id: uuid.v1(),
-        textContent: postTextContent.text,
+        textContent: postTextContent.text.trim(),
         updatedAt: Timestamp.now());
     await databaseService.uploadPost(postModel: post);
     _filesToUpload = null;

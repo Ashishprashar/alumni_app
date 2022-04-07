@@ -59,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             CircleAvatar(
                               radius: 25,
                               backgroundImage:
-                                  NetworkImage(individualUser.profilePic),
+                                  NetworkImage(widget.chatWithUser.profilePic),
                             ),
                           ],
                         ),
@@ -68,7 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => IndividualProfile(
-                                    user: individualUser,
+                                    user: widget.chatWithUser,
+                                    index: 1,
                                   )));
                         },
                         child: Container(
@@ -193,8 +194,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     )),
                     Container(
                         height: 60,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         decoration: BoxDecoration(
                             color: Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: BorderRadius.circular(35.0),
@@ -206,7 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               )
                             ]),
                         child: Container(
-                            height: 40,
+                            height: 60,
                             padding: const EdgeInsets.all(10),
                             child: TextField(
                               controller: provider.messageController,
@@ -219,7 +219,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       .copyWith(
                                           color:
                                               Theme.of(context).highlightColor),
-                                  contentPadding: const EdgeInsets.all(0),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   suffixIcon: GestureDetector(
                                       onTap: () {
                                         provider.onSendMessage(

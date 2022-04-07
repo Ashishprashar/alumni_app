@@ -34,6 +34,7 @@ class _ChatState extends State<Chat> {
     return Consumer<ChatProvider>(builder: (context, chatProvider, child) {
       return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'Chat',
               style: Theme.of(context).textTheme.headline6,
@@ -56,7 +57,9 @@ class _ChatState extends State<Chat> {
                         itemCount: chatProvider.chatList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ChatUserWidget(
-                              chatModel: chatProvider.chatList[index]);
+                            chatModel: chatProvider.chatList[index],
+                            index: index,
+                          );
                         }),
                   )));
     });
@@ -65,8 +68,8 @@ class _ChatState extends State<Chat> {
 
 class ChatUserWidget extends StatefulWidget {
   final ChatModel chatModel;
-  final int? index;
-  const ChatUserWidget({Key? key, required this.chatModel, this.index})
+  final int index;
+  const ChatUserWidget({Key? key, required this.chatModel, required this.index})
       : super(key: key);
 
   @override

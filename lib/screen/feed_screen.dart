@@ -143,6 +143,7 @@ class _PostWidgetState extends State<PostWidget> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (ctx) => IndividualProfile(
                                       user: user,
+                                      index: 1,
                                     )));
                           },
                           child: Row(children: [
