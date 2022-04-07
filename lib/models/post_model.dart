@@ -15,6 +15,7 @@ class PostModel {
     required this.attachments,
     required this.id,
     required this.ownerId,
+    required this.comments,
     this.likes,
     required this.updatedAt,
     this.likeCount,
@@ -29,6 +30,7 @@ class PostModel {
   int? likeCount;
   Timestamp updatedAt;
   String textContent;
+  List comments;
   List? tags;
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
@@ -39,12 +41,14 @@ class PostModel {
         likes: (json["likes"] ?? []),
         likeCount: json["like_count"] ?? 0,
         textContent: json["text_content"],
+        comments: json["comments"] ?? [],
         tags: (json["tags"] ?? []),
       );
 
   Map<String, dynamic> toJson() => {
         "atachments": attachments,
         "id": id,
+        "comments": comments,
         "updated_at": updatedAt,
         "owner_id": ownerId,
         "likes": likes ?? [],

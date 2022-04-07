@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:alumni_app/models/comment_model.dart';
 import 'package:alumni_app/models/post_model.dart';
+import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,7 +18,9 @@ class FeedProvider with ChangeNotifier {
   DatabaseService databaseService = DatabaseService();
   ScrollController feedScroller = ScrollController();
   TextEditingController postTextContent = TextEditingController();
+  TextEditingController commentTextContent = TextEditingController();
   bool isUploading = false;
+  List<CommentModel> _commentList = [];
   addSingleFile({required XFile? file}) {
     if (_filesToUpload == null) {
       _filesToUpload = [file!];
@@ -24,6 +28,10 @@ class FeedProvider with ChangeNotifier {
       _filesToUpload!.add(file!);
     }
     notifyListeners();
+  }
+
+  List<CommentModel> get commentList {
+    return [..._commentList];
   }
 
   scrollUp() {
@@ -92,13 +100,51 @@ class FeedProvider with ChangeNotifier {
         ownerId: firebaseCurrentUser?.uid ?? "",
         id: uuid.v1(),
         textContent: postTextContent.text.trim(),
-        updatedAt: Timestamp.now());
+        updatedAt: Timestamp.now(),
+        comments: []);
     await databaseService.uploadPost(postModel: post);
     _filesToUpload = null;
     postTextContent.text = "";
 
     isUploading = false;
     notifyListeners();
+  }
+
+  Future<UserModel> getUser({required String id}) async {
+    final docRef = await userCollection.doc(id).get();
+    return UserModel.fromMap(docRef.data() ?? {});
+  }
+
+  fetchComment({required PostModel postModel}) async {
+    final docRef = await postCollection.doc(postModel.id).get();
+    postModel = PostModel.fromJson(docRef.data() ?? {});
+    List<CommentModel> commentList = [];
+    _commentList = [];
+    notifyListeners();
+    for (String commentId in postModel.comments) {
+      var docRef = await commentCollection.doc(commentId).get();
+      commentList.add(CommentModel.fromJson(docRef.data() ?? {}));
+    }
+    _commentList = commentList;
+    notifyListeners();
+  }
+
+  addComment({required PostModel postModel}) async {
+    String id = const Uuid().v4();
+    Timestamp timeNow = Timestamp.now();
+
+    await commentCollection.doc(id).set(CommentModel(
+            commentedBy: firebaseCurrentUser!.uid,
+            commentText: commentTextContent.text,
+            id: id,
+            updateTime: timeNow)
+        .toJson());
+    await postCollection.doc(postModel.id).update({
+      "comments": FieldValue.arrayUnion([id]),
+    });
+    commentTextContent.text = "";
+    notifyListeners();
+    await fetchComment(postModel: postModel);
   }
 
   addLike({required String postId}) async {

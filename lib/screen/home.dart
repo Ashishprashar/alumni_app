@@ -20,6 +20,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
 final postCollection = db.collection('post');
+final commentCollection = db.collection('comment');
 final chatCollection = db.collection('chat');
 late UserModel individualUser;
 // bool isDeleting = false;
