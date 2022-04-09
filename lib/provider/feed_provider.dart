@@ -35,11 +35,13 @@ class FeedProvider with ChangeNotifier {
   }
 
   scrollUp() {
-    feedScroller.animateTo(
-      feedScroller.position.minScrollExtent,
-      duration: const Duration(seconds: 5),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (feedScroller.hasClients) {
+      feedScroller.animateTo(
+        feedScroller.position.minScrollExtent,
+        duration: const Duration(seconds: 5),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   addMultiFileToUploadList({required List<XFile>? files}) {
