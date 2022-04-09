@@ -41,8 +41,6 @@ class ChatProvider with ChangeNotifier {
         .update({"content": "This message was deleted", "deleted": true});
   }
 
-  
-
   fetchChatList() async {
     final docRef = await chatCollection
         .where("users", arrayContains: firebaseCurrentUser?.uid)
@@ -53,20 +51,18 @@ class ChatProvider with ChangeNotifier {
     for (var chatDoc in docs) {
       final chatData = chatDoc.data();
 
-
-    // not able to understand this code
-
       final userRef = await userCollection
           .doc((chatData["users"] as List)
               .where((element) => element != firebaseCurrentUser?.uid)
               .toList()[0])
           .get();
+
       chatData["user"] = userRef.data();
+
       log(chatData.toString());
 
       ChatModel chatModel = ChatModel.fromJson(chatData);
       chatList.add(chatModel);
-
     }
     // log(chatList[0].toString());
     _chatList = chatList;
@@ -74,6 +70,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   List<ChatModel> get chatList {
+    // why not just return _chatList ? what is the reason for returning a new list.
     return [..._chatList];
   }
 

@@ -17,7 +17,6 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<FeedProvider>(context, listen: false)
         .putTextInController(widget.postModel.textContent);
