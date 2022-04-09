@@ -1,8 +1,10 @@
 import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'home.dart';
 
 class People extends StatefulWidget {
@@ -77,59 +79,62 @@ class _UserListState extends State<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: SizeData.screenWidth * 0.7,
-                child: TextField(
-                  controller: _searchController,
-                  decoration:  InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: InkWell(
-                        child: const Icon(Icons.close),
-                        onTap: (){
-                          setState(() {
-                            _searchController.clear();
-                          });
-                        },
-                      ),
-                      hintText: 'Search by name'),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(_allResults.length.toString(),
-                      style: Theme.of(context).textTheme.bodyText2),
-                  const SizedBox(
-                    width: 10,
+    return Consumer<PeopleProvider>(builder: (context, peopleProvider, child) {
+      return Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: SizeData.screenWidth * 0.7,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: InkWell(
+                          child: const Icon(Icons.close),
+                          onTap: () {
+                            setState(() {
+                              _searchController.clear();
+                            });
+                          },
+                        ),
+                        hintText: 'Search by name'),
                   ),
-                  const Icon(Icons.people),
-                ],
-              ),
-            ],
+                ),
+                Row(
+                  children: [
+                    Text(_allResults.length.toString(),
+                        style: Theme.of(context).textTheme.bodyText2),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Icon(Icons.people),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        const Divider(
-          color: Colors.black,
-          thickness: 0.1,
-        ),
-        _resultsList.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: _resultsList.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    userCard(index, _resultsList),
-              )
-            : const Center(
-                child: Text("No users found"),
-              ),
-      ],
-    );
+          const Divider(
+            color: Colors.black,
+            thickness: 0.1,
+          ),
+          _resultsList.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  controller: peopleProvider.peopleScroller,
+                  itemCount: _resultsList.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      userCard(index, _resultsList),
+                )
+              : const Center(
+                  child: Text("No users found"),
+                ),
+        ],
+      );
+    });
   }
 
   Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {

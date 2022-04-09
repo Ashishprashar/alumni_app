@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:alumni_app/screen/comment_screen.dart';
 import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
@@ -21,7 +22,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.builder(
-                                controller: scrollController,
+                                controller: feedProvider.feedScroller,
                                 shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: snapshot.data!.docs.length + 1,
@@ -238,7 +238,23 @@ class _PostWidgetState extends State<PostWidget> {
                               Container(
                                   margin: const EdgeInsets.only(left: 10),
                                   child: Text((widget.postModel.likeCount ?? 0)
-                                      .toString()))
+                                      .toString())),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                CommentScreen(
+                                                    postModel:
+                                                        widget.postModel))));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: const Icon(
+                                      Icons.mode_comment_rounded,
+                                      size: 24,
+                                    ),
+                                  )),
                             ],
                           ),
                           Text(
