@@ -7,6 +7,7 @@ import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -171,7 +172,8 @@ class UserProfile extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: CircleAvatar(
                       radius: 40,
-                      backgroundImage: NetworkImage(user.profilePic),
+                      backgroundImage:
+                          CachedNetworkImageProvider(user.profilePic),
                     ));
               }),
               child: GestureDetector(
@@ -189,7 +191,8 @@ class UserProfile extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: CircleAvatar(
                       radius: 40,
-                      backgroundImage: NetworkImage(user.profilePic),
+                      backgroundImage:
+                          CachedNetworkImageProvider(user.profilePic),
                     ),
                   )),
             ),
@@ -246,7 +249,7 @@ class UserProfile extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                padding: const  EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   user.bio,
                   style: Theme.of(context).textTheme.bodyText2,

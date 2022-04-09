@@ -9,9 +9,11 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -52,30 +54,24 @@ class _FeedScreenState extends State<FeedScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: postCollection
-                            .orderBy("updated_at", descending: true)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView.builder(
-                                controller: feedProvider.feedScroller,
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: snapshot.data!.docs.length + 1,
-                                itemBuilder: ((context, index) => index == 0
-                                    ? const UploadPostWidget()
-                                    : getPostList(snapshot, index - 1))
-                                //      Column(
-                                //   children: [
-                                //     for (var i = 0; i < snapshot.data!.docs.length; i++)
+                    child: PaginateFirestore(
+                      itemsPerPage: 10,
+                      //item builder type is compulsory.
+                      scrollController: feedProvider.feedScroller,
+                      itemBuilder: (context, documentSnapshots, index) {
+                        final data = documentSnapshots[index].data() as Map?;
+                        log(data.toString());
+                        return index == 0
+                            ? const UploadPostWidget()
+                            : getPostList(documentSnapshots, index - 1);
+                      },
+                      query: postCollection.orderBy("updated_at",
+                          descending: true),
 
-                                //   ],
-                                // )
-                                );
-                          }
-                          return Container();
-                        }),
+                      itemBuilderType: PaginateBuilderType.listView,
+
+                      isLive: true,
+                    ),
                   )
                 ],
               ),
@@ -86,9 +82,19 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
+// void pagination(FeedProvider feedProvider) {
+//       if ((scrollController.position.pixels ==
+//           scrollController.position.maxScrollExtent) && (_subCategoryModel.products.length < total)) {
+//         setState(() {
+//           isLoading = true;
+//           page += 1;
+//           //add api for load the more data according to new page
+//         });
+//       }
+//   }
   getPostList(snapshot, int i) {
-    PostModel postModel = PostModel.fromJson(
-        snapshot.data!.docs[i].data() as Map<String, dynamic>);
+    PostModel postModel =
+        PostModel.fromJson(snapshot[i].data() as Map<String, dynamic>);
 
     return PostWidget(postModel: postModel);
   }
@@ -150,7 +156,8 @@ class _PostWidgetState extends State<PostWidget> {
                           child: Row(children: [
                             CircleAvatar(
                                 radius: 20,
-                                backgroundImage: NetworkImage(user.profilePic)),
+                                backgroundImage: CachedNetworkImageProvider(
+                                    user.profilePic)),
                             Container(
                                 margin: const EdgeInsets.only(left: 10),
                                 child: Text(user.name))

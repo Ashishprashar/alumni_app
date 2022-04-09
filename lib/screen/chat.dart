@@ -3,6 +3,7 @@ import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/media_query.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -101,7 +102,8 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
         placeholderBuilder: ((ctx, size, child) {
           return CircleAvatar(
             radius: 30,
-            backgroundImage: NetworkImage(widget.chatModel.user.profilePic),
+            backgroundImage:
+                CachedNetworkImageProvider(widget.chatModel.user.profilePic),
           );
         }),
         child: GestureDetector(
@@ -116,7 +118,8 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
           },
           child: CircleAvatar(
             radius: 30,
-            backgroundImage: NetworkImage(widget.chatModel.user.profilePic),
+            backgroundImage:
+                CachedNetworkImageProvider(widget.chatModel.user.profilePic),
           ),
         ),
       ),

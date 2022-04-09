@@ -1,6 +1,7 @@
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -61,8 +62,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                           children: [
                                             CircleAvatar(
                                               radius: 15,
-                                              backgroundImage: NetworkImage(
-                                                  snap.data!.profilePic),
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                      snap.data!.profilePic),
                                             ),
                                             Container(
                                               margin: const EdgeInsets.only(
