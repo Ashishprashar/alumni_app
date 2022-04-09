@@ -71,7 +71,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 snap.data!.name,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .titleMedium,
+                                                    .bodyText2,
                                               ),
                                             ),
                                             Text(feedProvider.commentList[index]
