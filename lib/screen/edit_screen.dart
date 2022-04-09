@@ -5,6 +5,7 @@ import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/editable_social_icons.dart';
 import 'package:alumni_app/widget/image_picker_widget.dart';
 import 'package:alumni_app/widget/teck_stack_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:alumni_app/services/database_service.dart';
@@ -129,7 +130,8 @@ class _EditScreenState extends State<EditScreen> {
                                     backgroundColor:
                                         Theme.of(context).highlightColor,
                                     backgroundImage: profileImage == null
-                                        ? NetworkImage(currentUser!.profilePic)
+                                        ? CachedNetworkImageProvider(
+                                            currentUser!.profilePic)
                                         : FileImage(profileImage!)
                                             as ImageProvider,
                                     child:

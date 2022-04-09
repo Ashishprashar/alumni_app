@@ -5,6 +5,7 @@ import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:bubble/bubble.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -57,10 +58,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           children: [
                             const Icon(Icons.arrow_back),
                             CircleAvatar(
-                              radius: 25,
-                              backgroundImage:
-                                  NetworkImage(widget.chatWithUser.profilePic),
-                            ),
+                                radius: 25,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    widget.chatWithUser.profilePic))
                           ],
                         ),
                       ),

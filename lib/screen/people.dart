@@ -2,6 +2,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -158,8 +159,8 @@ class _UserListState extends State<UserList> {
             radius: 30,
 
             // backgroundImage: NetworkImage(individualUser.profilePic),
-            backgroundImage:
-                NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
+            backgroundImage: CachedNetworkImageProvider(
+                UserModel.fromJson(snapshot[index]).profilePic),
           );
         }),
         child: GestureDetector(
@@ -175,7 +176,8 @@ class _UserListState extends State<UserList> {
           },
           child: CircleAvatar(
             radius: 30,
-            backgroundImage: NetworkImage(individualUser.profilePic),
+            backgroundImage:
+                CachedNetworkImageProvider(individualUser.profilePic),
             // backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           ),
         ),
