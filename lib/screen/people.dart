@@ -161,6 +161,8 @@ class _UserListState extends State<UserList> {
             // backgroundImage: NetworkImage(individualUser.profilePic),
             backgroundImage: CachedNetworkImageProvider(
                 UserModel.fromJson(snapshot[index]).profilePic),
+            // backgroundImage:
+            //     NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           );
         }),
         child: GestureDetector(
@@ -176,8 +178,9 @@ class _UserListState extends State<UserList> {
           },
           child: CircleAvatar(
             radius: 30,
-            backgroundImage:
-                CachedNetworkImageProvider(individualUser.profilePic),
+            // backgroundImage: NetworkImage(individualUser.profilePic),
+            backgroundImage: CachedNetworkImageProvider(
+                UserModel.fromJson(snapshot[index]).profilePic),
             // backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
           ),
         ),

@@ -14,7 +14,7 @@ import '../screen/home.dart';
 
 class FeedProvider with ChangeNotifier {
   List<XFile>? _filesToUpload;
-  final List<PostModel> _allPosts = [];
+  // final List<PostModel> _allPosts = [];
   DatabaseService databaseService = DatabaseService();
   ScrollController feedScroller = ScrollController();
   TextEditingController postTextContent = TextEditingController();

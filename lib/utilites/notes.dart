@@ -37,10 +37,21 @@
 
 
   // More notes
-
   
+  45 100
 
+  1. So how are we going to use firebase properly [code best practices]
+  
+   -- options   . we might have to remove features inorder to meet the 50 limit per day
+                . we might have to upgrade plan 
 
+  2. UI design [theme and sizing and finally the actual desgin]
+
+  3. firestore vs real time database, also image storage also has a limit of 1gb per day
+
+  4. pagination, search machinic in the  people page [firebase queary search vs offline list search]
+
+  5. also chat page, and feed page also take up reads.
 
 
  */
