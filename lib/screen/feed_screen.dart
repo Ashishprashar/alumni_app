@@ -27,7 +27,8 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     super.initState();
-    // scrollController.addListener();
+    Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
+    // feedScroller.addListener();
   }
 
   @override
@@ -39,6 +40,7 @@ class _FeedScreenState extends State<FeedScreen> {
       child: Consumer<FeedProvider>(builder: (context, feedProvider, child) {
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               'Feed',
               style: Theme.of(context).textTheme.headline6,
@@ -53,6 +55,7 @@ class _FeedScreenState extends State<FeedScreen> {
               height: SizeData.screenHeight,
               child: Column(
                 children: [
+                  const UploadPostWidget(),
                   Expanded(
                     child: PaginateFirestore(
                       itemsPerPage: 10,
@@ -61,9 +64,11 @@ class _FeedScreenState extends State<FeedScreen> {
                       itemBuilder: (context, documentSnapshots, index) {
                         final data = documentSnapshots[index].data() as Map?;
                         log(data.toString());
-                        return index == 0
-                            ? const UploadPostWidget()
-                            : getPostList(documentSnapshots, index - 1);
+                        // return index == 0
+                        //     ? const UploadPostWidget()
+                        //     : getPostList(documentSnapshots, index - 1);
+
+                        return getPostList(documentSnapshots, index);
                       },
                       query: postCollection.orderBy("updated_at",
                           descending: true),
@@ -121,6 +126,7 @@ class _PostWidgetState extends State<PostWidget> {
           future: userCollection.doc(widget.postModel.ownerId).get(),
           builder: (context, futureSnap) {
             // if(widget.postModel.)
+
             if (futureSnap.hasData) {
               UserModel user =
                   UserModel.fromJson(futureSnap.data as DocumentSnapshot);

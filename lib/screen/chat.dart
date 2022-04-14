@@ -1,6 +1,5 @@
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
-import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,9 +20,10 @@ class _ChatState extends State<Chat> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero).then((value) {
+    // Future.delayed(Duration.zero).then((value) {
       Provider.of<ChatProvider>(context, listen: false).fetchChatList();
-    });
+    // });
+    //  Provider.of<ChatProvider>(context, listen: false).fetchChatList();
   }
 
   @override

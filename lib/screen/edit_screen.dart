@@ -134,33 +134,28 @@ class _EditScreenState extends State<EditScreen> {
                                             currentUser!.profilePic)
                                         : FileImage(profileImage!)
                                             as ImageProvider,
-                                    child:
-                                        const FaIcon(FontAwesomeIcons.camera),
+                                    child: const FaIcon(FontAwesomeIcons.pen),
                                   ),
                                 ),
                               ),
+                              const SizedBox(height: 20),
                               CustomTextField(
                                 controller: nameController,
                                 title: "Name",
                               ),
-                              // CustomTextField(
-                              //   controller: bioController,
-                              //   title: "Bio",
-                              //   hint: "Tell us about you",
-                              // ),
+                              const SizedBox(height: 20),
                               Container(
-                                // height: height + 30,
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'bio',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(color: Colors.black),
+                                    const Text(
+                                      'Bio',
+                                      // style: Theme.of(context)
+                                      //     .textTheme
+                                      //     .bodyText1
+                                      //     ?.copyWith(color: Colors.black),
                                     ),
                                     Container(
                                       // height: height,
@@ -190,6 +185,7 @@ class _EditScreenState extends State<EditScreen> {
                                   ],
                                 ),
                               ),
+                              const SizedBox(height: 20),
                               CustomTextField(
                                 controller: techStackController,
                                 title: "Tech Stack",
@@ -213,18 +209,33 @@ class _EditScreenState extends State<EditScreen> {
                                       techStackList.removeAt(i);
                                     });
                                   }),
+                              const SizedBox(height: 20),
                               //branch
                               Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 25),
                                 child: Row(
                                   children: [
-                                    const Text("Branch"),
+                                    Text(
+                                      "Branch",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
                                     Container(
                                       width: 20,
                                     ),
                                     DropdownButton(
-                                      hint: Text(currentUser!.branch),
+                                      hint: defaultBranchValue == null
+                                          ? Text(currentUser!.branch)
+                                          : Text(
+                                              defaultBranchValue!,
+                                              // style: const TextStyle(
+                                              //     color: Colors.blue),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
                                       value: defaultBranchValue,
                                       icon:
                                           const Icon(Icons.keyboard_arrow_down),
@@ -250,7 +261,12 @@ class _EditScreenState extends State<EditScreen> {
                                     const EdgeInsets.symmetric(horizontal: 25),
                                 child: Row(
                                   children: [
-                                    const Text("Semester"),
+                                    Text(
+                                      "Semester",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
                                     Container(
                                       width: 20,
                                     ),
@@ -259,8 +275,11 @@ class _EditScreenState extends State<EditScreen> {
                                           ? Text(currentUser!.semester)
                                           : Text(
                                               defaultSemesterValue!,
-                                              style: const TextStyle(
-                                                  color: Colors.blue),
+                                              // style: const TextStyle(
+                                              //     color: Colors.blue),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
                                             ),
                                       value: defaultSemesterValue,
                                       icon:

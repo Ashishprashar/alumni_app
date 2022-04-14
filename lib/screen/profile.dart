@@ -42,8 +42,10 @@ class _ProfileState extends State<Profile> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text(
-                              "You will loose all your data after this action!!!\nAre you sure?"),
+                          title: Text(
+                            "You will loose all your data after this action!!!\nAre you sure?",
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
                           content: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -90,7 +92,10 @@ class _ProfileState extends State<Profile> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("Are you sure?"),
+                        title: Text(
+                          "Are you sure?",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                         content: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -169,7 +174,7 @@ class UserProfile extends StatelessWidget {
               placeholderBuilder: ((ctx, size, widget) {
                 return CircleAvatar(
                     radius: 50,
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).iconTheme.color,
                     child: CircleAvatar(
                       radius: 40,
                       backgroundImage:
@@ -188,11 +193,12 @@ class UserProfile extends StatelessWidget {
                   },
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).iconTheme.color,
                     child: CircleAvatar(
                       radius: 40,
                       backgroundImage:
                           CachedNetworkImageProvider(user.profilePic),
+                      // CachedNetworkImageProvider(user.profilePic),
                     ),
                   )),
             ),
@@ -213,7 +219,13 @@ class UserProfile extends StatelessWidget {
                     width: 120,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [Icon(Icons.message), Text("Message")],
+                      children: [
+                        const Icon(Icons.message),
+                        Text(
+                          "Message",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        )
+                      ],
                     ),
                   ),
                 )),
@@ -292,7 +304,10 @@ class UserProfile extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2,
                   )
-                : const Text("no skills added yet")),
+                : Text(
+                    "no skills added yet",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
         const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

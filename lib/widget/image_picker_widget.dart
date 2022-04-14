@@ -35,9 +35,12 @@ class ImagePickerWidget extends StatelessWidget {
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  FaIcon(FontAwesomeIcons.camera),
-                  Text("Camera")
+                children: [
+                  const FaIcon(FontAwesomeIcons.camera),
+                  Text(
+                    "Camera",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )
                 ],
               ),
             ),
@@ -55,9 +58,12 @@ class ImagePickerWidget extends StatelessWidget {
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  FaIcon(FontAwesomeIcons.camera),
-                  Text("Gallery")
+                children: [
+                  const FaIcon(FontAwesomeIcons.camera),
+                  Text(
+                    "Gallery",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )
                 ],
               ),
             ),

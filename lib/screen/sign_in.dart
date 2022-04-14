@@ -45,29 +45,38 @@ class _SignInScreenState extends State<SignInScreen> {
               //     onTap: () async => await authServices.signInWith(context, ""),
               //   ),
               // ),
-              const SizedBox(height:50,),
+              const SizedBox(
+                height: 50,
+              ),
               SizedBox(
-                height:45,
-                width: 200,
+                height: 45,
+                width: 250,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                      primary:Theme.of(context).primaryColor,
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)),),
-                      side: const BorderSide(color: Colors.blueGrey,width:2)
-                  ),
-                  onPressed: ()  async => await authServices.signInWith(context, ""),
+                      primary: Theme.of(context).primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                      ),
+                      side: const BorderSide(color: Colors.blueGrey, width: 2)),
+                  onPressed: () async =>
+                      await authServices.signInWith(context, ""),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 10,bottom: 10),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
-                      children: const [
-                        Image(
+                      children: [
+                        const Image(
                           image: AssetImage("assets/images/google_image.png"),
                           fit: BoxFit.cover,
-                          height:30,
+                          height: 30,
                         ),
-                        SizedBox(width:8,),
+                        const SizedBox(
+                          width: 8,
+                        ),
                         //Image.asset("assets/images/google_image.jpg"),
-                        Text("SignIn With Google"),
+                        Text(
+                          "SignIn With Google",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ],
                     ),
                   ),
@@ -76,6 +85,5 @@ class _SignInScreenState extends State<SignInScreen> {
             ],
           ),
         ));
-
   }
 }

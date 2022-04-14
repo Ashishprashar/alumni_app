@@ -27,10 +27,7 @@ class CustomTextField extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context) 
-                .textTheme
-                .bodyText1
-                ?.copyWith(color: Colors.black),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           Container(
             height: height,

@@ -14,14 +14,18 @@ class IntroductionPage extends StatelessWidget {
         scrollPhysics: const BouncingScrollPhysics(),
         pages: [
           PageViewModel(
-            titleWidget: const Padding(
-              padding: EdgeInsets.all(8.0),
+            titleWidget: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Onboarding screen will be worked on in the  end i guess, because we still have to figure out how we are  going to onboard admin,student and alumni',
-              textAlign: TextAlign.justify,
+                textAlign: TextAlign.justify,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
-            bodyWidget: const Text('Body of 1st Page'),
+            bodyWidget: Text(
+              'Body of 1st Page',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             decoration: const PageDecoration(),
             image: Center(
               child: Image.asset(
@@ -35,8 +39,14 @@ class IntroductionPage extends StatelessWidget {
             footer: const Text('Footer'), //You can add button here for instance
           ),
           PageViewModel(
-            titleWidget: const Text('Title of 1st Page'),
-            bodyWidget: const Text('Body of 1st Page'),
+            titleWidget: Text(
+              'Title of 1st Page',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            bodyWidget: Text(
+              'Body of 1st Page',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             decoration: const PageDecoration(),
             image: Center(
               child: Image.asset(
@@ -50,8 +60,14 @@ class IntroductionPage extends StatelessWidget {
             footer: const Text('Footer'),
           ),
           PageViewModel(
-            titleWidget: const Text('Title of 1st Page'),
-            bodyWidget: const Text('Body of 1st Page'),
+            titleWidget: Text(
+              'Title of 1st Page',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            bodyWidget: Text(
+              'Body of 1st Page',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             decoration: const PageDecoration(),
             image: Center(
               child: Image.asset(
@@ -72,9 +88,15 @@ class IntroductionPage extends StatelessWidget {
           navigatorService.navigateToOnBoarding(context);
         },
         showSkipButton: true,
-        skip: const Text("Skip"),
+        skip: Text(
+          "Skip",
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
         next: const Icon(Icons.forward),
-        done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
+        done: Text(
+          "Done",
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
         dotsDecorator: DotsDecorator(
             size: const Size.square(10.0),
             activeSize: const Size(20.0, 10.0),

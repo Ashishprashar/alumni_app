@@ -16,7 +16,6 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero).then((value) {
       Provider.of<FeedProvider>(context, listen: false)
@@ -76,8 +75,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     .bodyText2,
                                               ),
                                             ),
-                                            Text(feedProvider.commentList[index]
-                                                .commentText),
+                                            Text(
+                                              feedProvider.commentList[index]
+                                                  .commentText,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
+                                            ),
                                           ],
                                         ),
                                         Container(

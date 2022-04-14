@@ -44,10 +44,12 @@ class _ChatScreenState extends State<ChatScreen> {
               .fetchChatList();
           return true;
         },
+
         child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
                 appBar: AppBar(
+                  
                     // leadingWidth: 30,
                     titleSpacing: 5,
                     automaticallyImplyLeading: false,

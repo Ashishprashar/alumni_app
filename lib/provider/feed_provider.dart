@@ -30,6 +30,15 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // @override
+  // void dispose() {
+  //   feedScroller.dispose();
+    
+  //   super.dispose();
+  // }
+
+ 
+
   List<CommentModel> get commentList {
     return [..._commentList];
   }
@@ -37,11 +46,16 @@ class FeedProvider with ChangeNotifier {
   scrollUp() {
     if (feedScroller.hasClients) {
       feedScroller.animateTo(
-        feedScroller.position.minScrollExtent,
-        duration: const Duration(seconds: 5),
+        // feedScroller.position.minScrollExtent,
+        0,
+        duration: const Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
       );
     }
+  }
+
+  addFeedScroller(){
+    feedScroller = ScrollController();
   }
 
   addMultiFileToUploadList({required List<XFile>? files}) {

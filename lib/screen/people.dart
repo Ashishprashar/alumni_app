@@ -4,6 +4,7 @@ import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
@@ -63,6 +64,8 @@ class _UserListState extends State<UserList> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    // Provider.of<PeopleProvider>(context, listen: false)
+    //     .populateFutureSnapshot();
   }
 
   @override
@@ -109,6 +112,8 @@ class _UserListState extends State<UserList> {
                   children: [
                     Text(_allResults.length.toString(),
                         style: Theme.of(context).textTheme.bodyText2),
+                    // Text(peopleProvider.snapshotLength.toString(),
+                    // style: Theme.of(context).textTheme.bodyText2),
                     const SizedBox(
                       width: 10,
                     ),
@@ -130,9 +135,43 @@ class _UserListState extends State<UserList> {
                   itemBuilder: (BuildContext context, int index) =>
                       userCard(index, _resultsList),
                 )
-              : const Center(
-                  child: Text("No users found"),
+              : Center(
+                  child: Text(
+                    "No users found",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
+          // FutureBuilder<QuerySnapshot>(
+          //   future: peopleProvider.getFutureSnapshot(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.hasError) {
+          //       return Text('${snapshot.error}');
+          //     } else if (snapshot.hasData) {
+          //       final doc = snapshot.data!;
+          //       final docs = doc.docs;
+          //       print('magma');
+          //       print(docs);
+          //       // return Expanded(
+          //       //   child: ListView(
+          //       //     children: docs!.map((DocumentSnapshot doc) {
+          //       //       final data = doc.data() as Map?;
+          //       //       return Text(
+          //       //         '${data!['postId']} isFromCache: ${doc.metadata.isFromCache}',
+          //       //         textAlign: TextAlign.center,
+          //       //       );
+          //       //     }).toList(),
+          //       //   ),
+          //       // );
+          //       return ListView.builder(
+          //           shrinkWrap: true,
+          //           itemCount: docs!.length,
+          //           itemBuilder: (BuildContext context, int index) =>
+          //               userCard(index, docs));
+          //     }
+
+          //     return const CircularProgressIndicator();
+          //   },
+          // ),
         ],
       );
     });
@@ -141,6 +180,9 @@ class _UserListState extends State<UserList> {
   Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {
     DocumentSnapshot document = snapshot[index];
     individualUser = UserModel.fromJson(document);
+    print('lols');
+    print(individualUser);
+    print('lols');
     return ListTile(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -237,6 +279,7 @@ class _UserListState extends State<UserList> {
     _allResults = data;
     // });
     searchResultsList();
+
     return "complete";
   }
 }
@@ -269,9 +312,9 @@ class _ProfilePicDialogState extends State<ProfilePicDialog> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: ClipRRect(
-              // borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                widget.image,
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: widget.image,
                 fit: BoxFit.cover,
                 // height: SizeData.screenHeight * .3,
                 // width: SizeData.screenWidth * .8,

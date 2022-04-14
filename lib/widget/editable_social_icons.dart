@@ -129,7 +129,10 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                                 // }
                               }
                             },
-                            child: const Text('Submit'),
+                            child: Text(
+                              'Submit',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ),
                         ),
                       ],

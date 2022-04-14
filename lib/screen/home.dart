@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
       _currentIndex = index;
     });
     if (index == 0) {
+      
       Provider.of<FeedProvider>(context, listen: false).scrollUp();
     }
     if (index == 2) {
@@ -51,10 +52,10 @@ class _HomeState extends State<Home> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +106,8 @@ class _HomeState extends State<Home> {
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.white70,
             selectedFontSize: 12,
-            // backgroundColor: Theme.of(context).secondaryHeaderColor,
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
+            // backgroundColor: Colors.blue,
             elevation: 0,
             onTap: onTabTapped,
             currentIndex: _currentIndex,

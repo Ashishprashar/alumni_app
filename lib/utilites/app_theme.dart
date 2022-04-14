@@ -23,7 +23,7 @@ class AppTheme {
                   fontWeight: FontWeight.w600))
           .headline6,
     ),
-    primaryColor: Colors.black,
+    primaryColor: Colors.blue,
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     splashColor: Colors.blue,
