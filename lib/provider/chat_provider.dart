@@ -29,6 +29,7 @@ class ChatProvider with ChangeNotifier {
     return await _lastMessage.data()?["lastMessage"]["content"];
   }
 
+  
   deleteMessage(
     String convoID,
     String timestamp,

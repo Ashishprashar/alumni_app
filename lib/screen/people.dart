@@ -1,11 +1,12 @@
+import 'dart:developer';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
-import 'package:alumni_app/services/media_query.dart';
+import 'package:alumni_app/screen/search_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
 
@@ -24,9 +25,34 @@ class _PeopleState extends State<People> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text(
-            'People',
-            style: Theme.of(context).textTheme.headline6,
+          title: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchPage()),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(7),
+                  color: Colors.grey[200]),
+              height: 30,
+              child: Row(
+                children: [
+                  const Icon(Icons.search),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Search by name',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ],
+              ),
+            ),
           ),
           iconTheme: Theme.of(context).appBarTheme.iconTheme,
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -63,9 +89,8 @@ class _UserListState extends State<UserList> {
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
-    // Provider.of<PeopleProvider>(context, listen: false)
-    //     .populateFutureSnapshot();
+    // _searchController.addListener(_onSearchChanged);
+    Provider.of<PeopleProvider>(context, listen: false).addPeopleScroller();
   }
 
   @override
@@ -78,7 +103,7 @@ class _UserListState extends State<UserList> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    resultsLoaded = getUsersPastTripsStreamSnapshots();
+    // resultsLoaded = getUsersPastTripsStreamSnapshots();
   }
 
   @override
@@ -86,103 +111,32 @@ class _UserListState extends State<UserList> {
     return Consumer<PeopleProvider>(builder: (context, peopleProvider, child) {
       return Column(
         children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: SizeData.screenWidth * 0.7,
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: InkWell(
-                          child: const Icon(Icons.close),
-                          onTap: () {
-                            setState(() {
-                              _searchController.clear();
-                            });
-                          },
-                        ),
-                        hintText: 'Search by name'),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(_allResults.length.toString(),
-                        style: Theme.of(context).textTheme.bodyText2),
-                    // Text(peopleProvider.snapshotLength.toString(),
-                    // style: Theme.of(context).textTheme.bodyText2),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Icon(Icons.people),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            color: Colors.black,
-            thickness: 0.1,
-          ),
-          _resultsList.isNotEmpty
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  controller: peopleProvider.peopleScroller,
-                  itemCount: _resultsList.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      userCard(index, _resultsList),
-                )
-              : Center(
-                  child: Text(
-                    "No users found",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-          // FutureBuilder<QuerySnapshot>(
-          //   future: peopleProvider.getFutureSnapshot(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasError) {
-          //       return Text('${snapshot.error}');
-          //     } else if (snapshot.hasData) {
-          //       final doc = snapshot.data!;
-          //       final docs = doc.docs;
-          //       print('magma');
-          //       print(docs);
-          //       // return Expanded(
-          //       //   child: ListView(
-          //       //     children: docs!.map((DocumentSnapshot doc) {
-          //       //       final data = doc.data() as Map?;
-          //       //       return Text(
-          //       //         '${data!['postId']} isFromCache: ${doc.metadata.isFromCache}',
-          //       //         textAlign: TextAlign.center,
-          //       //       );
-          //       //     }).toList(),
-          //       //   ),
-          //       // );
-          //       return ListView.builder(
-          //           shrinkWrap: true,
-          //           itemCount: docs!.length,
-          //           itemBuilder: (BuildContext context, int index) =>
-          //               userCard(index, docs));
-          //     }
+          PaginateFirestore(
+            shrinkWrap: true,
+            itemsPerPage: 10,
+            //item builder type is compulsory.
+            scrollController: peopleProvider.peopleScroller,
+            itemBuilder: (context, documentSnapshots, index) {
+              final data = documentSnapshots[index].data() as Map?;
+              log(data.toString());
+              return userCard(index, documentSnapshots);
+            },
+            query: userCollection.orderBy("updated_at", descending: true),
 
-          //     return const CircularProgressIndicator();
-          //   },
-          // ),
+            itemBuilderType: PaginateBuilderType.listView,
+
+            isLive: true,
+          ),
         ],
       );
     });
   }
 
-  Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {
-    DocumentSnapshot document = snapshot[index];
-    individualUser = UserModel.fromJson(document);
-    print('lols');
-    print(individualUser);
-    print('lols');
+  // Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {
+  Widget userCard(int index, List<DocumentSnapshot<Object?>> snapshot) {
+    // DocumentSnapshot document = snapshot[index];
+    // individualUser = UserModel.fromJson(document);
+    individualUser = UserModel.fromJson(snapshot[index]);
     return ListTile(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -234,7 +188,7 @@ class _UserListState extends State<UserList> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyText1)
-          : const Text("[no skills added yet]"),
+          : const Text("No skills added yet"),
       trailing: Text(individualUser.type,
           style: Theme.of(context).textTheme.bodyText1),
     );

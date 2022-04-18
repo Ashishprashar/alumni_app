@@ -31,6 +31,12 @@ class _FeedScreenState extends State<FeedScreen> {
     // feedScroller.addListener();
   }
 
+  // @override
+  // void dispose() {
+  //   Provider.of<FeedProvider>(context, listen: false).disposeAllControllers();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -323,6 +329,7 @@ class MorePostOptionBottomSheet extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (ctx) => EditPostScreen(
                           postModel: postModel,

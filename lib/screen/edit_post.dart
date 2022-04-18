@@ -18,7 +18,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<FeedProvider>(context, listen: false)
+     Provider.of<FeedProvider>(context, listen: false)
         .putTextInController(widget.postModel.textContent);
   }
 
@@ -27,7 +27,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
     return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
       return WillPopScope(
         onWillPop: () async {
-          feedProvider.putTextInController("");
+          // feedProvider.putTextInController("");
+          Provider.of<FeedProvider>(context, listen: false)
+              .putTextInController("");
           return true;
         },
         child: Scaffold(
@@ -62,12 +64,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
               child: DoneButton(
                   onTap: () async {
                     await feedProvider.updatePost(widget.postModel);
+                    //  Provider.of<FeedProvider>(context, listen: false)
+                    //     .updatePost(widget.postModel);
                     const _snackBar = SnackBar(
                       content: Text('Post has been Edited!'),
                     );
+                    Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                   width: SizeData.screenWidth * .2,
                   text: "Done"),
