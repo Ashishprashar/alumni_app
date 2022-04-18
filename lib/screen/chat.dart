@@ -21,7 +21,7 @@ class _ChatState extends State<Chat> {
   void initState() {
     super.initState();
     // Future.delayed(Duration.zero).then((value) {
-      Provider.of<ChatProvider>(context, listen: false).fetchChatList();
+    Provider.of<ChatProvider>(context, listen: false).fetchChatList();
     // });
     //  Provider.of<ChatProvider>(context, listen: false).fetchChatList();
   }
@@ -46,7 +46,7 @@ class _ChatState extends State<Chat> {
             elevation: 1,
             toolbarHeight: 50,
           ),
-          body: chatProvider.chatList.isEmpty
+          body: chatProvider.chats.isEmpty
               ? const Center(
                   child: Text("No chats"),
                 )
@@ -56,10 +56,10 @@ class _ChatState extends State<Chat> {
                     height: SizeData.screenHeight,
                     child: ListView.builder(
                         // shrinkWrap: true,
-                        itemCount: chatProvider.chatList.length,
+                        itemCount: chatProvider.chats.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ChatUserWidget(
-                            chatModel: chatProvider.chatList[index],
+                            chatModel: chatProvider.chats[index],
                             index: index,
                           );
                         }),

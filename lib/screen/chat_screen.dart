@@ -3,13 +3,14 @@ import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/services/media_query.dart';
-import 'package:alumni_app/widget/done_button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../widget/done_button.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserModel chatWithUser;
@@ -20,20 +21,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late Stream<QuerySnapshot> _usersStream;
-  late String uid, convoID;
+  late Stream _usersStream;
+  late String uid, treeId;
 
   @override
   void initState() {
     super.initState();
     uid = firebaseCurrentUser!.uid;
-    convoID = Provider.of<ChatProvider>(context, listen: false)
-        .getConversationID(uid, widget.chatWithUser.id);
-    _usersStream = chatCollection
-        .doc(convoID)
-        .collection(convoID)
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+    if (widget.chatWithUser.id.compareTo(firebaseCurrentUser!.uid) > 0) {
+      treeId = widget.chatWithUser.id + "_" + firebaseCurrentUser!.uid;
+    } else {
+      treeId = firebaseCurrentUser!.uid + "_" + widget.chatWithUser.id;
+    }
   }
 
   @override
@@ -99,11 +98,26 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Container(
                       padding: const EdgeInsets.all(8),
                       width: SizeData.screenWidth,
-                      child: StreamBuilder<QuerySnapshot>(
-                          stream: _usersStream,
+                      child: StreamBuilder(
+                          stream: messagesDb.child(treeId).orderByKey().onValue,
                           builder: (context, snapshot) {
+                            List listMessage = [];
                             if (snapshot.hasData) {
-                              final List listMessage = snapshot.data!.docs;
+                              if ((snapshot.data as Event).snapshot.value ==
+                                  null) {
+                                return Container();
+                              }
+                              Map values =
+                                  (snapshot.data as Event).snapshot.value;
+                              // chatCount =
+                              //     (snapshot.data as Event).snapshot.value.keys.length;
+
+                              values.forEach((key, value) {
+                                if (value != null) {
+                                  listMessage.add(value);
+                                }
+                              });
+
                               return ListView.builder(
                                   reverse: true,
                                   shrinkWrap: true,
@@ -112,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   itemBuilder: (context, index) {
                                     return Column(
                                       crossAxisAlignment: (listMessage[index]
-                                                  ["idFrom"] !=
+                                                  ["senderId"] !=
                                               firebaseCurrentUser!.uid)
                                           ? CrossAxisAlignment.start
                                           : CrossAxisAlignment.end,
@@ -132,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     DoneButton(
                                                         onTap: () {
                                                           provider.deleteMessage(
-                                                              convoID,
+                                                              treeId,
                                                               listMessage[index]
                                                                   [
                                                                   "timestamp"]);
@@ -157,7 +171,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                           child: Bubble(
                                             margin: const BubbleEdges.all(8),
                                             nip: (listMessage[index]
-                                                        ["idFrom"] !=
+                                                        ["senderId"] !=
                                                     firebaseCurrentUser!.uid)
                                                 ? BubbleNip.leftTop
                                                 : BubbleNip.rightTop,
@@ -167,15 +181,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   CrossAxisAlignment.end,
                                               children: [
                                                 Text(listMessage[index]
-                                                    ["content"]),
+                                                        ["message"] ??
+                                                    ""),
                                                 Text(
                                                   DateFormat(
                                                           "dd MM yyyy hh:mma")
-                                                      .format(DateTime
-                                                          .fromMillisecondsSinceEpoch(
-                                                              int.parse(listMessage[
-                                                                      index][
-                                                                  "timestamp"]))),
+                                                      .format(DateTime.parse(
+                                                          listMessage[index]
+                                                              ["timestamp"])),
                                                   textAlign: TextAlign.right,
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -226,7 +239,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                       onTap: () {
                                         provider.onSendMessage(
                                             provider.messageController.text,
-                                            convoID,
                                             uid,
                                             widget.chatWithUser.id);
                                         FocusManager.instance.primaryFocus
