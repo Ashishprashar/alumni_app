@@ -19,7 +19,7 @@ class ChatModel {
   UserModel user;
   String? lasMessage;
 
-  factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
+  factory ChatModel.fromJson(json) => ChatModel(
         user: UserModel.fromMap(json["user"]),
         lasMessage: json["lastMessage"],
       );

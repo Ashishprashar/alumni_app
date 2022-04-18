@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:alumni_app/models/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../screen/home.dart';
@@ -10,7 +11,8 @@ import '../services/auth.dart';
 class ChatProvider with ChangeNotifier {
   TextEditingController messageController = TextEditingController();
   AuthServices authServices = AuthServices();
-  List<ChatModel> _chatList = [];
+  List chats = [];
+  final List<ChatModel> _chatList = [];
   final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
       .collection('user')
       .where("id", isNotEqualTo: firebaseCurrentUser!.uid)
@@ -22,52 +24,45 @@ class ChatProvider with ChangeNotifier {
   }
 
   getLastMessage(String peerId) async {
-    final _lastMessage = await chatCollection
-        .doc(getConversationID(firebaseCurrentUser!.uid, peerId))
+    final _lastMessage = await chatListDb
+        .child(getConversationID(firebaseCurrentUser!.uid, peerId))
         .get();
 
-    return await _lastMessage.data()?["lastMessage"]["content"];
+    return await (_lastMessage.value as Map)["lastMessage"]["message"];
   }
 
-  
+  fetchChatList() async {
+    chats = [];
+    log(firebaseCurrentUser!.uid);
+    DataSnapshot data = await chatListDb.child(firebaseCurrentUser!.uid).get();
+    Map values = data.value ?? {};
+    // print(data);
+    // chatListCount = data.value.keys.length;
+    values.forEach((key, value) async {
+      (value).addAll({"id": key});
+      final userRef = await userCollection
+          .doc(value["receiverId"] == firebaseCurrentUser!.uid
+              ? value["senderId"]
+              : value["receiverId"])
+          .get();
+      value["user"] = userRef.data();
+
+      chats.add(ChatModel.fromJson((value)));
+      notifyListeners();
+    });
+    notifyListeners();
+  }
+
   deleteMessage(
     String convoID,
     String timestamp,
   ) async {
-    DocumentReference convoDoc = chatCollection.doc(convoID);
+    final convoDoc = chatListDb.child(convoID);
     await convoDoc.update({"lastMessage": "This message was deleted"});
-    final DocumentReference messageDoc =
-        chatCollection.doc(convoID).collection(convoID).doc(timestamp);
+    final messageDoc =
+        chatListDb.child(convoID).child(convoID).child(timestamp);
     await messageDoc
         .update({"content": "This message was deleted", "deleted": true});
-  }
-
-  fetchChatList() async {
-    final docRef = await chatCollection
-        .where("users", arrayContains: firebaseCurrentUser?.uid)
-        .get();
-    final docs = docRef.docs;
-
-    List<ChatModel> chatList = [];
-    for (var chatDoc in docs) {
-      final chatData = chatDoc.data();
-
-      final userRef = await userCollection
-          .doc((chatData["users"] as List)
-              .where((element) => element != firebaseCurrentUser?.uid)
-              .toList()[0])
-          .get();
-
-      chatData["user"] = userRef.data();
-
-      log(chatData.toString());
-
-      ChatModel chatModel = ChatModel.fromJson(chatData);
-      chatList.add(chatModel);
-    }
-    // log(chatList[0].toString());
-    _chatList = chatList;
-    notifyListeners();
   }
 
   List<ChatModel> get chatList {
@@ -75,49 +70,43 @@ class ChatProvider with ChangeNotifier {
     return [..._chatList];
   }
 
-  sendMessage(
-    String convoID,
-    String id,
-    String pid,
-    String content,
-    String timestamp,
-  ) {
-    final DocumentReference convoDoc = chatCollection.doc(convoID);
-
-    convoDoc.set(<String, dynamic>{
-      "lastMessage": content,
-      'users': <String>[id, pid]
-    }).then((dynamic success) {
-      final DocumentReference messageDoc =
-          chatCollection.doc(convoID).collection(convoID).doc(timestamp);
-
-      FirebaseFirestore.instance
-          .runTransaction((Transaction transaction) async {
-        transaction.set(
-          messageDoc,
-          <String, dynamic>{
-            'idFrom': id,
-            'idTo': pid,
-            'deleted': false,
-            'timestamp': timestamp,
-            'content': content,
-            'read': false
-          },
-        );
-      });
+  void sendMessage(
+      {required String to, required String from, required String message}) {
+    String treeId;
+    DateTime createdAt = DateTime.now();
+    if (to.compareTo(from) > 0) {
+      treeId = to + "_" + from;
+    } else {
+      treeId = from + "_" + to;
+    }
+    var messageNode = messagesDb.child(treeId).push();
+    messageNode.set({
+      'senderId': from,
+      'receiverId': to,
+      'message': message,
+      'timestamp': createdAt.toString(),
     });
-    notifyListeners();
+    print(messageNode.key);
+
+    chatListDb.child(from).child(to).update({
+      'lastMessage': message,
+      'senderId': from,
+      'receiverId': to,
+      'timestamp': createdAt.toString(),
+      'messageId': messageNode.key,
+    });
   }
 
-  void onSendMessage(String content, convoID, uid, toId) {
+  void onSendMessage(String content, uid, toId) {
     if (content.isNotEmpty) {
       messageController.clear();
       content = content.trim();
 
-      sendMessage(convoID, uid, toId, content,
-          DateTime.now().millisecondsSinceEpoch.toString());
-      // listScrollController.animateTo(0.0,
-      //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      sendMessage(
+        from: uid,
+        message: content,
+        to: toId,
+      );
     }
     notifyListeners();
   }

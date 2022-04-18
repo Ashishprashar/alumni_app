@@ -44,13 +44,15 @@ class AuthServices {
   deleteAccount(BuildContext context) async {
     log("values");
 
-    final chatRef = await chatCollection
-        .where("users", arrayContains: firebaseCurrentUser?.uid)
-        .get();
-    final docs = chatRef.docs;
-    for (var chat in docs) {
-      await chatCollection.doc(chat.id).delete();
-    }
+    // final chatRef = await
+    // // chatCollection
+    // (await chatRealTimeDB.get() as Map<String,dynamic>).
+    //     .where("users", arrayContains: firebaseCurrentUser?.uid)
+    //     .get();
+    // final docs = chatRef.docs;
+    // for (var chat in docs) {
+    //   await chatCollection.doc(chat.id).delete();
+    // }
     final postRef = await postCollection
         .where("owner_id", isEqualTo: firebaseCurrentUser?.uid)
         .get();
