@@ -438,9 +438,6 @@ class _EditScreenState extends State<EditScreen> {
     setState(() {
       profileImage = null;
     });
-    // this method is called in willpop scopes on tap.
-    // will pop scope requires me to return a Future<bool> value,
-    // hence i am returning this random future bool value.
     return Future.value(true);
   }
 }

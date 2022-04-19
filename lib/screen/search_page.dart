@@ -6,7 +6,6 @@ import 'package:alumni_app/screen/people.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  // String searchKey = '';
   Stream<QuerySnapshot>? streamQuery;
 
   @override
@@ -25,6 +23,7 @@ class _SearchPageState extends State<SearchPage> {
     streamQuery = userCollection
         .where('name', isGreaterThanOrEqualTo: _searchController.text)
         .where('name', isLessThan: _searchController.text + 'z')
+        .orderBy('name', descending: true)
         .snapshots();
     _searchController.addListener(_seachControllerUpdate);
     super.initState();

@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
- 
+
 import '../screen/home.dart';
 
 class FeedProvider with ChangeNotifier {
@@ -30,12 +30,11 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  disposeAllControllers(){
+  disposeAllControllers() {
     feedScroller.dispose();
     postTextContent.dispose();
     commentTextContent.dispose();
   }
- 
 
   List<CommentModel> get commentList {
     return [..._commentList];
@@ -52,7 +51,7 @@ class FeedProvider with ChangeNotifier {
     }
   }
 
-  addFeedScroller(){
+  addFeedScroller() {
     feedScroller = ScrollController();
   }
 

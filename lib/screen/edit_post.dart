@@ -18,8 +18,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
   @override
   void initState() {
     super.initState();
-     Provider.of<FeedProvider>(context, listen: false)
-        .putTextInController(widget.postModel.textContent);
+    // Provider.of<FeedProvider>(context, listen: false)
+    //     .putTextInController(widget.postModel.textContent);
   }
 
   @override

@@ -36,7 +36,6 @@ class _PeopleState extends State<People> {
               margin: const EdgeInsets.symmetric(horizontal: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  // border: Border.all(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(7),
                   color: Colors.grey[200]),
               height: 30,
@@ -80,30 +79,10 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
-  final TextEditingController _searchController = TextEditingController();
-
-  late Future resultsLoaded;
-  List<QueryDocumentSnapshot<Object?>> _allResults = [];
-  List<QueryDocumentSnapshot<Object?>> _resultsList = [];
-
   @override
   void initState() {
     super.initState();
-    // _searchController.addListener(_onSearchChanged);
     Provider.of<PeopleProvider>(context, listen: false).addPeopleScroller();
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // resultsLoaded = getUsersPastTripsStreamSnapshots();
   }
 
   @override
@@ -141,7 +120,6 @@ class _UserListState extends State<UserList> {
       onTap: () {
         FocusScope.of(context).unfocus();
         individualUser = UserModel.fromJson(snapshot[index]);
-        _searchController.clear();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (ctx) => IndividualProfile(
                   user: individualUser,
@@ -192,49 +170,6 @@ class _UserListState extends State<UserList> {
       trailing: Text(individualUser.type,
           style: Theme.of(context).textTheme.bodyText1),
     );
-  }
-
-  _onSearchChanged() {
-    searchResultsList();
-  }
-
-  searchResultsList() {
-    List<QueryDocumentSnapshot<Object?>> showResults = [];
-
-    if (_searchController.text != "") {
-      for (var tripSnapshot in _allResults) {
-        var title = UserModel.fromJson(tripSnapshot).name.toLowerCase();
-
-        if (title.contains(_searchController.text.toLowerCase())) {
-          showResults.add(tripSnapshot);
-        }
-      }
-    } else {
-      showResults = List.from(_allResults);
-    }
-    if (mounted) {
-      setState(() {
-        _resultsList = showResults;
-      });
-    }
-  }
-
-  getUsersPastTripsStreamSnapshots() async {
-    List<QueryDocumentSnapshot<Object?>> data = [];
-    await FirebaseFirestore.instance
-        .collection('user')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (QueryDocumentSnapshot<Object?> item in querySnapshot.docs) {
-        data.add(item);
-      }
-    });
-    // setState(() {
-    _allResults = data;
-    // });
-    searchResultsList();
-
-    return "complete";
   }
 }
 
