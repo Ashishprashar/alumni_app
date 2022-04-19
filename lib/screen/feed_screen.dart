@@ -253,21 +253,28 @@ class _PostWidgetState extends State<PostWidget> {
                                   child: Text((widget.postModel.likeCount ?? 0)
                                       .toString())),
                               GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                CommentScreen(
-                                                    postModel:
-                                                        widget.postModel))));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: const Icon(
-                                      Icons.mode_comment_rounded,
-                                      size: 24,
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: ((context) => CommentScreen(
+                                          postModel: widget.postModel))));
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5),
+                                      child: const Icon(
+                                        Icons.mode_comment_rounded,
+                                        size: 24,
+                                      ),
                                     ),
-                                  )),
+                                    Text(
+                                      (widget.postModel.comments.length)
+                                          .toString(),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                           Text(
