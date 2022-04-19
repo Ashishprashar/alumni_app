@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/chat_provider.dart';
 import '../screen/sign_in.dart';
 
 class AuthServices {
@@ -32,7 +33,7 @@ class AuthServices {
 
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);
-
+        await Provider.of<ChatProvider>(context, listen: false).fetchChatList();
         navigatorService.navigateToHome(context);
       } else {
         // navigatorService.navigateToOnBoarding(context);

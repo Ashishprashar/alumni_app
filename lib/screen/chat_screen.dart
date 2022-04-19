@@ -99,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.all(8),
                       width: SizeData.screenWidth,
                       child: StreamBuilder(
-                          stream: messagesDb.child(treeId).orderByKey().onValue,
+                          stream: messagesDb.child(treeId).onValue,
                           builder: (context, snapshot) {
                             List listMessage = [];
                             if (snapshot.hasData) {
@@ -114,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                               values.forEach((key, value) {
                                 if (value != null) {
-                                  listMessage.add(value);
+                                  listMessage.insert(0, value);
                                 }
                               });
 
@@ -133,8 +133,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                       children: [
                                         GestureDetector(
                                           onLongPress: () {
-                                            if ((!listMessage[index]
-                                                ["deleted"])) {
+                                            if ((!(listMessage[index]
+                                                    ["deleted"] ??
+                                                false))) {
                                               showDialog(
                                                 context: context,
                                                 builder: (ctx) => AlertDialog(
@@ -144,12 +145,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                                       "Are you sure?"),
                                                   actions: [
                                                     DoneButton(
-                                                        onTap: () {
-                                                          provider.deleteMessage(
-                                                              treeId,
-                                                              listMessage[index]
-                                                                  [
-                                                                  "timestamp"]);
+                                                        onTap: () async {
+                                                          await provider
+                                                              .deleteMessage(
+                                                                  treeId,
+                                                                  listMessage[
+                                                                          index]
+                                                                      [
+                                                                      "messageId"]);
                                                           Navigator.pop(
                                                               context);
                                                         },
