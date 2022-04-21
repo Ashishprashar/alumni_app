@@ -7,7 +7,6 @@ import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +21,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // late Stream _usersStream;
+  late Stream _usersStream;
   late String uid, treeId;
 
   @override
@@ -48,6 +47,8 @@ class _ChatScreenState extends State<ChatScreen> {
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
                 appBar: AppBar(
+
+                    // leadingWidth: 30,
                     titleSpacing: 5,
                     automaticallyImplyLeading: false,
                     title: Row(children: [
@@ -94,122 +95,120 @@ class _ChatScreenState extends State<ChatScreen> {
                     Consumer<ChatProvider>(builder: (context, provider, child) {
                   return Column(children: [
                     Expanded(
-                      child: Container(
-                        // padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.only(bottom: 8),
-                        width: SizeData.screenWidth,
-                        child: StreamBuilder(
-                            stream:
-                                messagesDb.child(treeId).orderByKey().onValue,
-                            builder: (context, snapshot) {
-                              List listMessage = [];
-                              if (snapshot.hasData) {
-                                if ((snapshot.data as Event).snapshot.value ==
-                                    null) {
-                                  return Container();
-                                }
-                                Map values =
-                                    (snapshot.data as Event).snapshot.value;
-                                // chatCount =
-                                //     (snapshot.data as Event).snapshot.value.keys.length;
-
-                                values.forEach((key, value) {
-                                  if (value != null) {
-                                    listMessage.add(value);
-                                  }
-                                  // listMessage = listMessage.reversed.toList();
-                                });
-
-                                return ListView.builder(
-                                    reverse: true,
-                                    shrinkWrap: true,
-                                    itemCount: listMessage.length,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        crossAxisAlignment: (listMessage[index]
-                                                    ["senderId"] !=
-                                                firebaseCurrentUser!.uid)
-                                            ? CrossAxisAlignment.start
-                                            : CrossAxisAlignment.end,
-                                        children: [
-                                          GestureDetector(
-                                            onLongPress: () {
-                                              if ((!listMessage[index]
-                                                  ["deleted"])) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                    title: const Text(
-                                                        "Delete message"),
-                                                    content: const Text(
-                                                        "Are you sure?"),
-                                                    actions: [
-                                                      DoneButton(
-                                                          onTap: () {
-                                                            provider.deleteMessage(
-                                                                treeId,
-                                                                listMessage[
-                                                                        index][
-                                                                    "timestamp"]);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          text: "Yes"),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      DoneButton(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          text: "No")
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                            child: Bubble(
-                                              margin: const BubbleEdges.all(8),
-                                              nip: (listMessage[index]
-                                                          ["senderId"] !=
-                                                      firebaseCurrentUser!.uid)
-                                                  ? BubbleNip.leftTop
-                                                  : BubbleNip.rightTop,
-                                              color:
-                                                  Theme.of(context).hoverColor,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(listMessage[index]
-                                                          ["message"] ??
-                                                      ""),
-                                                  Text(
-                                                    DateFormat(
-                                                            "dd MM yyyy hh:mma")
-                                                        .format(DateTime.parse(
-                                                            listMessage[index]
-                                                                ["timestamp"])),
-                                                    textAlign: TextAlign.right,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .caption,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              } else {
+                        child: Container(
+                      padding: const EdgeInsets.all(8),
+                      width: SizeData.screenWidth,
+                      child: StreamBuilder(
+                          stream: messagesDb.child(treeId).onValue,
+                          builder: (context, snapshot) {
+                            List listMessage = [];
+                            if (snapshot.hasData) {
+                              if ((snapshot.data as Event).snapshot.value ==
+                                  null) {
                                 return Container();
                               }
-                            }),
-                      ),
-                    ),
+                              Map values =
+                                  (snapshot.data as Event).snapshot.value;
+                              // chatCount =
+                              //     (snapshot.data as Event).snapshot.value.keys.length;
+
+                              values.forEach((key, value) {
+                                if (value != null) {
+                                  listMessage.insert(0, value);
+                                }
+                              });
+
+                              return ListView.builder(
+                                  reverse: true,
+                                  shrinkWrap: true,
+                                  itemCount: listMessage.length,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      crossAxisAlignment: (listMessage[index]
+                                                  ["senderId"] !=
+                                              firebaseCurrentUser!.uid)
+                                          ? CrossAxisAlignment.start
+                                          : CrossAxisAlignment.end,
+                                      children: [
+                                        GestureDetector(
+                                          onLongPress: () {
+                                            if ((!(listMessage[index]
+                                                    ["deleted"] ??
+                                                false))) {
+                                              showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                  title: const Text(
+                                                      "Delete message"),
+                                                  content: const Text(
+                                                      "Are you sure?"),
+                                                  actions: [
+                                                    DoneButton(
+                                                        onTap: () async {
+                                                          await provider
+                                                              .deleteMessage(
+                                                                  treeId,
+                                                                  listMessage[
+                                                                          index]
+                                                                      [
+                                                                      "messageId"]);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        text: "Yes"),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    DoneButton(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        text: "No")
+                                                  ],
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Bubble(
+                                            margin: const BubbleEdges.all(8),
+                                            nip: (listMessage[index]
+                                                        ["senderId"] !=
+                                                    firebaseCurrentUser!.uid)
+                                                ? BubbleNip.leftTop
+                                                : BubbleNip.rightTop,
+                                            color: Theme.of(context).hoverColor,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(listMessage[index]
+                                                        ["message"] ??
+                                                    ""),
+                                                Text(
+                                                  DateFormat(
+                                                          "dd MM yyyy hh:mma")
+                                                      .format(DateTime.parse(
+                                                          listMessage[index]
+                                                              ["timestamp"])),
+                                                  textAlign: TextAlign.right,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              return Container();
+                            }
+                          }),
+                    )),
                     Container(
                         height: 60,
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -228,9 +227,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             padding: const EdgeInsets.all(10),
                             child: TextField(
                               controller: provider.messageController,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(200),
-                              ],
                               scrollPhysics: const BouncingScrollPhysics(),
                               decoration: InputDecoration(
                                   hintText: "Type a message",

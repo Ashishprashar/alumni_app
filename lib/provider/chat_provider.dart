@@ -54,15 +54,14 @@ class ChatProvider with ChangeNotifier {
   }
 
   deleteMessage(
-    String convoID,
-    String timestamp,
+    String treeID,
+    String id,
   ) async {
-    final convoDoc = chatListDb.child(convoID);
+    final convoDoc = chatListDb.child(treeID);
     await convoDoc.update({"lastMessage": "This message was deleted"});
-    final messageDoc =
-        chatListDb.child(convoID).child(convoID).child(timestamp);
+    final messageDoc = messagesDb.child(treeID).child(id);
     await messageDoc
-        .update({"content": "This message was deleted", "deleted": true});
+        .update({"message": "This message was deleted", "deleted": true});
   }
 
   List<ChatModel> get chatList {
@@ -83,6 +82,7 @@ class ChatProvider with ChangeNotifier {
     messageNode.set({
       'senderId': from,
       'receiverId': to,
+      'messageId': messageNode.key,
       'message': message,
       'timestamp': createdAt.toString(),
     });
