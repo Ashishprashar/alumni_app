@@ -30,11 +30,11 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  disposeAllControllers() {
-    feedScroller.dispose();
-    postTextContent.dispose();
-    commentTextContent.dispose();
-  }
+  // disposeAllControllers() {
+  //   feedScroller.dispose();
+  //   postTextContent.dispose();
+  //   commentTextContent.dispose();
+  // }
 
   List<CommentModel> get commentList {
     return [..._commentList];

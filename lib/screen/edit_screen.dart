@@ -152,10 +152,6 @@ class _EditScreenState extends State<EditScreen> {
                                   children: [
                                     const Text(
                                       'Bio',
-                                      // style: Theme.of(context)
-                                      //     .textTheme
-                                      //     .bodyText1
-                                      //     ?.copyWith(color: Colors.black),
                                     ),
                                     Container(
                                       // height: height,

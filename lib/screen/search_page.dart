@@ -1,5 +1,4 @@
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/screen/people.dart';
@@ -16,6 +15,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
+
   Stream<QuerySnapshot>? streamQuery;
 
   @override
@@ -23,8 +23,9 @@ class _SearchPageState extends State<SearchPage> {
     streamQuery = userCollection
         .where('name', isGreaterThanOrEqualTo: _searchController.text)
         .where('name', isLessThan: _searchController.text + 'z')
-        .orderBy('name', descending: true)
+        .orderBy("name", descending: true)
         .snapshots();
+
     _searchController.addListener(_seachControllerUpdate);
     super.initState();
   }
@@ -148,6 +149,7 @@ class _SearchPageState extends State<SearchPage> {
       streamQuery = userCollection
           .where('name', isGreaterThanOrEqualTo: _searchController.text)
           .where('name', isLessThan: _searchController.text + 'z')
+          .orderBy('name', descending: true)
           .snapshots();
     });
   }
