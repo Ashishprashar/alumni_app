@@ -17,6 +17,12 @@ import '../screen/sign_in.dart';
 class AuthServices {
   NavigatorService navigatorService = NavigatorService();
   Future signInWith(BuildContext context, String type) async {
+    authorizedEmail = await setupRemoteConfig();
+    if (authorizedEmail.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("You are not authorized")));
+      return;
+    }
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -24,6 +30,11 @@ class AuthServices {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      if (!authorizedEmail.contains(googleUser.email)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("You are not authorized")));
+        return;
+      }
       final User? _user = (await auth.signInWithCredential(credential)).user;
 
       DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
@@ -40,6 +51,13 @@ class AuthServices {
         navigatorService.navigateToIntroductionPage(context);
       }
     }
+  }
+
+  setupRemoteConfig() async {
+    var data = await authorizedEmailDb.get();
+
+    log(data.value.toString());
+    return data.value;
   }
 
   deleteAccount(BuildContext context) async {

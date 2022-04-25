@@ -1,6 +1,7 @@
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:alumni_app/provider/invite_screen_provider.dart';
 import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/wrapper.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CurrentUserProvider()),
         ChangeNotifierProvider(create: (context) => FeedProvider()),
         ChangeNotifierProvider(create: (context) => ChatProvider()),
+        ChangeNotifierProvider(create: (context) => InviteProvider()),
         ChangeNotifierProvider(create: (context) => PeopleProvider()),
       ],
       child: MaterialApp(
