@@ -7,6 +7,7 @@ import 'package:alumni_app/screen/comment_screen.dart';
 import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
+import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -49,6 +50,21 @@ class _FeedScreenState extends State<FeedScreen> {
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             elevation: 1,
             toolbarHeight: 50,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => const InviteScreen())));
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: Icon(
+                    Icons.share,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                ),
+              )
+            ],
           ),
           body: SafeArea(
             child: SizedBox(
@@ -331,7 +347,7 @@ class MorePostOptionBottomSheet extends StatelessWidget {
             InkWell(
               onTap: () {
                 Provider.of<FeedProvider>(context, listen: false)
-        .putTextInController(postModel.textContent);
+                    .putTextInController(postModel.textContent);
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (ctx) => EditPostScreen(

@@ -133,6 +133,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                       children: [
                                         GestureDetector(
                                           onLongPress: () {
+                                            if (listMessage[index]
+                                                    ["senderId"] !=
+                                                firebaseCurrentUser?.uid) {
+                                              return;
+                                            }
                                             if ((!(listMessage[index]
                                                     ["deleted"] ??
                                                 false))) {
