@@ -3,6 +3,7 @@
 //     final user = userFromJson(jsonString);
 
 import 'dart:convert';
+// import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +27,11 @@ class UserModel {
     required this.admin,
     required this.semester,
     required this.branch,
+    // this.isFollowing,
+    // this.followerCount,
+    // this.followingCount,
+    // this.followers,
+    // this.following,
   });
 
   String bio;
@@ -42,6 +48,13 @@ class UserModel {
   bool admin;
   String semester;
   String branch;
+  // bool? isFollowing;
+  // // people the user is being followed by
+  // int? followerCount;
+  // // people the user is following
+  // int? followingCount;
+  // List? followers;
+  // List? following;
 
   factory UserModel.fromJson(DocumentSnapshot json) => UserModel(
         bio: json["bio"] ?? "",
@@ -58,6 +71,11 @@ class UserModel {
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
+        // isFollowing: json["is_following"] ?? false,
+        // followerCount: json["follower_count"] ?? 0,
+        // followingCount: json["following_count"] ?? 0,
+        // followers: json['followers'] ?? [],
+        // following: json['following'] ?? [],
       );
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
         bio: json["bio"] ?? "",
@@ -76,6 +94,11 @@ class UserModel {
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
+        // isFollowing: json["is_following"] ?? false,
+        // followerCount: json["follower_count"] ?? 0,
+        // followingCount: json["following_count"] ?? 0,
+        // followers: json["followers"] ?? [],
+        // following: json["following"] ?? [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,6 +116,11 @@ class UserModel {
         "admin": admin,
         "semester": semester,
         "branch": branch,
+        // "is_following": isFollowing,
+        // "follower_count": followerCount,
+        // "following_count": followerCount,
+        // "followers": followers,
+        // "following": following,
       };
 }
 

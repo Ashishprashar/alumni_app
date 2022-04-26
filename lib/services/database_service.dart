@@ -51,7 +51,13 @@ class DatabaseService {
         updatedAt: now,
         admin: false,
         semester: "8",
-        branch: "CSE");
+        branch: "CSE",
+        // isFollowing: "is_following" ?? false,
+        // followerCount: json["follower_count"] ?? 0,
+        // followingCount: json["following_count"] ?? 0,
+        // followers: json['followers'] ?? [],
+        // following: json['following'] ?? [],
+        );
 
     Map<String, dynamic> data = (user.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
