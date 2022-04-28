@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../screen/home.dart';
 
@@ -15,15 +18,23 @@ class InviteProvider with ChangeNotifier {
     notifyListeners();
     var data = await authorizedEmailDb.get();
 
-    // log(data.value.toString());
-    authorizedEmail = data.value ?? [];
-    if (authorizedEmail.contains(emailID)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email is already ianvited.")));
-      return;
-    }
-    // authorizedEmail.add(emailID);
-    await authorizedEmailDb.set((authorizedEmail) + [emailID]);
+    log(data.value.toString());
+
+    (data.value as Map).forEach((key, value) {
+      if (value["invitedTo"] == emailID) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Email is already ianvited.")));
+        return;
+      }
+    });
+
+    String invitedBy = currentUser!.email;
+
+    await authorizedEmailDb.child(const Uuid().v1()).set({
+      "invitedBy": invitedBy,
+      "invitedTo": emailID,
+      "timeStamp": DateTime.now().toString()
+    });
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text("Email invited.")));
   }
