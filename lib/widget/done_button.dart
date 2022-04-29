@@ -18,17 +18,22 @@ class DoneButton extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(),
       child: Container(
-        height: height,
+        height: height ?? 24,
         width: width,
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Theme.of(context).primaryColorLight,
-            border: Border.all(color: Theme.of(context).primaryColorDark)),
+          borderRadius: BorderRadius.circular(16),
+          color: Theme.of(context).highlightColor.withOpacity(.2),
+
+          // border: Border.all(color: Theme.of(context).hintColor)
+        ),
         child: Center(
             child: Text(
           text,
-          style: Theme.of(context).textTheme.button,
+          style: Theme.of(context)
+              .textTheme
+              .button!
+              .copyWith(fontSize: 10, fontWeight: FontWeight.w600),
         )),
       ),
     );

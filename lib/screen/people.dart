@@ -23,46 +23,63 @@ class _PeopleState extends State<People> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchPage()),
-              );
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  color: Colors.grey[200]),
-              height: 30,
-              child: Row(
-                children: [
-                  const Icon(Icons.search),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Search by name',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          iconTheme: Theme.of(context).appBarTheme.iconTheme,
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          elevation: 1,
-          toolbarHeight: 50,
-        ),
-        body: const SafeArea(
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   title:
+        //   iconTheme: Theme.of(context).appBarTheme.iconTheme,
+        //   backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        //   elevation: 1,
+        //   toolbarHeight: 50,
+        // ),
+        body: SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,
             child: SingleChildScrollView(
-              child: UserList(),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchPage()),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Theme.of(context)
+                                    .backgroundColor
+                                    .withOpacity(.1),
+                                blurRadius: 20,
+                                spreadRadius: 20,
+                                offset: const Offset(0, 10))
+                          ],
+                          borderRadius: BorderRadius.circular(15),
+                          color: Theme.of(context)
+                              .backgroundColor
+                              .withOpacity(.5)),
+                      height: 44,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Search by name',
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const UserList(),
+                ],
+              ),
             ),
           ),
         ),
@@ -116,7 +133,7 @@ class _UserListState extends State<UserList> {
     // DocumentSnapshot document = snapshot[index];
     // individualUser = UserModel.fromJson(document);
     individualUser = UserModel.fromJson(snapshot[index]);
-    return ListTile(
+    return InkWell(
       onTap: () {
         FocusScope.of(context).unfocus();
         individualUser = UserModel.fromJson(snapshot[index]);
@@ -126,49 +143,79 @@ class _UserListState extends State<UserList> {
                   index: index,
                 )));
       },
-      leading: Hero(
-        tag: "profile-pic$index",
-        placeholderBuilder: ((ctx, size, widget) {
-          return CircleAvatar(
-            radius: 30,
-
-            // backgroundImage: NetworkImage(individualUser.profilePic),
-            backgroundImage: CachedNetworkImageProvider(
-                UserModel.fromJson(snapshot[index]).profilePic),
-            // backgroundImage:
-            //     NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
-          );
-        }),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(HeroDialogRoute(
-                builder: ((context) => Center(
-                      child: ProfilePicDialog(
-                        index: index,
-                        // image: individualUser.profilePic,
-                        image: UserModel.fromJson(snapshot[index]).profilePic,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        margin: const EdgeInsets.only(bottom: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 40,
+              width: 40,
+              child: Hero(
+                placeholderBuilder: (context, heroSize, child) => Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image(
+                      image: CachedNetworkImageProvider(
+                          UserModel.fromJson(snapshot[index]).profilePic),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                tag: "profile-pic$index",
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(HeroDialogRoute(
+                        builder: ((context) => Center(
+                              child: ProfilePicDialog(
+                                index: index,
+                                // image: individualUser.profilePic,
+                                image: UserModel.fromJson(snapshot[index])
+                                    .profilePic,
+                              ),
+                            ))));
+                  },
+                  child: Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image(
+                        image: CachedNetworkImageProvider(
+                            UserModel.fromJson(snapshot[index]).profilePic),
+                        fit: BoxFit.cover,
                       ),
-                    ))));
-          },
-          child: CircleAvatar(
-            radius: 30,
-            // backgroundImage: NetworkImage(individualUser.profilePic),
-            backgroundImage: CachedNetworkImageProvider(
-                UserModel.fromJson(snapshot[index]).profilePic),
-            // backgroundImage: NetworkImage(UserModel.fromJson(snapshot[index]).profilePic),
-          ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(left: 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(individualUser.name,
+                        style: Theme.of(context).textTheme.headline2),
+                    Text(
+                        individualUser.techStack.isEmpty
+                            ? "Skills not added"
+                            : individualUser.techStack.toString(),
+                        style: Theme.of(context).textTheme.subtitle1)
+                  ],
+                ),
+              ),
+            ),
+            Text(individualUser.type,
+                style: Theme.of(context).textTheme.subtitle1)
+          ],
         ),
       ),
-      title: Text(individualUser.name,
-          style: Theme.of(context).textTheme.subtitle1),
-      subtitle: individualUser.techStack.isNotEmpty
-          ? Text(individualUser.techStack.toString(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText1)
-          : const Text("No skills added yet"),
-      trailing: Text(individualUser.type,
-          style: Theme.of(context).textTheme.bodyText1),
     );
   }
 }

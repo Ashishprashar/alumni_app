@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
-import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/feed_screen.dart';
 import 'package:alumni_app/screen/people.dart';
@@ -48,17 +47,17 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int backTaps = 0;
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    if (index == 0) {
-      Provider.of<FeedProvider>(context, listen: false).scrollUp();
-    }
-    if (index == 2) {
-      Provider.of<PeopleProvider>(context, listen: false).scrollUp();
-    }
-  }
+  // void onTabTapped(int index) {
+  //   setState(() {
+  //     _currentIndex = index;
+  //   });
+  //   if (index == 0) {
+  //     Provider.of<FeedProvider>(context, listen: false).scrollUp();
+  //   }
+  //   if (index == 2) {
+  //     Provider.of<PeopleProvider>(context, listen: false).scrollUp();
+  //   }
+  // }
 
   @override
   void initState() {
@@ -107,42 +106,125 @@ class _HomeState extends State<Home> {
           return false;
         },
         child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: currentUserProvider.isDeleting
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : _children[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white70,
-            selectedFontSize: 12,
-            backgroundColor: Theme.of(context).primaryColor,
-            // backgroundColor: Colors.blue,
-            elevation: 0,
-            onTap: onTabTapped,
-            currentIndex: _currentIndex,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.feed),
-                label: 'Feed',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Chat',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group),
-                label: 'People',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
-          ),
+              : Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 70),
+                      child: _children[_currentIndex],
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 70,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.transparent.withOpacity(.1),
+                                offset: const Offset(0, 15),
+                                blurRadius: 10,
+                                spreadRadius: 10,
+                                blurStyle: BlurStyle.outer)
+                          ],
+                          color: Colors.transparent,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
+                        ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                  radius: 20,
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    setState(() {
+                                      _currentIndex = 0;
+                                    });
+                                    if (_currentIndex == 0) {
+                                      Provider.of<FeedProvider>(context,
+                                              listen: false)
+                                          .scrollUp();
+                                    }
+                                  },
+                                  child: NavigationTheme(
+                                    color: _currentIndex == 0
+                                        ? Theme.of(context).primaryColor
+                                        : null,
+                                    icon: Icons.feed,
+                                  )),
+                              InkWell(
+                                  radius: 20,
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    setState(() {
+                                      _currentIndex = 1;
+                                    });
+                                    // if (_currentIndex == 2) {
+                                    //   Provider.of<PeopleProvider>(context,
+                                    //           listen: false)
+                                    //       .scrollUp();
+                                    // }
+                                  },
+                                  child: NavigationTheme(
+                                    color: _currentIndex == 1
+                                        ? Theme.of(context).primaryColor
+                                        : null,
+                                    icon: Icons.chat,
+                                  )),
+                              InkWell(
+                                  radius: 20,
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    setState(() {
+                                      _currentIndex = 2;
+                                    });
+                                  },
+                                  child: NavigationTheme(
+                                    color: _currentIndex == 2
+                                        ? Theme.of(context).primaryColor
+                                        : null,
+                                    icon: Icons.group,
+                                  )),
+                              InkWell(
+                                  radius: 20,
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    setState(() {
+                                      _currentIndex = 3;
+                                    });
+                                  },
+                                  child: NavigationTheme(
+                                    color: _currentIndex == 3
+                                        ? Theme.of(context).primaryColor
+                                        : null,
+                                    icon: Icons.person,
+                                  )),
+                            ]),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       );
     });
+  }
+}
+
+class NavigationTheme extends StatelessWidget {
+  Color? color;
+  IconData? icon;
+  NavigationTheme({Key? key, this.color, this.icon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(8), child: Icon(icon, color: color));
   }
 }
