@@ -37,8 +37,9 @@ class _PostWidgetState extends State<PostWidget> {
             // if(widget.postModel.)
 
             if (futureSnap.hasData) {
-              UserModel user =
-                  UserModel.fromJson(futureSnap.data as DocumentSnapshot);
+              UserModel user = UserModel.fromMap(
+                  (futureSnap.data as DocumentSnapshot).data()
+                      as Map<String, dynamic>);
               // setState(() {
               isLike = widget.postModel.likes == null
                   ? false

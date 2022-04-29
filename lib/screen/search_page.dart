@@ -93,11 +93,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget userCard(int index, List<QueryDocumentSnapshot<Object?>>? snapshot) {
-    individualUser = UserModel.fromJson(snapshot![index]);
+    final individualUser =
+        UserModel.fromMap(snapshot![index].data() as Map<String, dynamic>);
     return ListTile(
       onTap: () {
         FocusScope.of(context).unfocus();
-        individualUser = UserModel.fromJson(snapshot[index]);
+        // individualUser = UserModel.fromJson(snapshot[index]);
         // _searchController.clear();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (ctx) => IndividualProfile(
@@ -110,8 +111,8 @@ class _SearchPageState extends State<SearchPage> {
         placeholderBuilder: ((ctx, size, widget) {
           return CircleAvatar(
             radius: 30,
-            backgroundImage: CachedNetworkImageProvider(
-                UserModel.fromJson(snapshot[index]).profilePic),
+            backgroundImage:
+                CachedNetworkImageProvider(individualUser.profilePic),
           );
         }),
         child: GestureDetector(
@@ -120,14 +121,14 @@ class _SearchPageState extends State<SearchPage> {
                 builder: ((context) => Center(
                       child: ProfilePicDialog(
                         index: index,
-                        image: UserModel.fromJson(snapshot[index]).profilePic,
+                        image: individualUser.profilePic,
                       ),
                     ))));
           },
           child: CircleAvatar(
             radius: 30,
-            backgroundImage: CachedNetworkImageProvider(
-                UserModel.fromJson(snapshot[index]).profilePic),
+            backgroundImage:
+                CachedNetworkImageProvider(individualUser.profilePic),
           ),
         ),
       ),
