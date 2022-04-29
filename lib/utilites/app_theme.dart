@@ -35,7 +35,7 @@ class AppTheme {
     iconTheme: const IconThemeData(
       color: Colors.grey,
     ),
-
+    errorColor: const Color.fromRGBO(255, 0, 92, 1),
     hintColor: Colors.grey,
     cardColor: Colors.white,
     highlightColor: Colors.grey[700],

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:alumni_app/models/post_model.dart';
@@ -28,7 +29,7 @@ class DatabaseService {
     TaskSnapshot storageSnap = await uploadTask;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
 
-     Map _linkToSocial = {
+    Map _linkToSocial = {
       'email': firebaseCurrentUser!.email,
       'twitter': '',
       'linkedin': '',
@@ -38,20 +39,21 @@ class DatabaseService {
     };
 
     UserModel user = UserModel(
-        bio: "",
-        connection: [],
-        createdAt: now,
-        email: firebaseCurrentUser!.email ?? "",
-        id: firebaseCurrentUser!.uid,
-        linkToSocial: _linkToSocial,
-        name: name,
-        profilePic: downloadUrl,
-        techStack: teckStack,
-        type: "student",
-        updatedAt: now,
-        admin: false,
-        semester: "8",
-        branch: "CSE");
+      bio: "",
+      connection: [],
+      createdAt: now,
+      email: firebaseCurrentUser!.email ?? "",
+      id: firebaseCurrentUser!.uid,
+      linkToSocial: _linkToSocial,
+      name: name,
+      profilePic: downloadUrl,
+      techStack: teckStack,
+      type: "student",
+      updatedAt: now,
+      admin: false,
+      semester: "8",
+      branch: "CSE",
+    );
 
     Map<String, dynamic> data = (user.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
@@ -83,20 +85,21 @@ class DatabaseService {
     }
 
     UserModel updatedUser = UserModel(
-        bio: bio,
-        connection: [],
-        createdAt: createdAt,
-        email: firebaseCurrentUser!.email ?? "",
-        id: firebaseCurrentUser!.uid,
-        linkToSocial: linkToSocials,
-        name: name,
-        profilePic: downloadUrl,
-        techStack: techStack,
-        type: 'student',
-        updatedAt: now,
-        admin: false,
-        semester: semester,
-        branch: branch);
+      bio: bio,
+      connection: [],
+      createdAt: createdAt,
+      email: firebaseCurrentUser!.email ?? "",
+      id: firebaseCurrentUser!.uid,
+      linkToSocial: linkToSocials,
+      name: name,
+      profilePic: downloadUrl,
+      techStack: techStack,
+      type: 'student',
+      updatedAt: now,
+      admin: false,
+      semester: semester,
+      branch: branch,
+    );
 
     Map<String, dynamic> data = (updatedUser.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
@@ -111,9 +114,10 @@ class DatabaseService {
 
   getUserData(context, String id) async {
     DocumentSnapshot doc = await userCollection.doc(id).get();
-
+    log("message");
     if (doc.exists) {
-      UserModel _userModel = UserModel.fromJson(doc);
+      UserModel _userModel =
+          UserModel.fromMap(doc.data() as Map<String, dynamic>);
 
       navigatorKey.currentContext
           ?.read<CurrentUserProvider>()

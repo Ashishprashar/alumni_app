@@ -34,7 +34,7 @@ class AuthServices {
       DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
 
       if (doc.exists) {
-        UserModel _userModel = UserModel.fromJson(doc);
+        UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
 
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);
