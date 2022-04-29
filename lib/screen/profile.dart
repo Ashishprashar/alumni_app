@@ -163,208 +163,193 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
-          padding: const EdgeInsets.all(52),
-          color: Theme.of(context).splashColor,
-          child: Center(
-            child: Hero(
-              tag: "profile-pic$index",
-              placeholderBuilder: ((ctx, size, widget) {
-                return CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(context).iconTheme.color,
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage:
-                          CachedNetworkImageProvider(user.profilePic),
-                    ));
-              }),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(HeroDialogRoute(
-                        builder: ((context) => Center(
-                              child: ProfilePicDialog(
-                                index: index,
-                                image: user.profilePic,
+          // height: 170,
+          margin: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.circular(20)),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+                margin: const EdgeInsets.only(
+                    left: 24, right: 24, top: 20, bottom: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: "profile-pic$index",
+                      placeholderBuilder: ((ctx, size, widget) {
+                        return Container(
+                          height: 63,
+                          width: 63,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Image(
+                            image: CachedNetworkImageProvider(user.profilePic),
+                            fit: BoxFit.cover,
+                          ),
+                          // CachedNetworkImageProvider(user.profilePic),
+                        );
+                      }),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(HeroDialogRoute(
+                                builder: ((context) => Center(
+                                      child: ProfilePicDialog(
+                                        index: index,
+                                        image: user.profilePic,
+                                      ),
+                                    ))));
+                          },
+                          child: Container(
+                            width: 63,
+                            height: 63,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const [
+                                  BoxShadow(spreadRadius: 0, blurRadius: 5)
+                                ]),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image(
+                                image:
+                                    CachedNetworkImageProvider(user.profilePic),
+                                fit: BoxFit.cover,
                               ),
-                            ))));
-                  },
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(context).iconTheme.color,
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage:
-                          CachedNetworkImageProvider(user.profilePic),
-                      // CachedNetworkImageProvider(user.profilePic),
+                            ),
+                            // CachedNetworkImageProvider(user.profilePic),
+                          )),
                     ),
-                  )),
-            ),
-          ),
-        ),
-        if (user.id != firebaseCurrentUser?.uid)
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => ChatScreen(
-                            chatWithUser: user,
-                          )));
-                },
-                child: Center(
-                  child: SizedBox(
-                    width: 120,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(Icons.message),
-                        Text(
-                          "Message",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        )
-                      ],
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(user.name,
+                                style: Theme.of(context).textTheme.headline2),
+                            Text(user.type,
+                                style: Theme.of(context).textTheme.subtitle1)
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    if (user.id != firebaseCurrentUser?.uid)
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => ChatScreen(
+                                      chatWithUser: user,
+                                    )));
+                          },
+                          child: Image.asset("assets/images/message.png"))
+                  ],
                 )),
-          ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Name: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.name,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 50,
-        ),
-        Center(
-          child: Text(
-            'Bio: ',
-            style: Theme.of(context).textTheme.headline2,
-          ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  user.bio,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.justify,
-                ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                "About",
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
-          ],
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+              child: Text(
+                user.bio,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+              ),
+              child: Text(
+                "Tech Stack",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+              child: Text(
+                user.techStack.join(","),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+              ),
+              child: Text(
+                "Semester",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+              child: Text(
+                user.semester,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+              ),
+              child: Text(
+                "Privelage",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 10),
+              child: Text(
+                user.admin ? "Admin" : "Normal User",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+              ),
+              child: Text(
+                "Branch",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 20),
+              child: Text(
+                user.branch,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ]),
         ),
-        const SizedBox(height: 52),
-        Center(
-          child: Text(
-            'Socials',
-            style: Theme.of(context).textTheme.headline2,
+        Container(
+          margin: const EdgeInsets.only(left: 24, right: 24, bottom: 10),
+          height: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SocialIconButton(user: user, socialName: 'email'),
+              SocialIconButton(user: user, socialName: 'twitter'),
+              SocialIconButton(user: user, socialName: 'linkedin'),
+              SocialIconButton(user: user, socialName: 'facebook'),
+              SocialIconButton(user: user, socialName: 'instagram'),
+              SocialIconButton(user: user, socialName: 'github'),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SocialIconButton(user: user, socialName: 'email'),
-            SocialIconButton(user: user, socialName: 'twitter'),
-            SocialIconButton(user: user, socialName: 'linkedin'),
-            SocialIconButton(user: user, socialName: 'facebook'),
-            SocialIconButton(user: user, socialName: 'instagram'),
-            SocialIconButton(user: user, socialName: 'github'),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Center(
-            child: Text(
-          'Teck Stack',
-          style: Theme.of(context).textTheme.headline2,
-        )),
-        const SizedBox(height: 16),
-        Center(
-            child: user.techStack.isNotEmpty
-                ? Text(
-                    user.techStack.toString(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  )
-                : Text(
-                    "no skills added yet",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Semester: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.semester.toString(),
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'privelage: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.admin ? "Admin" : "Normal User",
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Branch: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.branch,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'type: ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              user.type,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
       ],
     );
   }

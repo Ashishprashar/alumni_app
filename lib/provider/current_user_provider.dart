@@ -1,12 +1,13 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:flutter/material.dart';
 
+import '../screen/home.dart';
+
 class CurrentUserProvider extends ChangeNotifier {
-  late UserModel _currentUser;
   bool isDeleting = false;
-  
-  UserModel getCurrentUser() {
-    return _currentUser;
+
+  UserModel? getCurrentUser() {
+    return currentUser;
   }
 
   setDeleting() {
@@ -15,7 +16,7 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 
   updateCurrentUser(UserModel updatedUser) {
-    _currentUser = updatedUser;
+    currentUser = updatedUser;
 
     isDeleting = false;
     notifyListeners();
