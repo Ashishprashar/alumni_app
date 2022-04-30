@@ -132,11 +132,13 @@ class _UserListState extends State<UserList> {
   Widget userCard(int index, List<DocumentSnapshot<Object?>> snapshot) {
     // DocumentSnapshot document = snapshot[index];
     // individualUser = UserModel.fromJson(document);
-    individualUser = UserModel.fromJson(snapshot[index]);
+    var individualUser =
+        UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
     return InkWell(
       onTap: () {
         FocusScope.of(context).unfocus();
-        individualUser = UserModel.fromJson(snapshot[index]);
+        individualUser =
+            UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (ctx) => IndividualProfile(
                   user: individualUser,
@@ -159,8 +161,8 @@ class _UserListState extends State<UserList> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image(
-                      image: CachedNetworkImageProvider(
-                          UserModel.fromJson(snapshot[index]).profilePic),
+                      image:
+                          CachedNetworkImageProvider(individualUser.profilePic),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -173,8 +175,7 @@ class _UserListState extends State<UserList> {
                               child: ProfilePicDialog(
                                 index: index,
                                 // image: individualUser.profilePic,
-                                image: UserModel.fromJson(snapshot[index])
-                                    .profilePic,
+                                image: individualUser.profilePic,
                               ),
                             ))));
                   },
@@ -185,7 +186,7 @@ class _UserListState extends State<UserList> {
                       borderRadius: BorderRadius.circular(15),
                       child: Image(
                         image: CachedNetworkImageProvider(
-                            UserModel.fromJson(snapshot[index]).profilePic),
+                            individualUser.profilePic),
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:alumni_app/models/post_model.dart';
+import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -34,7 +35,8 @@ class _FeedScreenState extends State<FeedScreen> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Consumer<FeedProvider>(builder: (context, feedProvider, child) {
+      child: Consumer2<FeedProvider, CurrentUserProvider>(
+          builder: (context, feedProvider, currentUserProvider, child) {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -82,8 +84,18 @@ class _FeedScreenState extends State<FeedScreen> {
 
                         return getPostList(documentSnapshots, index);
                       },
-                      query: postCollection.orderBy("updated_at",
-                          descending: true),
+                      query: postCollection.where("owner_id",
+                          whereIn: currentUserProvider
+                                  .getCurrentUser()!
+                                  .following!
+                                  .isEmpty
+                              ? [currentUserProvider.getCurrentUser()!.id]
+                              : currentUserProvider
+                                      .getCurrentUser()!
+                                      .following! +
+                                  [
+                                    currentUserProvider.getCurrentUser()!.id
+                                  ]), //.orderBy("updated_at", descending: true),
 
                       itemBuilderType: PaginateBuilderType.listView,
 
@@ -99,16 +111,6 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
-// void pagination(FeedProvider feedProvider) {
-//       if ((scrollController.position.pixels ==
-//           scrollController.position.maxScrollExtent) && (_subCategoryModel.products.length < total)) {
-//         setState(() {
-//           isLoading = true;
-//           page += 1;
-//           //add api for load the more data according to new page
-//         });
-//       }
-//   }
   getPostList(snapshot, int i) {
     PostModel postModel =
         PostModel.fromJson(snapshot[i].data() as Map<String, dynamic>);
