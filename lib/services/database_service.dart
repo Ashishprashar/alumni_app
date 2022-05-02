@@ -46,6 +46,7 @@ class DatabaseService {
       id: firebaseCurrentUser!.uid,
       linkToSocial: _linkToSocial,
       name: name,
+      searchName: name.toUpperCase(),
       profilePic: downloadUrl,
       techStack: teckStack,
       type: "student",
@@ -53,6 +54,10 @@ class DatabaseService {
       admin: false,
       semester: "8",
       branch: "CSE",
+      follower: [],
+      following: [],
+      followerCount: 0,
+      followingCount: 0,
     );
 
     Map<String, dynamic> data = (user.toJson());
@@ -92,6 +97,7 @@ class DatabaseService {
       id: firebaseCurrentUser!.uid,
       linkToSocial: linkToSocials,
       name: name,
+      searchName: name.toUpperCase(),
       profilePic: downloadUrl,
       techStack: techStack,
       type: 'student',
@@ -99,6 +105,10 @@ class DatabaseService {
       admin: false,
       semester: semester,
       branch: branch,
+      follower: currentUser!.follower,
+      following: currentUser!.following,
+      followerCount: currentUser!.followerCount,
+      followingCount: currentUser!.followingCount,
     );
 
     Map<String, dynamic> data = (updatedUser.toJson());

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import '../models/user.dart';
+import '../models/user.dart'; 
 
 class ProfileProvider with ChangeNotifier {
   Future<UserModel> addFollower(
@@ -24,7 +24,7 @@ class ProfileProvider with ChangeNotifier {
     UserModel? currentUser =
         Provider.of<CurrentUserProvider>(context, listen: false)
             .getCurrentUser();
-    currentUser!.addFollowing(id);
+    currentUser!.addFollowing(id); 
     Provider.of<CurrentUserProvider>(context, listen: false)
         .updateCurrentUser(currentUser);
 

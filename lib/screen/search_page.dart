@@ -21,9 +21,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     streamQuery = userCollection
-        .where('name', isGreaterThanOrEqualTo: _searchController.text)
-        .where('name', isLessThan: _searchController.text + 'z')
-        .orderBy("name", descending: true)
+        .where('search_name', isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+        .where('search_name', isLessThan: _searchController.text.toUpperCase() + 'z')
+        .orderBy("search_name", descending: true)
         .snapshots();
 
     _searchController.addListener(_seachControllerUpdate);
@@ -148,9 +148,9 @@ class _SearchPageState extends State<SearchPage> {
   _seachControllerUpdate() {
     setState(() {
       streamQuery = userCollection
-          .where('name', isGreaterThanOrEqualTo: _searchController.text)
-          .where('name', isLessThan: _searchController.text + 'z')
-          .orderBy('name', descending: true)
+          .where('search_name', isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+          .where('search_name', isLessThan: _searchController.text.toUpperCase() + 'z')
+          .orderBy('search_name', descending: true)
           .snapshots();
     });
   }
