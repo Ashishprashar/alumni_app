@@ -23,7 +23,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-
   late UserModel? currentUser;
 
   @override
@@ -82,6 +81,7 @@ class _FeedScreenState extends State<FeedScreen> {
                       itemsPerPage: 10,
                       //item builder type is compulsory.
                       scrollController: feedProvider.feedScroller,
+     
                       itemBuilder: (context, documentSnapshots, index) {
                         final data = documentSnapshots[index].data() as Map?;
                         log(data.toString());
@@ -94,18 +94,18 @@ class _FeedScreenState extends State<FeedScreen> {
                       query: postCollection.where("owner_id",
                           // whereIn: currentUserProvider
                           //         .getCurrentUser()!
-                          whereIn: currentUser!
-                                  .following
-                                  .isEmpty
-                              // ? [currentUserProvider.getCurrentUser()!.id]
-                              ? [currentUser!.id]
-                              // : currentUserProvider
-                              //         .getCurrentUser()!
-                              //         .following +
-                              //     [
-                              //       currentUserProvider.getCurrentUser()!.id
-                              //     ]), //.orderBy("updated_at", descending: true),
-                              : currentUser!.following + [currentUser!.id]),
+                          whereIn: (currentUser == null)
+                              ? null
+                              : currentUser!.following.isEmpty
+                                  // ? [currentUserProvider.getCurrentUser()!.id]
+                                  ? [currentUser!.id]
+                                  // : currentUserProvider
+                                  //         .getCurrentUser()!
+                                  //         .following +
+                                  //     [
+                                  //       currentUserProvider.getCurrentUser()!.id
+                                  //     ]), //.orderBy("updated_at", descending: true),
+                                  : currentUser!.following + [currentUser!.id]),
 
                       itemBuilderType: PaginateBuilderType.listView,
 
@@ -116,6 +116,41 @@ class _FeedScreenState extends State<FeedScreen> {
               ),
             ),
           ),
+          drawer: Drawer(
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('Drawer Header'),
+              ),
+              ListTile(
+                title: const Text('Item 1'),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Item 2'),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
         );
       }),
     );

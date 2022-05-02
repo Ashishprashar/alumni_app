@@ -38,7 +38,7 @@ class AuthServices {
         // UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
         UserModel _userModel = UserModel.fromDoc(doc);
 
-        Provider.of<CurrentUserProvider>(context, listen: false)
+        await Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);
         await Provider.of<ChatProvider>(context, listen: false).fetchChatList();
         navigatorService.navigateToHome(context);

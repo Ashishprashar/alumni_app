@@ -26,7 +26,6 @@ class _ProfileState extends State<Profile> {
   late UserModel? currentUser;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
@@ -155,6 +154,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
+        
       );
     });
   }
