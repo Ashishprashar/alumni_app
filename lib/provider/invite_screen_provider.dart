@@ -16,6 +16,7 @@ class InviteProvider with ChangeNotifier {
     }
     emailId.text = "";
     notifyListeners();
+    // we are fetching all the invites in the db, which could be around a 1000. Any work around?
     var data = await authorizedEmailDb.get();
 
     log(data.value.toString());

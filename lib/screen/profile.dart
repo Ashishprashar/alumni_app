@@ -272,7 +272,7 @@ class _UserProfileState extends State<UserProfile> {
                       if (widget.user.id != firebaseCurrentUser?.uid)
                         InkWell(
                             onTap: () {
-                              if (currentUser!.following!
+                              if (currentUser!.following
                                   .contains(widget.user.id)) {
                                 profileProvider.removeFollowing(
                                     id: widget.user.id, context: context);
@@ -302,7 +302,7 @@ class _UserProfileState extends State<UserProfile> {
                             child: SizedBox(
                               height: 16,
                               width: 16,
-                              child: Image.asset(currentUser!.following!
+                              child: Image.asset(currentUser!.following
                                       .contains(widget.user.id)
                                   ? "assets/images/unfollow.png"
                                   : "assets/images/follower.png"),

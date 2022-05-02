@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:alumni_app/models/post_model.dart';
+import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/edit_post.dart';
@@ -22,11 +23,17 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+
+  late UserModel? currentUser;
+
   @override
   void initState() {
     super.initState();
     Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
-    // feedScroller.addListener();
+    setState(() {
+      currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+          .getCurrentUser();
+    });
   }
 
   @override
@@ -85,17 +92,20 @@ class _FeedScreenState extends State<FeedScreen> {
                         return getPostList(documentSnapshots, index);
                       },
                       query: postCollection.where("owner_id",
-                          whereIn: currentUserProvider
-                                  .getCurrentUser()!
-                                  .following!
+                          // whereIn: currentUserProvider
+                          //         .getCurrentUser()!
+                          whereIn: currentUser!
+                                  .following
                                   .isEmpty
-                              ? [currentUserProvider.getCurrentUser()!.id]
-                              : currentUserProvider
-                                      .getCurrentUser()!
-                                      .following! +
-                                  [
-                                    currentUserProvider.getCurrentUser()!.id
-                                  ]), //.orderBy("updated_at", descending: true),
+                              // ? [currentUserProvider.getCurrentUser()!.id]
+                              ? [currentUser!.id]
+                              // : currentUserProvider
+                              //         .getCurrentUser()!
+                              //         .following +
+                              //     [
+                              //       currentUserProvider.getCurrentUser()!.id
+                              //     ]), //.orderBy("updated_at", descending: true),
+                              : currentUser!.following + [currentUser!.id]),
 
                       itemBuilderType: PaginateBuilderType.listView,
 

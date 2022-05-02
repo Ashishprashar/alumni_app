@@ -32,9 +32,11 @@ class AuthServices {
       final User? _user = (await auth.signInWithCredential(credential)).user;
 
       DocumentSnapshot doc = await userCollection.doc(_user?.uid).get();
+      print(doc.data().toString());
 
       if (doc.exists) {
-        UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
+        // UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
+        UserModel _userModel = UserModel.fromDoc(doc);
 
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);

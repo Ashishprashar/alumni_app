@@ -158,6 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                           index]
                                                                       [
                                                                       "messageId"]);
+
                                                           Navigator.pop(
                                                               context);
                                                         },
