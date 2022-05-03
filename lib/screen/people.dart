@@ -6,9 +6,7 @@ import 'package:alumni_app/screen/search_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
-import 'home.dart';
 
 class People extends StatefulWidget {
   const People({Key? key}) : super(key: key);
@@ -107,22 +105,34 @@ class _UserListState extends State<UserList> {
     return Consumer<PeopleProvider>(builder: (context, peopleProvider, child) {
       return Column(
         children: [
-          PaginateFirestore(
-            shrinkWrap: true,
-            itemsPerPage: 10,
-            //item builder type is compulsory.
-            scrollController: peopleProvider.peopleScroller,
-            itemBuilder: (context, documentSnapshots, index) {
-              final data = documentSnapshots[index].data() as Map?;
-              log(data.toString());
-              return userCard(index, documentSnapshots);
-            },
-            query: userCollection.orderBy("updated_at", descending: true),
+          FutureBuilder(
+              future: peopleProvider.fetchPeople(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    child: const CircularProgressIndicator(),
+                  );
+                }
+                List<DocumentSnapshot> documentSnapshots =
+                    peopleProvider.peopleList;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  // itemsPerPage: 10,
+                  //item builder type is compulsory.
+                  controller: peopleProvider.peopleScroller,
+                  itemCount: documentSnapshots.length,
+                  itemBuilder: (context, index) {
+                    final data = documentSnapshots[index].data() as Map?;
+                    log(data.toString());
+                    return userCard(index, documentSnapshots);
+                  },
+                  // query: userCollection.orderBy("updated_at", descending: true),
 
-            itemBuilderType: PaginateBuilderType.listView,
+                  // itemBuilderType: PaginateBuilderType.listView,
 
-            isLive: true,
-          ),
+                  // isLive: true,
+                );
+              }),
         ],
       );
     });
