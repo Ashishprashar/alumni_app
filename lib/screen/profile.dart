@@ -8,7 +8,8 @@ import 'package:alumni_app/screen/edit_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:alumni_app/widget/done_button.dart';
+import 'package:alumni_app/widget/delete_icon.dart';
+import 'package:alumni_app/widget/sign_out_button.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -39,54 +40,13 @@ class _ProfileState extends State<Profile> {
         builder: (context, currentUserProvider, child) {
       return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           title: Text(
             'Profile',
             style: Theme.of(context).textTheme.headline6,
           ),
           actions: [
-            IconButton(
-                onPressed: () async {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(
-                            "You will loose all your data after this action!!!\nAre you sure?",
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DoneButton(
-                                height: 30,
-                                width: 70,
-                                text: "Yes",
-                                onTap: () async {
-                                  Navigator.pop(context);
-                                  currentUserProvider.setDeleting();
-                                  await authServices.deleteAccount(context);
-                                },
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              DoneButton(
-                                height: 30,
-                                width: 70,
-                                text: "No",
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-
-                  // currentUserProvider.setDeleting();
-                },
-                icon: const Icon(Icons.delete)),
+            const DeleteIcon(),
             IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -95,45 +55,7 @@ class _ProfileState extends State<Profile> {
                           builder: (context) => const EditScreen()));
                 },
                 icon: const Icon(Icons.edit)),
-            IconButton(
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(
-                          "Are you sure?",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            DoneButton(
-                              height: 30,
-                              width: 70,
-                              text: "Yes",
-                              onTap: () async {
-                                await authServices.signOut(context);
-                              },
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            DoneButton(
-                              height: 30,
-                              width: 70,
-                              text: "No",
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-              },
-              icon: const Icon(Icons.login_rounded),
-            ),
+            const SignOutButton(),
             Container(
               padding: const EdgeInsets.only(right: 10),
             ),
@@ -142,6 +64,7 @@ class _ProfileState extends State<Profile> {
           elevation: 1,
           toolbarHeight: 50,
         ),
+        drawer: Drawer(child: Container(),),
         body: SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,
@@ -154,7 +77,6 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
-        
       );
     });
   }
