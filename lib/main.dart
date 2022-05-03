@@ -4,6 +4,7 @@ import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/provider/invite_screen_provider.dart';
 import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
+import 'package:alumni_app/provider/search_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/media_query.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => InviteProvider()),
         ChangeNotifierProvider(create: (context) => PeopleProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
       ],
       child: MaterialApp(
         // this is needed to provide providers to places where there is no build context
