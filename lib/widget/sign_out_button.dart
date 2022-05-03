@@ -14,8 +14,11 @@ class _SignOutButtonState extends State<SignOutButton> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
+    return ListTile(
+      leading: const Icon(Icons.login_rounded),
+      minLeadingWidth: 0,
+      title: Text('Logout', style: Theme.of(context).textTheme.headline3),
+      onTap: () async {
         showDialog(
             context: context,
             builder: (context) {
@@ -51,7 +54,6 @@ class _SignOutButtonState extends State<SignOutButton> {
               );
             });
       },
-      icon: const Icon(Icons.login_rounded),
     );
   }
 }

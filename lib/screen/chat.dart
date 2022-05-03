@@ -47,17 +47,7 @@ class _ChatState extends State<Chat> {
           ),
           body: Column(
             children: [
-              Container(
-                  margin: const EdgeInsets.all(24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Messages",
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    ],
-                  )),
+              const SizedBox(height: 20),
               chatProvider.chats.isEmpty
                   ? const Center(
                       child: Text("No chats"),

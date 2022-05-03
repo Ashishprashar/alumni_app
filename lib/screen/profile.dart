@@ -4,12 +4,10 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
-import 'package:alumni_app/screen/edit_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:alumni_app/widget/delete_icon.dart';
-import 'package:alumni_app/widget/sign_out_button.dart';
+import 'package:alumni_app/widget/app_drawer.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -45,26 +43,26 @@ class _ProfileState extends State<Profile> {
             'Profile',
             style: Theme.of(context).textTheme.headline6,
           ),
-          actions: [
-            const DeleteIcon(),
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EditScreen()));
-                },
-                icon: const Icon(Icons.edit)),
-            const SignOutButton(),
-            Container(
-              padding: const EdgeInsets.only(right: 10),
-            ),
-          ],
+          // actions: [
+          //   const DeleteIcon(),
+          //   IconButton(
+          //       onPressed: () {
+          //         Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => const EditScreen()));
+          //       },
+          //       icon: const Icon(Icons.edit)),
+          //   const SignOutButton(),
+          //   Container(
+          //     padding: const EdgeInsets.only(right: 10),
+          //   ),
+          // ],
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 1,
           toolbarHeight: 50,
         ),
-        drawer: Drawer(child: Container(),),
+        endDrawer: AppDrawer(currentUser: currentUser!,),
         body: SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,

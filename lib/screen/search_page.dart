@@ -47,6 +47,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: const EdgeInsets.symmetric(vertical: 20),
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: TextField(
+              autofocus: true,
               // style: TextStyle(backgroundColor: Colors.grey),
               controller: _searchController,
               decoration: InputDecoration(
