@@ -1,10 +1,11 @@
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/provider/search_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -14,85 +15,75 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = TextEditingController();
-
-  Stream<QuerySnapshot>? streamQuery;
-
   @override
   void initState() {
-    streamQuery = userCollection
-        .where('search_name', isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-        .where('search_name', isLessThan: _searchController.text.toUpperCase() + 'z')
-        .orderBy("search_name", descending: true)
-        .snapshots();
-
-    _searchController.addListener(_seachControllerUpdate);
+    Provider.of<SearchProvider>(context, listen: false)
+        .addListenerToScrollController();
+    Provider.of<SearchProvider>(context, listen: false).searchPeople();
     super.initState();
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    Provider.of<SearchProvider>(context).searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: TextField(
-              // style: TextStyle(backgroundColor: Colors.grey),
-              controller: _searchController,
-              decoration: InputDecoration(
-                  fillColor: Colors.grey[100],
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  isDense: true, // Added this
-                  contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                  // prefixIcon: const Icon(Icons.search),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? InkWell(
-                          onTap: () {
-                            _searchController.clear();
-                          },
-                          child: const Icon(
-                            Icons.close,
-                            size: 25,
-                            color: Colors.grey,
-                          ),
-                        )
-                      : null,
-                  hintText: 'Search by name'),
+    return Consumer<SearchProvider>(builder: (context, searchProvider, child) {
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              title: Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: TextField(
+                  // style: TextStyle(backgroundColor: Colors.grey),
+                  controller: searchProvider.searchController,
+                  onChanged: (v) {
+                    searchProvider.searchPeople();
+                  },
+                  decoration: InputDecoration(
+                      fillColor: Colors.grey[100],
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      isDense: true, // Added this
+                      contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                      // prefixIcon: const Icon(Icons.search),
+                      // suffixIcon: _searchController.text.isNotEmpty
+                      //     ? InkWell(
+                      //         onTap: () {
+                      //           _searchController.clear();
+                      //         },
+                      //         child: const Icon(
+                      //           Icons.close,
+                      //           size: 25,
+                      //           color: Colors.grey,
+                      //         ),
+                      //       )
+                      //     : null,
+                      hintText: 'Search by name'),
+                ),
+              ),
             ),
-          ),
-        ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: streamQuery,
-          builder: (context, snapshot) {
-            return (snapshot.connectionState == ConnectionState.waiting)
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: snapshot.data?.docs.length,
-                    itemBuilder: (context, index) {
-                      return userCard(index, snapshot.data?.docs);
-                    },
-                  );
-          },
-        ),
-      ),
-    );
+            body: ListView.builder(
+              itemCount: searchProvider.peopleList.length,
+              controller: searchProvider.scrollController,
+              itemBuilder: (context, index) {
+                return userCard(index, searchProvider.peopleList);
+              },
+            )),
+      );
+    });
   }
 
-  Widget userCard(int index, List<QueryDocumentSnapshot<Object?>>? snapshot) {
+  Widget userCard(int index, List<DocumentSnapshot<Object?>>? snapshot) {
     final individualUser =
         UserModel.fromMap(snapshot![index].data() as Map<String, dynamic>);
     return ListTile(
@@ -143,15 +134,5 @@ class _SearchPageState extends State<SearchPage> {
       trailing: Text(individualUser.type,
           style: Theme.of(context).textTheme.bodyText1),
     );
-  }
-
-  _seachControllerUpdate() {
-    setState(() {
-      streamQuery = userCollection
-          .where('search_name', isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name', isLessThan: _searchController.text.toUpperCase() + 'z')
-          .orderBy('search_name', descending: true)
-          .snapshots();
-    });
   }
 }
