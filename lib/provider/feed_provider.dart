@@ -4,6 +4,7 @@ import 'package:alumni_app/models/comment_model.dart';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/services/database_service.dart';
+import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,7 @@ class FeedProvider with ChangeNotifier {
   List<XFile>? _filesToUpload;
   // final List<PostModel> _allPosts = [];
   DatabaseService databaseService = DatabaseService();
-  ScrollController feedScroller = ScrollController();
+
   TextEditingController postTextContent = TextEditingController();
   TextEditingController commentTextContent = TextEditingController();
   bool isUploading = false;
@@ -41,18 +42,14 @@ class FeedProvider with ChangeNotifier {
   }
 
   scrollUp() {
-    if (feedScroller.hasClients) {
-      feedScroller.animateTo(
-        // feedScroller.position.minScrollExtent,
-        0,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
-  }
-
-  addFeedScroller() {
-    feedScroller = ScrollController();
+    // if (feedScroller.hasClients) {
+    //   feedScroller.animateTo(
+    //     // feedScroller.position.minScrollExtent,
+    //     0,
+    //     duration: const Duration(seconds: 1),
+    //     curve: Curves.fastOutSlowIn,
+    //   );
+    // }
   }
 
   addMultiFileToUploadList({required List<XFile>? files}) {
@@ -116,6 +113,8 @@ class FeedProvider with ChangeNotifier {
         updatedAt: Timestamp.now(),
         comments: []);
     await databaseService.uploadPost(postModel: post);
+    await databaseService.addNotification(
+        type: kNotificationKeyPost, postID: post.id);
     _filesToUpload = null;
     postTextContent.text = "";
 
@@ -155,16 +154,23 @@ class FeedProvider with ChangeNotifier {
     await postCollection.doc(postModel.id).update({
       "comments": FieldValue.arrayUnion([id]),
     });
+
     commentTextContent.text = "";
+    await databaseService.addNotification(
+        postID: postModel.id,
+        type: kNotificationKeyComment,
+        sentTo: postModel.ownerId);
     notifyListeners();
     await fetchComment(postModel: postModel);
   }
 
-  addLike({required String postId}) async {
+  addLike({required String postId, required String ownerId}) async {
     await postCollection.doc(postId).update({
       "likes": FieldValue.arrayUnion([firebaseCurrentUser?.uid]),
       "like_count": FieldValue.increment(1)
     });
+    await databaseService.addNotification(
+        postID: postId, type: kNotificationKeyLike, sentTo: ownerId);
   }
 
   removeLike({required String postId}) async {

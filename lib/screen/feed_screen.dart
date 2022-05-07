@@ -7,6 +7,7 @@ import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
+import 'package:alumni_app/screen/notification_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
@@ -24,11 +25,11 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   late UserModel? currentUser;
-
+  ScrollController feedScroller = ScrollController();
   @override
   void initState() {
     super.initState();
-    Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
+    // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
     setState(() {
       currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
           .getCurrentUser();
@@ -67,6 +68,19 @@ class _FeedScreenState extends State<FeedScreen> {
                     color: Theme.of(context).appBarTheme.iconTheme!.color,
                   ),
                 ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => const NotificationScreen())));
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: Icon(
+                    Icons.notifications,
+                    color: Theme.of(context).appBarTheme.iconTheme!.color,
+                  ),
+                ),
               )
             ],
           ),
@@ -79,39 +93,23 @@ class _FeedScreenState extends State<FeedScreen> {
                   Expanded(
                     child: PaginateFirestore(
                       itemsPerPage: 10,
-                      //item builder type is compulsory.
-                      scrollController: feedProvider.feedScroller,
-
+                      scrollController: feedScroller,
                       itemBuilder: (context, documentSnapshots, index) {
                         final data = documentSnapshots[index].data() as Map?;
                         log(data.toString());
-                        // return index == 0
-                        //     ? const UploadPostWidget()
-                        //     : getPostList(documentSnapshots, index - 1);
 
                         return getPostList(documentSnapshots, index);
                       },
                       query: postCollection
                           .where("owner_id",
-                              // whereIn: currentUserProvider
-                              //         .getCurrentUser()!
                               whereIn: (currentUser == null)
                                   ? null
                                   : currentUser!.following.isEmpty
-                                      // ? [currentUserProvider.getCurrentUser()!.id]
                                       ? [currentUser!.id]
-                                      // : currentUserProvider
-                                      //         .getCurrentUser()!
-                                      //         .following +
-                                      //     [
-                                      //       currentUserProvider.getCurrentUser()!.id
-                                      //     ]),
                                       : currentUser!.following +
                                           [currentUser!.id])
                           .orderBy("updated_at", descending: true),
-
                       itemBuilderType: PaginateBuilderType.listView,
-
                       isLive: true,
                     ),
                   )
