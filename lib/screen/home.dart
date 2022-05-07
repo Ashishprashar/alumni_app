@@ -24,6 +24,7 @@ final userCollection = db.collection('user');
 final postCollection = db.collection('post');
 UserModel? currentUser;
 final commentCollection = db.collection('comment');
+final notificationCollection = db.collection('notification');
 // final chatCollection = db.collection('chat');
 final chatListDb = FirebaseDatabase.instance.reference().child("chat");
 final messagesDb = FirebaseDatabase.instance.reference().child('messages/');

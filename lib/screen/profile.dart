@@ -154,7 +154,6 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
-        
       );
     });
   }
@@ -271,7 +270,15 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                       if (widget.user.id != firebaseCurrentUser?.uid)
                         InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              if (currentUser!.followRequest
+                                  .contains(widget.user.id)) {
+                                log("remove");
+                                profileProvider.removeFollowing(
+                                    id: widget.user.id, context: context);
+                                return;
+                              }
+
                               if (currentUser!.following
                                   .contains(widget.user.id)) {
                                 profileProvider.removeFollowing(
@@ -284,17 +291,18 @@ class _UserProfileState extends State<UserProfile> {
                                           context: context);
                                 });
                               } else {
+                                log("following");
                                 setState(() {
                                   profileProvider.addFollowing(
                                       id: widget.user.id, context: context);
                                 });
-                                setState(() async {
-                                  widget.user =
-                                      await profileProvider.addFollower(
-                                          userModel: widget.user,
-                                          id: widget.user.id,
-                                          context: context);
-                                });
+                                // setState(() async {
+                                //   widget.user =
+                                //       await profileProvider.addFollower(
+                                //           userModel: widget.user,
+                                //           id: widget.user.id,
+                                //           context: context);
+                                // });
                               }
                               log("message" +
                                   currentUser!.following.toString());
@@ -302,10 +310,16 @@ class _UserProfileState extends State<UserProfile> {
                             child: SizedBox(
                               height: 16,
                               width: 16,
-                              child: Image.asset(currentUser!.following
+                              child: currentUser!.followRequest
                                       .contains(widget.user.id)
-                                  ? "assets/images/unfollow.png"
-                                  : "assets/images/follower.png"),
+                                  ? const Icon(
+                                      Icons.donut_large_sharp,
+                                      size: 20,
+                                    )
+                                  : Image.asset(currentUser!.following
+                                          .contains(widget.user.id)
+                                      ? "assets/images/unfollow.png"
+                                      : "assets/images/follower.png"),
                             )),
                     ],
                   )),
