@@ -178,6 +178,7 @@ class DatabaseService {
     if (doc.exists) {
       UserModel _userModel =
           UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      // UserModel _userModel = UserModel.fromDoc(doc);
 
       navigatorKey.currentContext
           ?.read<CurrentUserProvider>()

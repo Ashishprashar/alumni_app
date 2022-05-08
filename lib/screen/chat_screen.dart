@@ -9,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:alumni_app/widget/app_drawer.dart';
 
 import '../widget/done_button.dart';
 
@@ -91,6 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       )
                     ])),
+                
                 body:
                     Consumer<ChatProvider>(builder: (context, provider, child) {
                   return Column(children: [

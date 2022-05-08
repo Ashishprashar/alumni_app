@@ -1,6 +1,7 @@
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/people.dart';
+import 'package:alumni_app/services/auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -44,6 +45,12 @@ class _ChatState extends State<Chat> {
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             elevation: 1,
             toolbarHeight: 50,
+            // actions: [
+            //   IconButton(onPressed: (){
+            //     AuthServices auth = AuthServices();
+            //     auth.signOut(context);
+            //   }, icon: Icon(Icons.logout))
+            // ],
           ),
           body: Column(
             children: [

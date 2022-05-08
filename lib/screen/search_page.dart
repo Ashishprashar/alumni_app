@@ -25,9 +25,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    Provider.of<SearchProvider>(context, listen: false)
-        .searchController
-        .dispose();
+    // Provider.of<SearchProvider>(context, listen: false)
+    //     .searchController
+    //     .dispose();
     super.dispose();
   }
 
