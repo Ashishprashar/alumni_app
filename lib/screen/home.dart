@@ -74,6 +74,7 @@ class _HomeState extends State<Home> {
       const FeedScreen(),
       const Chat(),
       const People(),
+      // const SearchPage(),
       const Profile(),
     ];
 

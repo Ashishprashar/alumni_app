@@ -375,11 +375,11 @@ class _EditScreenState extends State<EditScreen> {
                                         await updateUserDetails().then(
                                             (value) =>
                                                 Navigator.of(context).pop());
-                                        const _snackBar = SnackBar(
-                                          content: Text('Profile Updated!'),
-                                        );
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(_snackBar);
+                                        // const _snackBar = SnackBar(
+                                        //   content: Text('Profile Updated!'),
+                                        // );
+                                        // ScaffoldMessenger.of(context)
+                                        //     .showSnackBar(_snackBar);
                                       } catch (e) {
                                         setState(() {
                                           isLoading = false;
@@ -388,6 +388,11 @@ class _EditScreenState extends State<EditScreen> {
                                       setState(() {
                                         profileImage = null;
                                         isLoading = false;
+                                        // const _snackBar = SnackBar(
+                                        //   content: Text('Profile Updated!'),
+                                        // );
+                                        // ScaffoldMessenger.of(context)
+                                        //     .showSnackBar(_snackBar);
                                       });
                                     },
                                     text: "Save"),

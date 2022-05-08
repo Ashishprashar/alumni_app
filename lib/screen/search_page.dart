@@ -25,9 +25,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    // Provider.of<SearchProvider>(context, listen: false)
-    //     .searchController
-    //     .dispose();
+    Provider.of<SearchProvider>(context, listen: false)
+        .searchController
+        .dispose();
     super.dispose();
   }
 
@@ -37,12 +37,14 @@ class _SearchPageState extends State<SearchPage> {
       return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
+            resizeToAvoidBottomInset: true,
             appBar: AppBar(
               elevation: 0,
               title: Container(
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: TextField(
+                  autofocus: true,
                   // style: TextStyle(backgroundColor: Colors.grey),
                   controller: searchProvider.searchController,
                   onChanged: (v) {
@@ -58,10 +60,10 @@ class _SearchPageState extends State<SearchPage> {
                       isDense: true, // Added this
                       contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                       // prefixIcon: const Icon(Icons.search),
-                      // suffixIcon: _searchController.text.isNotEmpty
+                      // suffixIcon: searchProvider.searchController.text.isNotEmpty
                       //     ? InkWell(
                       //         onTap: () {
-                      //           _searchController.clear();
+                      //           searchProvider.clearSearchController();
                       //         },
                       //         child: const Icon(
                       //           Icons.close,
@@ -74,12 +76,14 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
             ),
-            body: ListView.builder(
-              itemCount: searchProvider.peopleList.length,
-              controller: searchProvider.scrollController,
-              itemBuilder: (context, index) {
-                return userCard(index, searchProvider.peopleList);
-              },
+            body: SafeArea(
+              child: ListView.builder(
+                itemCount: searchProvider.peopleList.length,
+                controller: searchProvider.scrollController,
+                itemBuilder: (context, index) {
+                  return userCard(index, searchProvider.peopleList);
+                },
+              ),
             )),
       );
     });

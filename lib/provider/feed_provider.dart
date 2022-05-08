@@ -112,6 +112,7 @@ class FeedProvider with ChangeNotifier {
         textContent: postTextContent.text.trim(),
         updatedAt: Timestamp.now(),
         comments: []);
+    // No need to check the database file, does exactly what it says
     await databaseService.uploadPost(postModel: post);
     await databaseService.addNotification(
         type: kNotificationKeyPost, postID: post.id);

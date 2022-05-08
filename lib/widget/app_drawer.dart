@@ -1,5 +1,9 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/edit_screen.dart';
+import 'package:alumni_app/screen/faq_screen.dart';
+import 'package:alumni_app/screen/about_screen.dart';
+import 'package:alumni_app/screen/privacy_screen.dart';
+import 'package:alumni_app/screen/settings_screen.dart';
 import 'package:alumni_app/widget/sign_out_button.dart';
 import 'package:flutter/material.dart';
 
@@ -27,18 +31,19 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'App Version: 1.0.0',
+              'Version: 1.0.0',
               style: Theme.of(context).textTheme.headline3,
             ),
-            onTap: () {},
           ),
           const EditProfile(),
-          const SignOutButton(),
           const Settings(),
           const FAQ(),
-          const AccountDetails(),
-          const MastHead(),
-          const TermsOfService(),
+          // const AccountDetails(),
+          const About(),
+          // const TermsOfService(),
+          const SignOutButton(),
+          const Privacy(),
+          const ContactUs(),
         ],
       ),
     );
@@ -80,6 +85,10 @@ class Settings extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SettingsScreen()),
+        );
       },
     );
   }
@@ -99,6 +108,10 @@ class FAQ extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FaqScreen()),
+        );
       },
     );
   }
@@ -123,8 +136,8 @@ class AccountDetails extends StatelessWidget {
   }
 }
 
-class MastHead extends StatelessWidget {
-  const MastHead({Key? key}) : super(key: key);
+class About extends StatelessWidget {
+  const About({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,18 +145,45 @@ class MastHead extends StatelessWidget {
       leading: const Icon(Icons.anchor),
       minLeadingWidth: 0,
       title: Text(
-        'MastHead',
+        'About',
         style: Theme.of(context).textTheme.headline3,
       ),
       onTap: () {
         Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AboutScreen()),
+        );
       },
     );
   }
 }
 
-class TermsOfService extends StatelessWidget {
-  const TermsOfService({ Key? key }) : super(key: key);
+// class TermsOfService extends StatelessWidget {
+//   const TermsOfService({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       leading: const Icon(Icons.important_devices),
+//       minLeadingWidth: 0,
+//       title: Text(
+//         'Terms',
+//         style: Theme.of(context).textTheme.headline3,
+//       ),
+//       onTap: () {
+//         Navigator.of(context).pop();
+//         Navigator.push(
+//           context,
+//           MaterialPageRoute(builder: (context) => const TermsOfServiceScreen()),
+//         );
+//       },
+//     );
+//   }
+// }
+
+class Privacy extends StatelessWidget {
+  const Privacy({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +191,34 @@ class TermsOfService extends StatelessWidget {
       leading: const Icon(Icons.privacy_tip),
       minLeadingWidth: 0,
       title: Text(
-        'Terms Of Service',
+        'Privacy',
         style: Theme.of(context).textTheme.headline3,
       ),
       onTap: () {
         Navigator.of(context).pop();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PrivacyScreen()));
+      },
+    );
+  }
+}
+
+class ContactUs extends StatelessWidget {
+  const ContactUs({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.privacy_tip),
+      minLeadingWidth: 0,
+      title: Text(
+        'Contact Us',
+        style: Theme.of(context).textTheme.headline3,
+      ),
+      onTap: () {
+        Navigator.of(context).pop();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PrivacyScreen()));
       },
     );
   }

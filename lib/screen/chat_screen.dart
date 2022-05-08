@@ -21,7 +21,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late Stream _usersStream;
+  // late Stream _usersStream;
   late String uid, treeId;
 
   @override

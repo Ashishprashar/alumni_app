@@ -26,14 +26,16 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-          .getCurrentUser();
-    });
+    // setState(() {
+    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+    //     .getCurrentUser();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<CurrentUserProvider>(context, listen: true)
+        .getCurrentUser();
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
       return Scaffold(
@@ -62,7 +64,9 @@ class _ProfileState extends State<Profile> {
           elevation: 1,
           toolbarHeight: 50,
         ),
-        endDrawer: AppDrawer(currentUser: currentUser!,),
+        endDrawer: AppDrawer(
+          currentUser: currentUser!,
+        ),
         body: SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,
@@ -256,7 +260,7 @@ class _UserProfileState extends State<UserProfile> {
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
                     Text(
-                      "Follower",
+                      "Followers",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ]),
@@ -284,7 +288,7 @@ class _UserProfileState extends State<UserProfile> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                    "About",
+                    "Bio",
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -302,7 +306,7 @@ class _UserProfileState extends State<UserProfile> {
                   right: 24,
                 ),
                 child: Text(
-                  "Tech Stack",
+                  "Skills",
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
