@@ -4,10 +4,12 @@ class DoneButton extends StatelessWidget {
   final Function onTap;
   final double? height;
   final double? width;
+  final Color? color;
   final String text;
   const DoneButton({
     Key? key,
     this.height,
+    this.color,
     this.width,
     required this.onTap,
     required this.text,
@@ -23,7 +25,7 @@ class DoneButton extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Theme.of(context).highlightColor.withOpacity(.2),
+          color: color ?? Theme.of(context).highlightColor.withOpacity(.2),
 
           // border: Border.all(color: Theme.of(context).hintColor)
         ),

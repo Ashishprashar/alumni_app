@@ -6,6 +6,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/navigator_services.dart';
+import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -58,6 +59,7 @@ class DatabaseService {
       following: [],
       followerCount: 0,
       followingCount: 0,
+      followRequest: [],
     );
 
     Map<String, dynamic> data = (user.toJson());
@@ -109,6 +111,7 @@ class DatabaseService {
       following: currentUser!.following,
       followerCount: currentUser!.followerCount,
       followingCount: currentUser!.followingCount,
+      followRequest: currentUser!.followRequest,
     );
 
     Map<String, dynamic> data = (updatedUser.toJson());
@@ -116,6 +119,53 @@ class DatabaseService {
     navigatorKey.currentContext
         ?.read<CurrentUserProvider>()
         .updateCurrentUser(updatedUser);
+  }
+
+  addNotification({
+    required String type,
+    String? postID,
+    String? sentTo,
+  }) async {
+    String content = "";
+    switch (type) {
+      case kNotificationKeyPost:
+        content = "Checkout! ${currentUser!.name} has added a new post.";
+        break;
+      case kNotificationKeyChat:
+        content = "You got a new message from ${currentUser!.name}.";
+        break;
+      case kNotificationKeyFollowRequest:
+        content = "${currentUser!.name} has sent you a follow request.";
+        break;
+      case kNotificationKeyLike:
+        content = "${currentUser!.name} liked your post.";
+        break;
+      case kNotificationKeyComment:
+        content = "${currentUser!.name} commented on your post.";
+        break;
+      case kNotificationKeyFollowAccepted:
+        content = "${currentUser!.name} has accepted your follow request.";
+        break;
+      default:
+        content = "You got a new notification";
+        break;
+    }
+    DateTime now = DateTime.now();
+    var data = {
+      "type": type,
+      "sentBy": currentUser!.id,
+      "sentTo": currentUser!.follower,
+      "content": content,
+      "updated_at": now
+    };
+    if (type != kNotificationKeyPost) {
+      data["sentTo"] = [sentTo];
+    }
+    if (type == "post") {
+      data["postId"] = postID!;
+    }
+    String id = (await notificationCollection.add(data)).id;
+    await notificationCollection.doc(id).update({"id": id});
   }
 
   uploadPost({required PostModel postModel}) async {

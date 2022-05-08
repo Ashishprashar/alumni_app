@@ -16,6 +16,7 @@ class UserModel {
     required this.bio,
     required this.connection,
     required this.createdAt,
+    required this.followRequest,
     required this.email,
     required this.id,
     required this.linkToSocial,
@@ -38,6 +39,7 @@ class UserModel {
   List<String> connection;
   List<String> follower;
   List<String> following;
+  List<String> followRequest;
   int followingCount;
   int followerCount;
   Timestamp createdAt;
@@ -59,6 +61,8 @@ class UserModel {
         connection: List<String>.from((json["connection"] ?? []).map((x) => x)),
         follower: List<String>.from((json["follower"] ?? []).map((x) => x)),
         following: List<String>.from((json["following"] ?? []).map((x) => x)),
+        followRequest:
+            List<String>.from((json["follow_request"] ?? []).map((x) => x)),
         followerCount: json["follower_count"] ?? 0,
         followingCount: json["following_count"] ?? 0,
         createdAt: json["created_at"],
@@ -83,6 +87,8 @@ class UserModel {
         connection: List<String>.from((json["connection"] ?? []).map((x) => x)),
         follower: List<String>.from((json["follower"] ?? []).map((x) => x)),
         following: List<String>.from((json["following"] ?? []).map((x) => x)),
+        followRequest:
+            List<String>.from((json["follow_request"] ?? []).map((x) => x)),
         followerCount: json["follower_count"] ?? 0,
         followingCount: json["following_count"] ?? 0,
         createdAt: json["created_at"],
@@ -116,6 +122,7 @@ class UserModel {
         "type": type,
         "follower": follower,
         "following": following,
+        "follow_request": followRequest,
         "following_count": followingCount,
         "follower_count": followerCount,
         "updated_at": updatedAt,
@@ -134,11 +141,24 @@ class UserModel {
     log(following.toString());
   }
 
+  addFollowRequest(String id) {
+    followRequest.add(id);
+    // followingCount = followingCount + 1;
+    log(following.toString());
+  }
+
   removeFollower(String id) {
     follower.removeWhere((e) {
       return e == id;
     });
     followerCount = followerCount - 1;
+  }
+
+  removeFollowRequest(String id) {
+    followRequest.removeWhere((e) {
+      return e == id;
+    });
+    // followerCount = followerCount - 1;
   }
 
   removeFollowing(String id) {

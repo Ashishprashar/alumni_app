@@ -169,7 +169,8 @@ class _PostWidgetState extends State<PostWidget> {
                                     });
                                     if (isLike) {
                                       feedProvider.addLike(
-                                          postId: widget.postModel.id);
+                                          postId: widget.postModel.id,
+                                          ownerId: widget.postModel.ownerId);
                                     } else {
                                       feedProvider.removeLike(
                                           postId: widget.postModel.id);
