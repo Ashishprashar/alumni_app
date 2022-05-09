@@ -210,7 +210,7 @@ class ContactUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.privacy_tip),
+      leading: const Icon(Icons.contact_page),
       minLeadingWidth: 0,
       title: Text(
         'Contact Us',

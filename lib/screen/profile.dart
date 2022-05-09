@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
@@ -7,10 +8,13 @@ import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
+import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/app_drawer.dart';
+import 'package:alumni_app/widget/post_widget.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -40,26 +44,10 @@ class _ProfileState extends State<Profile> {
         builder: (context, currentUserProvider, child) {
       return Scaffold(
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
           title: Text(
             'Profile',
             style: Theme.of(context).textTheme.headline6,
           ),
-          // actions: [
-          //   const DeleteIcon(),
-          //   IconButton(
-          //       onPressed: () {
-          //         Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => const EditScreen()));
-          //       },
-          //       icon: const Icon(Icons.edit)),
-          //   const SignOutButton(),
-          //   Container(
-          //     padding: const EdgeInsets.only(right: 10),
-          //   ),
-          // ],
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 1,
           toolbarHeight: 50,
@@ -73,7 +61,7 @@ class _ProfileState extends State<Profile> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  UserProfile(user: currentUser!) // scroll down for the widget
+                  UserProfile(user: currentUser!),
                 ],
               ),
             ),
@@ -99,6 +87,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  ScrollController postsScroller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
@@ -386,8 +375,44 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
           ),
+          // only displays posts from our profile for now. We could have posts displayed for other
+          // people in our follow list too I guess. but im no expert with queries :3
+          widget.user.id == currentUser!.id
+              ? SizedBox(
+                  height: SizeData.screenHeight * 0.6,
+                  child: PaginateFirestore(
+                    itemsPerPage: 10,
+                    // scrollController: postsScroller,
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      log(data.toString());
+                      return getPostList(documentSnapshots, index);
+                    },
+                    query: postCollection
+                        .where('owner_id', isEqualTo: widget.user.id)
+                        .orderBy("updated_at", descending: true),
+                    itemBuilderType: PaginateBuilderType.listView,
+                    isLive: true,
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Center(
+                    child: Text(
+                      'We cannot show you posts from other\'s currently.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
         ],
       );
     });
+  }
+
+  getPostList(snapshot, int i) {
+    PostModel postModel =
+        PostModel.fromJson(snapshot[i].data() as Map<String, dynamic>);
+
+    return PostWidget(postModel: postModel);
   }
 }
