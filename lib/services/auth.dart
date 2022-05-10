@@ -120,6 +120,8 @@ class AuthServices {
   }
 
   signOut(BuildContext context) async {
+    googleSignIn.signOut();
+    auth.signOut();
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => const SignInScreen()));
   }
