@@ -4,7 +4,7 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/editable_social_icons.dart';
 import 'package:alumni_app/widget/image_picker_widget.dart';
-import 'package:alumni_app/widget/teck_stack_widget.dart';
+import 'package:alumni_app/widget/list_item_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -30,6 +30,7 @@ class _EditScreenState extends State<EditScreen> {
   File? profileImage;
   bool isLoading = false;
   List techStackList = [];
+  List interestsList = [];
   late UserModel? currentUser =
       navigatorKey.currentContext?.read<CurrentUserProvider>().getCurrentUser();
 
@@ -43,6 +44,7 @@ class _EditScreenState extends State<EditScreen> {
   late TextEditingController bioController;
 
   late TextEditingController techStackController;
+  late TextEditingController interestsController;
 
   String? defaultSemesterValue;
   String? defaultBranchValue;
@@ -52,7 +54,7 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     techStackList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
-
+    interestsList = List<dynamic>.from(currentUser!.interests.map((x) => x));
     twitterController =
         TextEditingController(text: currentUser!.linkToSocial['twitter']);
     linkedinController =
@@ -67,6 +69,7 @@ class _EditScreenState extends State<EditScreen> {
     nameController = TextEditingController(text: currentUser!.name);
     bioController = TextEditingController(text: currentUser!.bio);
     techStackController = TextEditingController();
+    interestsController = TextEditingController();
     super.initState();
   }
 
@@ -183,8 +186,32 @@ class _EditScreenState extends State<EditScreen> {
                               ),
                               const SizedBox(height: 20),
                               CustomTextField(
+                                controller: interestsController,
+                                title: "Interests",
+                                hint: 'Add Something',
+                                suffix: GestureDetector(
+                                    onTap: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      setState(() {
+                                        interestsList.insert(
+                                            0, interestsController.text);
+                                      });
+                                      interestsController.text = "";
+                                    },
+                                    child: const Icon(Icons.add_box_outlined)),
+                              ),
+                              ListItemsWidget(
+                                  listItems: interestsList,
+                                  removeTechElement: (int i) {
+                                    setState(() {
+                                      interestsList.removeAt(i);
+                                    });
+                                  }),
+                              const SizedBox(height: 20),
+                              CustomTextField(
                                 controller: techStackController,
-                                title: "Tech Stack",
+                                title: "Skills",
                                 hint: 'Add Something',
                                 suffix: GestureDetector(
                                     onTap: () {
@@ -198,8 +225,8 @@ class _EditScreenState extends State<EditScreen> {
                                     },
                                     child: const Icon(Icons.add_box_outlined)),
                               ),
-                              TechStackWidget(
-                                  techStackList: techStackList,
+                              ListItemsWidget(
+                                  listItems: techStackList,
                                   removeTechElement: (int i) {
                                     setState(() {
                                       techStackList.removeAt(i);
@@ -428,6 +455,7 @@ class _EditScreenState extends State<EditScreen> {
         profileImage,
         currentUser!.profilePic,
         techStackList,
+        interestsList,
         defaultBranchValue!,
         defaultSemesterValue!,
         linkToSocial,

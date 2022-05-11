@@ -2,7 +2,6 @@
 
 
 /*
-
   1. skils
   2. interests
   3. bio
@@ -13,4 +12,7 @@
   8. born in
   9. birthdate
   10. gender
+  11. member since
+  12. last update
+  13. email
  */

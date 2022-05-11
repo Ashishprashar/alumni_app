@@ -1,13 +1,13 @@
 import 'package:alumni_app/services/media_query.dart';
 import 'package:flutter/material.dart';
 
-class TechStackWidget extends StatelessWidget {
-  final List techStackList;
+class ListItemsWidget extends StatelessWidget {
+  final List listItems;
   final Function(int) removeTechElement;
 
-  const TechStackWidget({
+  const ListItemsWidget({
     Key? key,
-    required this.techStackList,
+    required this.listItems,
     required this.removeTechElement,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class TechStackWidget extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              for (int i = 0; i < techStackList.length; i += 2)
+              for (int i = 0; i < listItems.length; i += 2)
                 SizedBox(
                   width: SizeData.screenWidth * .4,
                   child: Row(
@@ -31,7 +31,7 @@ class TechStackWidget extends StatelessWidget {
                       SizedBox(
                         width: SizeData.screenWidth * .4 - 25,
                         child: Text(
-                          techStackList[i],
+                          listItems[i],
                           style: Theme.of(context)
                               .textTheme.bodyText1
                               // .displayMedium!
@@ -44,7 +44,7 @@ class TechStackWidget extends StatelessWidget {
                       GestureDetector(
                           onTap: () {
                             // setState(() {
-                            //   techStackList
+                            //   listItems
                             //       .removeAt(i);
                             // });
                             removeTechElement(i);
@@ -58,7 +58,7 @@ class TechStackWidget extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              for (int i = 1; i < techStackList.length; i += 2)
+              for (int i = 1; i < listItems.length; i += 2)
                 SizedBox(
                   width: SizeData.screenWidth * .4,
                   child: Row(
@@ -67,7 +67,7 @@ class TechStackWidget extends StatelessWidget {
                       SizedBox(
                         width: SizeData.screenWidth * .4 - 25,
                         child: Text(
-                          techStackList[i],
+                          listItems[i],
                           style: Theme.of(context)
                               .textTheme.bodyText1
                               // .displayMedium!
