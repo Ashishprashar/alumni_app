@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:alumni_app/models/comment_model.dart';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../screen/home.dart';
@@ -112,14 +114,25 @@ class FeedProvider with ChangeNotifier {
         textContent: postTextContent.text.trim(),
         updatedAt: Timestamp.now(),
         comments: []);
+    // No need to check the database file, does exactly what it says
     await databaseService.uploadPost(postModel: post);
+    incrementPostCount();
     await databaseService.addNotification(
         type: kNotificationKeyPost, postID: post.id);
     _filesToUpload = null;
     postTextContent.text = "";
-
     isUploading = false;
     notifyListeners();
+  }
+
+  void incrementPostCount() async {
+    currentUser!.incrementPostCount();
+    navigatorKey.currentContext
+        ?.read<CurrentUserProvider>()
+        .updateCurrentUser(currentUser!);
+    await userCollection
+        .doc(currentUser!.id)
+        .update({"post_count": FieldValue.increment(1)});
   }
 
   Future<UserModel> getUser({required String id}) async {
@@ -182,5 +195,13 @@ class FeedProvider with ChangeNotifier {
 
   deletePost({required String postId}) async {
     await postCollection.doc(postId).delete();
+    currentUser!.decrementPostCount();
+    navigatorKey.currentContext
+        ?.read<CurrentUserProvider>()
+        .updateCurrentUser(currentUser!);
+    await userCollection
+        .doc(currentUser!.id)
+        .update({"post_count": FieldValue.increment(-1)});
+    notifyListeners();
   }
 }

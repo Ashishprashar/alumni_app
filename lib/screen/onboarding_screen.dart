@@ -5,7 +5,7 @@ import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/widget/custom_text_field.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/image_picker_widget.dart';
-import 'package:alumni_app/widget/teck_stack_widget.dart';
+import 'package:alumni_app/widget/list_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,8 +87,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           },
                           child: const Icon(Icons.add_box_outlined)),
                     ),
-                    TechStackWidget(
-                        techStackList: techStack,
+                    ListItemsWidget(
+                        listItems: techStack,
                         removeTechElement: (int i) {
                           setState(() {
                             techStack.removeAt(i);

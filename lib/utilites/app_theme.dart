@@ -89,7 +89,7 @@ class AppTheme {
     splashColor: Colors.grey,
     //primaryColor: Colors.blue[900],
     primaryColor: Colors.grey[800],
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.black,
     iconTheme: const IconThemeData(
       color: Colors.white,

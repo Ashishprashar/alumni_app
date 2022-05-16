@@ -32,7 +32,10 @@ class UserModel {
     required this.following,
     required this.followerCount,
     required this.followingCount,
+    required this.postCount,
     required this.branch,
+    required this.interests,
+    required this.gender,
   });
 
   String bio;
@@ -42,6 +45,7 @@ class UserModel {
   List<String> followRequest;
   int followingCount;
   int followerCount;
+  int postCount;
   Timestamp createdAt;
   String email;
   String id;
@@ -50,11 +54,13 @@ class UserModel {
   String searchName;
   String profilePic;
   List techStack;
+  List interests;
   String type;
   Timestamp updatedAt;
   bool admin;
   String semester;
   String branch;
+  String gender;
 
   factory UserModel.fromDoc(DocumentSnapshot json) => UserModel(
         bio: json["bio"] ?? "",
@@ -65,6 +71,7 @@ class UserModel {
             List<String>.from((json["follow_request"] ?? []).map((x) => x)),
         followerCount: json["follower_count"] ?? 0,
         followingCount: json["following_count"] ?? 0,
+        postCount: json["post_count"] ?? 0,
         createdAt: json["created_at"],
         email: json["email"],
         id: json["id"],
@@ -75,38 +82,46 @@ class UserModel {
         techStack: json["tech_stack"] == null
             ? []
             : List<dynamic>.from(json["tech_stack"].map((x) => x)),
+        interests: json["interests"] == null
+            ? []
+            : List<dynamic>.from(json["interests"].map((x) => x)),
         type: json["type"] ?? "student",
         updatedAt: json["updated_at"],
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
+        gender: json["gender"] ?? "MALE",
       );
 
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        bio: json["bio"] ?? "",
-        connection: List<String>.from((json["connection"] ?? []).map((x) => x)),
-        follower: List<String>.from((json["follower"] ?? []).map((x) => x)),
-        following: List<String>.from((json["following"] ?? []).map((x) => x)),
-        followRequest:
-            List<String>.from((json["follow_request"] ?? []).map((x) => x)),
-        followerCount: json["follower_count"] ?? 0,
-        followingCount: json["following_count"] ?? 0,
-        createdAt: json["created_at"],
-        email: json["email"],
-        id: json["id"],
-        linkToSocial: json["link_to_social"] ?? {},
-        name: json["name"],
-        searchName: json["search_name"],
-        profilePic: json["profile_pic"],
-        techStack: json["tech_stack"] == null
-            ? []
-            : List<dynamic>.from(json["tech_stack"].map((x) => x)),
-        type: json["type"] ?? "student",
-        updatedAt: json["updated_at"],
-        admin: json["admin"] ?? false,
-        semester: json["semester"] ?? "8",
-        branch: json["branch"] ?? "CSE",
-      );
+      bio: json["bio"] ?? "",
+      connection: List<String>.from((json["connection"] ?? []).map((x) => x)),
+      follower: List<String>.from((json["follower"] ?? []).map((x) => x)),
+      following: List<String>.from((json["following"] ?? []).map((x) => x)),
+      followRequest:
+          List<String>.from((json["follow_request"] ?? []).map((x) => x)),
+      followerCount: json["follower_count"] ?? 0,
+      followingCount: json["following_count"] ?? 0,
+      postCount: json["post_count"] ?? 0,
+      createdAt: json["created_at"],
+      email: json["email"],
+      id: json["id"],
+      linkToSocial: json["link_to_social"] ?? {},
+      name: json["name"],
+      searchName: json["search_name"],
+      profilePic: json["profile_pic"],
+      techStack: json["tech_stack"] == null
+          ? []
+          : List<dynamic>.from(json["tech_stack"].map((x) => x)),
+      interests: json["interests"] == null
+          ? []
+          : List<dynamic>.from(json["interests"].map((x) => x)),
+      type: json["type"] ?? "student",
+      updatedAt: json["updated_at"],
+      admin: json["admin"] ?? false,
+      semester: json["semester"] ?? "8",
+      branch: json["branch"] ?? "CSE",
+      gender: json["gender"] ?? "MALE");
 
   Map<String, dynamic> toJson() => {
         "bio": bio,
@@ -119,16 +134,19 @@ class UserModel {
         "search_name": searchName,
         "profile_pic": profilePic,
         "tech_stack": List<dynamic>.from((techStack).map((x) => x)),
+        "interests": List<dynamic>.from((interests).map((x) => x)),
         "type": type,
         "follower": follower,
         "following": following,
         "follow_request": followRequest,
         "following_count": followingCount,
         "follower_count": followerCount,
+        "post_count": postCount,
         "updated_at": updatedAt,
         "admin": admin,
         "semester": semester,
         "branch": branch,
+        "gender": gender,
       };
   addFollower(String id) {
     follower.add(id);
@@ -166,6 +184,14 @@ class UserModel {
       return e == id;
     });
     followingCount = followingCount - 1;
+  }
+
+  incrementPostCount() {
+    postCount++;
+  }
+
+  decrementPostCount() {
+    postCount--;
   }
 }
 

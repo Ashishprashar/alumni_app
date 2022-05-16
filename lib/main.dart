@@ -1,3 +1,4 @@
+import 'package:alumni_app/provider/app_theme.dart';
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
@@ -41,13 +42,20 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => SearchProvider()),
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
+        ChangeNotifierProvider(create: (context) => AppThemeNotifier()),
       ],
-      child: MaterialApp(
-        // this is needed to provide providers to places where there is no build context
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        home: const Wrapper(),
+      child: Consumer<AppThemeNotifier>(
+        builder: (context, appTheme, child) {
+          return MaterialApp(
+            // this is needed to provide providers to places where there is no build context
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: appTheme.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
+            home: const Wrapper(),
+          );
+        },
       ),
     );
   }

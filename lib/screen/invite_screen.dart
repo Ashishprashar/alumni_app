@@ -14,7 +14,6 @@ class InviteScreen extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             title: Text(
               'Invite User',
               style: Theme.of(context).textTheme.headline6,

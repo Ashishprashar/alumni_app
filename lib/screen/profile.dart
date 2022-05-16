@@ -1,17 +1,20 @@
 import 'dart:developer';
 
+import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
-import 'package:alumni_app/screen/edit_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:alumni_app/widget/done_button.dart';
+import 'package:alumni_app/services/media_query.dart';
+import 'package:alumni_app/widget/app_drawer.dart';
+import 'package:alumni_app/widget/post_widget.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -27,120 +30,30 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-          .getCurrentUser();
-    });
+    // setState(() {
+    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+    //     .getCurrentUser();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<CurrentUserProvider>(context, listen: true)
+        .getCurrentUser();
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
       return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: Text(
             'Profile',
             style: Theme.of(context).textTheme.headline6,
           ),
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(
-                            "You will loose all your data after this action!!!\nAre you sure?",
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DoneButton(
-                                height: 30,
-                                width: 70,
-                                text: "Yes",
-                                onTap: () async {
-                                  Navigator.pop(context);
-                                  currentUserProvider.setDeleting();
-                                  await authServices.deleteAccount(context);
-                                },
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              DoneButton(
-                                height: 30,
-                                width: 70,
-                                text: "No",
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-
-                  // currentUserProvider.setDeleting();
-                },
-                icon: const Icon(Icons.delete)),
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EditScreen()));
-                },
-                icon: const Icon(Icons.edit)),
-            IconButton(
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(
-                          "Are you sure?",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            DoneButton(
-                              height: 30,
-                              width: 70,
-                              text: "Yes",
-                              onTap: () async {
-                                await authServices.signOut(context);
-                              },
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            DoneButton(
-                              height: 30,
-                              width: 70,
-                              text: "No",
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-              },
-              icon: const Icon(Icons.login_rounded),
-            ),
-            Container(
-              padding: const EdgeInsets.only(right: 10),
-            ),
-          ],
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 1,
           toolbarHeight: 50,
+        ),
+        endDrawer: AppDrawer(
+          currentUser: currentUser!,
         ),
         body: SafeArea(
           child: Scrollbar(
@@ -148,7 +61,7 @@ class _ProfileState extends State<Profile> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  UserProfile(user: currentUser!) // scroll down for the widget
+                  UserProfile(user: currentUser!),
                 ],
               ),
             ),
@@ -174,6 +87,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  ScrollController postsScroller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
@@ -323,9 +237,23 @@ class _UserProfileState extends State<UserProfile> {
                             )),
                     ],
                   )),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  Column(children: [
+                    Text(
+                      widget.user.postCount.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                    Text(
+                      "Posts",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ]),
                   Column(children: [
                     Text(
                       widget.user.followerCount.toString(),
@@ -335,15 +263,15 @@ class _UserProfileState extends State<UserProfile> {
                           .copyWith(color: Theme.of(context).errorColor),
                     ),
                     Text(
-                      "Follower",
+                      "Followers",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ]),
-                  Container(
-                    width: .2,
-                    height: 50,
-                    color: Colors.black,
-                  ),
+                  // Container(
+                  //   width: .2,
+                  //   height: 50,
+                  //   color: Colors.black,
+                  // ),
                   Column(children: [
                     Text(
                       widget.user.followingCount.toString(),
@@ -359,14 +287,16 @@ class _UserProfileState extends State<UserProfile> {
                   ]),
                 ],
               ),
-              if (widget.user.bio.isNotEmpty)
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    "About",
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
+              if(widget.user.bio.isNotEmpty)
+              const SizedBox(height: 20),
+              if (widget.user.bio.isNotEmpty) 
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  "Bio",
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
+              ),
               if (widget.user.bio.isNotEmpty)
                 Container(
                   margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
@@ -375,20 +305,38 @@ class _UserProfileState extends State<UserProfile> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.only(
                   left: 24,
                   right: 24,
                 ),
                 child: Text(
-                  "Tech Stack",
+                  "Skills",
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
                 child: Text(
-                  widget.user.techStack.join(","),
+                  widget.user.techStack.join(", "),
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                ),
+                child: Text(
+                  "Interests",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                child: Text(
+                  widget.user.interests.join(", "),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
@@ -409,23 +357,23 @@ class _UserProfileState extends State<UserProfile> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Privelage",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 10),
-                child: Text(
-                  widget.user.admin ? "Admin" : "Normal User",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(
+              //     left: 24,
+              //     right: 24,
+              //   ),
+              //   child: Text(
+              //     "Privelage",
+              //     style: Theme.of(context).textTheme.subtitle1,
+              //   ),
+              // ),
+              // Container(
+              //   margin: const EdgeInsets.only(left: 24, right: 24, bottom: 10),
+              //   child: Text(
+              //     widget.user.admin ? "Admin" : "Normal User",
+              //     style: Theme.of(context).textTheme.bodyText1,
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(
                   left: 24,
@@ -443,6 +391,24 @@ class _UserProfileState extends State<UserProfile> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                ),
+                child: Text(
+                  "Gender",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                child: Text(
+                  widget.user.gender,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              const SizedBox(height: 10),
             ]),
           ),
           Container(
@@ -461,8 +427,44 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
           ),
+          // only displays posts from our profile for now. We could have posts displayed for other
+          // people in our follow list too I guess. but im no expert with queries :3
+          widget.user.id == currentUser!.id
+              ? SizedBox(
+                  height: SizeData.screenHeight * 0.6,
+                  child: PaginateFirestore(
+                    itemsPerPage: 10,
+                    // scrollController: postsScroller,
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      log(data.toString());
+                      return getPostList(documentSnapshots, index);
+                    },
+                    query: postCollection
+                        .where('owner_id', isEqualTo: widget.user.id)
+                        .orderBy("updated_at", descending: true),
+                    itemBuilderType: PaginateBuilderType.listView,
+                    isLive: true,
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Center(
+                    child: Text(
+                      'We cannot show you posts from other\'s currently.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
         ],
       );
     });
+  }
+
+  getPostList(snapshot, int i) {
+    PostModel postModel =
+        PostModel.fromJson(snapshot[i].data() as Map<String, dynamic>);
+
+    return PostWidget(postModel: postModel);
   }
 }

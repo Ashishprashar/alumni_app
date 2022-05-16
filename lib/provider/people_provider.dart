@@ -34,7 +34,7 @@ class PeopleProvider with ChangeNotifier {
 
   fetchPeople() async {
     if (!hasMore) {
-      print('No More Products');
+      // print('No More Products');
       return;
     }
 
@@ -48,7 +48,7 @@ class PeopleProvider with ChangeNotifier {
           .startAfterDocument(lastDocument!)
           .limit(documentLimit)
           .get();
-      print(1);
+      // print(1);
     }
     if (querySnapshot.docs.length < documentLimit) {
       hasMore = false;

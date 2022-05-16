@@ -13,6 +13,7 @@ class SizeData {
   static late double devicePixel;
   static late EdgeInsets padding;
 
+
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;

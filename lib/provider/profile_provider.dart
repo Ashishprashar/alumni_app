@@ -13,6 +13,13 @@ import '../models/user.dart';
 
 class ProfileProvider with ChangeNotifier {
   DatabaseService databaseService = DatabaseService();
+
+  incrementPostCount({required BuildContext context}) async {
+    UserModel? _currentUser =
+          Provider.of<CurrentUserProvider>(context, listen: false)
+              .getCurrentUser();
+  }
+
   addFollower({required String id, required BuildContext context}) async {
     currentUser!.addFollower(id);
     await userCollection.doc(currentUser!.id).update({

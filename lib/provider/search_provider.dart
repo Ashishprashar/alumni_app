@@ -19,11 +19,11 @@ class SearchProvider with ChangeNotifier {
   final StreamController<List<DocumentSnapshot>> _controller =
       StreamController<List<DocumentSnapshot>>();
 
-  Stream<List<DocumentSnapshot>> get _streamController => _controller.stream;
+  // Stream<List<DocumentSnapshot>> get _streamController => _controller.stream;
 
   fetchMore() async {
     if (!hasMore) {
-      print('No More Products');
+      // print('No More Products');
       return;
     }
     if (isLoading) {
@@ -33,6 +33,8 @@ class SearchProvider with ChangeNotifier {
     isLoading = true;
 
     QuerySnapshot querySnapshot;
+    // added limit to the case where lastdocument == null. limit was not there before
+    // if i should not have done that remove it. 
     if (lastDocument == null) {
       querySnapshot = await userCollection
           .where('search_name',
@@ -40,6 +42,7 @@ class SearchProvider with ChangeNotifier {
           .where('search_name',
               isLessThan: _searchController.text.toUpperCase() + 'z')
           .orderBy('search_name', descending: true)
+          .limit(documentLimit)
           .get();
     } else {
       querySnapshot = await userCollection
@@ -50,7 +53,7 @@ class SearchProvider with ChangeNotifier {
           .startAfterDocument(lastDocument!)
           .limit(documentLimit)
           .get();
-      print(1);
+      // print(1);
     }
     if (querySnapshot.docs.length < documentLimit) {
       hasMore = false;
@@ -63,6 +66,7 @@ class SearchProvider with ChangeNotifier {
 
     isLoading = false;
   }
+
 
   addListenerToScrollController() {
     _scrollController.addListener(() {

@@ -50,6 +50,7 @@ class DatabaseService {
       searchName: name.toUpperCase(),
       profilePic: downloadUrl,
       techStack: teckStack,
+      interests: [],
       type: "student",
       updatedAt: now,
       admin: false,
@@ -59,7 +60,9 @@ class DatabaseService {
       following: [],
       followerCount: 0,
       followingCount: 0,
+      postCount: 0,
       followRequest: [],
+      gender: "MALE",
     );
 
     Map<String, dynamic> data = (user.toJson());
@@ -75,6 +78,7 @@ class DatabaseService {
     File? image,
     String downloadUrl,
     List techStack,
+    List interests,
     String branch,
     String semester,
     Map linkToSocials,
@@ -92,27 +96,29 @@ class DatabaseService {
     }
 
     UserModel updatedUser = UserModel(
-      bio: bio,
-      connection: [],
-      createdAt: createdAt,
-      email: firebaseCurrentUser!.email ?? "",
-      id: firebaseCurrentUser!.uid,
-      linkToSocial: linkToSocials,
-      name: name,
-      searchName: name.toUpperCase(),
-      profilePic: downloadUrl,
-      techStack: techStack,
-      type: 'student',
-      updatedAt: now,
-      admin: false,
-      semester: semester,
-      branch: branch,
-      follower: currentUser!.follower,
-      following: currentUser!.following,
-      followerCount: currentUser!.followerCount,
-      followingCount: currentUser!.followingCount,
-      followRequest: currentUser!.followRequest,
-    );
+        bio: bio,
+        connection: [],
+        createdAt: createdAt,
+        email: firebaseCurrentUser!.email ?? "",
+        id: firebaseCurrentUser!.uid,
+        linkToSocial: linkToSocials,
+        name: name,
+        searchName: name.toUpperCase(),
+        profilePic: downloadUrl,
+        techStack: techStack,
+        interests: interests,
+        type: 'student',
+        updatedAt: now,
+        admin: false,
+        semester: semester,
+        branch: branch,
+        follower: currentUser!.follower,
+        following: currentUser!.following,
+        followerCount: currentUser!.followerCount,
+        followingCount: currentUser!.followingCount,
+        postCount: currentUser!.postCount,
+        followRequest: currentUser!.followRequest,
+        gender: "MALE");
 
     Map<String, dynamic> data = (updatedUser.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
@@ -178,6 +184,7 @@ class DatabaseService {
     if (doc.exists) {
       UserModel _userModel =
           UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      // UserModel _userModel = UserModel.fromDoc(doc);
 
       navigatorKey.currentContext
           ?.read<CurrentUserProvider>()
