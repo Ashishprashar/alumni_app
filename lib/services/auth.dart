@@ -50,18 +50,17 @@ class AuthServices {
   }
 
   isAuthorized(String emailID) async {
-    var data = await authorizedEmailDb.get();
+    var data =
+        await authorizedEmailDb.where("invitedTo", isEqualTo: emailID).get();
 
-    log(data.value.toString());
-    bool isAuth = false;
-    (data.value as Map).forEach((key, value) {
-      if (emailID == value["invitedTo"]) {
-        isAuth = true;
-        return;
-      }
-    });
-    log(isAuth.toString());
-    return !isAuth;
+    log(data.docs.toString());
+    // bool isAuth = false;
+
+    if (data.docs.isNotEmpty) {
+      return false;
+    }
+    // log(isAuth.toString());
+    return true;
   }
 
   deleteAccount(BuildContext context) async {
