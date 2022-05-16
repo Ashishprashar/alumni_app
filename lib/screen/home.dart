@@ -28,8 +28,7 @@ final notificationCollection = db.collection('notification');
 // final chatCollection = db.collection('chat');
 final chatListDb = FirebaseDatabase.instance.reference().child("chat");
 final messagesDb = FirebaseDatabase.instance.reference().child('messages/');
-final authorizedEmailDb =
-    FirebaseDatabase.instance.reference().child('authorizedEmail/');
+final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
 // bool isDeleting = false;
 
