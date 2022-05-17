@@ -17,21 +17,20 @@ class InviteProvider with ChangeNotifier {
     emailId.text = "";
     notifyListeners();
     // we are fetching all the invites in the db, which could be around a 1000. Any work around?
-    var data = await authorizedEmailDb.get();
+    var data =
+        await authorizedEmailDb.where("invitedTo", isEqualTo: emailID).get();
 
-    log(data.value.toString());
+    log(data.docs.toString());
 
-    (data.value as Map).forEach((key, value) {
-      if (value["invitedTo"] == emailID) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Email is already invited.")));
-        return;
-      }
-    });
+    if (data.docs.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Email is already ianvited.")));
+      return;
+    }
 
     String invitedBy = currentUser!.email;
 
-    await authorizedEmailDb.child(const Uuid().v1()).set({
+    await authorizedEmailDb.doc(const Uuid().v1()).set({
       "invitedBy": invitedBy,
       "invitedTo": emailID,
       "timeStamp": DateTime.now().toString()
