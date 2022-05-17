@@ -13,12 +13,24 @@ import '../models/user.dart';
 
 class ProfileProvider with ChangeNotifier {
   DatabaseService databaseService = DatabaseService();
+  bool alreadyPoked = false;
 
-  incrementPostCount({required BuildContext context}) async {
-    UserModel? _currentUser =
-          Provider.of<CurrentUserProvider>(context, listen: false)
-              .getCurrentUser();
-  }
+  // incrementPostCount({required BuildContext context}) async {
+  //   UserModel? _currentUser =
+  //         Provider.of<CurrentUserProvider>(context, listen: false)
+  //             .getCurrentUser();
+  // }
+
+  // poke someone (need a better name)
+  pokeThem(
+      {required BuildContext context,
+      required String senderId,
+      required String receiverId}) async{
+        await databaseService.addNotification(
+          type: kNotificationKeyPoke, sentTo: receiverId);
+        alreadyPoked = true;
+        notifyListeners();
+      }
 
   addFollower({required String id, required BuildContext context}) async {
     currentUser!.addFollower(id);

@@ -134,6 +134,9 @@ class DatabaseService {
   }) async {
     String content = "";
     switch (type) {
+      case kNotificationKeyPoke:
+        content = "${currentUser!.name} just poked you.";
+        break;
       case kNotificationKeyPost:
         content = "Checkout! ${currentUser!.name} has added a new post.";
         break;

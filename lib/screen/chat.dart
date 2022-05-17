@@ -57,7 +57,7 @@ class _ChatState extends State<Chat> {
               const SizedBox(height: 20),
               chatProvider.chats.isEmpty
                   ? const Center(
-                      child: Text("No chats"),
+                      child: Text("No Chats"),
                     )
                   : Expanded(
                       // height: SizeData.screenHeight,

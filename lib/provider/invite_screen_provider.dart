@@ -24,7 +24,7 @@ class InviteProvider with ChangeNotifier {
     (data.value as Map).forEach((key, value) {
       if (value["invitedTo"] == emailID) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Email is already ianvited.")));
+            const SnackBar(content: Text("Email is already invited.")));
         return;
       }
     });
@@ -36,7 +36,7 @@ class InviteProvider with ChangeNotifier {
       "invitedTo": emailID,
       "timeStamp": DateTime.now().toString()
     });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Email invited.")));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Invite Sent! Tell your friend to install the app")));
   }
 }

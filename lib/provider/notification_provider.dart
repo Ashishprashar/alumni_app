@@ -24,6 +24,7 @@ class NotificationProvider with ChangeNotifier {
     fetchNotification();
   }
 
+  // need to paginate this to 10
   fetchNotification() async {
     List<NotificationModel> notificationList = [];
     final notifiData = await notificationCollection

@@ -287,16 +287,51 @@ class _UserProfileState extends State<UserProfile> {
                   ]),
                 ],
               ),
-              if(widget.user.bio.isNotEmpty)
-              const SizedBox(height: 20),
-              if (widget.user.bio.isNotEmpty) 
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  "Bio",
-                  style: Theme.of(context).textTheme.subtitle1,
+              
+              // only be able to poke people that you follow
+              // if (widget.user.id != firebaseCurrentUser?.uid &&
+              //     currentUser!.following.contains(widget.user.id))
+              //   Center(
+              //     child: Container(
+              //       padding: const EdgeInsets.symmetric(horizontal: 15),
+              //       color: Colors.orange,
+              //       child: InkWell(
+              //         onTap: () {
+              //           if (profileProvider.alreadyPoked) {
+              //             const _snackBar = SnackBar(
+              //               duration: Duration(milliseconds: 500),
+              //               content: Text('You cannot poke them until they poke you back!'),
+              //             );
+              //             ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+              //           } else {
+              //             profileProvider.pokeThem(
+              //                 context: context,
+              //                 senderId: currentUser!.id,
+              //                 receiverId: widget.user.id);
+              //             const _snackBar = SnackBar(
+              //               duration: Duration(milliseconds: 500),
+              //               content: Text('Poke sent!'),
+              //             );
+              //             ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+              //           }
+              //         },
+              //         child: Text(
+              //           'Poke them',
+              //           style: Theme.of(context).textTheme.bodyText1!,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              if (widget.user.bio.isNotEmpty) const SizedBox(height: 20),
+
+              if (widget.user.bio.isNotEmpty)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    "Bio",
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
-              ),
               if (widget.user.bio.isNotEmpty)
                 Container(
                   margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
