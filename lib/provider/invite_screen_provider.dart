@@ -24,7 +24,7 @@ class InviteProvider with ChangeNotifier {
 
     if (data.docs.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email is already ianvited.")));
+          const SnackBar(content: Text("Email is already invited.")));
       return;
     }
 
