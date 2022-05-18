@@ -70,13 +70,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             .notificationList[index].updatedAt)
                         .inHours;
                     // return getPostList(documentSnapshots, index);
-                    return notificationTile(
-                      inHour: inHour,
-                      inMin: inMin,
-                      inSec: inSec,
-                      snapshot: documentSnapshots,
-                      index: index,
-                    );
+                    // return notificationTile(
+                    //   inHour: inHour,
+                    //   inMin: inMin,
+                    //   inSec: inSec,
+                    //   snapshot: documentSnapshots,
+                    //   index: index,
+                    // );
+                    return Text('data');
                   },
                   query: notificationCollection
                       .where("sentTo", arrayContains: currentUser!.id)
@@ -125,100 +126,100 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 }
 
-class notificationTile extends StatelessWidget {
-  const notificationTile({
-    Key? key,
-    required this.inHour,
-    required this.inMin,
-    required this.inSec,
-    required this.snapshot,
-    required this.index,
-  }) : super(key: key);
+// class notificationTile extends StatelessWidget {
+//   const notificationTile({
+//     Key? key,
+//     required this.inHour,
+//     required this.inMin,
+//     required this.inSec,
+//     required this.snapshot,
+//     required this.index,
+//   }) : super(key: key);
 
-  final int inHour;
-  final int inMin;
-  final int inSec;
-  final List<DocumentSnapshot<Object?>> snapshot;
-  final int index;
+//   final int inHour;
+//   final int inMin;
+//   final int inSec;
+//   final List<DocumentSnapshot<Object?>> snapshot;
+//   final int index;
 
-  @override
-  Widget build(BuildContext context) {
-    String _profilePic = await 
-    NotificationModel notification = NotificationModel.fromJson(snapshot[index].data() as Map<String,dynamic>);
-    return Consumer2<NotificationProvider, ProfileProvider>(
-        builder: (context, notificationProvider, profileProvider, child) {
-    return Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-        child: Row(
-          children: [
-            Container(
-                height: 40,
-                width: 40,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image(
-                    image: CachedNetworkImageProvider(notificationProvider.getUserProfilePic()
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                )),
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        notification.content,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        (inHour == 0
-                            ? inMin == 0
-                                ? "$inSec sec ago"
-                                : "$inMin min ago"
-                            : "$inHour hr ago"),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ],
-                  )),
-            ),
-            if (notification.type ==
-                kNotificationKeyFollowRequest) ...[
-              DoneButton(
-                onTap: () {
-                  profileProvider.addFollower(
-                      id: notificationProvider.notificationList[index].sentBy,
-                      context: context);
-                  profileProvider.addFollowinfToOther(
-                      id: notificationProvider.notificationList[index].sentBy,
-                      context: context);
-                  profileProvider.removeFollowRequest(
-                      id: notificationProvider.notificationList[index].sentBy,
-                      context: context);
-                },
-                text: "Accept",
-                height: 30,
-                width: 80,
-              ),
-              DoneButton(
-                onTap: () {
-                  profileProvider.removeFollowRequest(
-                      id: notificationProvider.notificationList[index].sentBy,
-                      context: context);
-                  notificationProvider.deleteNotification(
-                      notificationProvider.notificationList[index].id);
-                },
-                text: "Deline",
-                height: 30,
-                width: 80,
-              ),
-            ],
-          ],
-        ));
-        });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     String _profilePic = await 
+//     NotificationModel notification = NotificationModel.fromJson(snapshot[index].data() as Map<String,dynamic>);
+//     return Consumer2<NotificationProvider, ProfileProvider>(
+//         builder: (context, notificationProvider, profileProvider, child) {
+//     return Container(
+//         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+//         child: Row(
+//           children: [
+//             Container(
+//                 height: 40,
+//                 width: 40,
+//                 decoration:
+//                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
+//                 child: ClipRRect(
+//                   borderRadius: BorderRadius.circular(15),
+//                   child: Image(
+//                     image: CachedNetworkImageProvider(notificationProvider.getUserProfilePic()
+//                     ),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 )),
+//             Expanded(
+//               child: Container(
+//                   margin: const EdgeInsets.only(left: 8),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: [
+//                       Text(
+//                         notification.content,
+//                         style: Theme.of(context).textTheme.bodyText1,
+//                       ),
+//                       Text(
+//                         (inHour == 0
+//                             ? inMin == 0
+//                                 ? "$inSec sec ago"
+//                                 : "$inMin min ago"
+//                             : "$inHour hr ago"),
+//                         style: Theme.of(context).textTheme.caption,
+//                       ),
+//                     ],
+//                   )),
+//             ),
+//             if (notification.type ==
+//                 kNotificationKeyFollowRequest) ...[
+//               DoneButton(
+//                 onTap: () {
+//                   profileProvider.addFollower(
+//                       id: notificationProvider.notificationList[index].sentBy,
+//                       context: context);
+//                   profileProvider.addFollowinfToOther(
+//                       id: notificationProvider.notificationList[index].sentBy,
+//                       context: context);
+//                   profileProvider.removeFollowRequest(
+//                       id: notificationProvider.notificationList[index].sentBy,
+//                       context: context);
+//                 },
+//                 text: "Accept",
+//                 height: 30,
+//                 width: 80,
+//               ),
+//               DoneButton(
+//                 onTap: () {
+//                   profileProvider.removeFollowRequest(
+//                       id: notificationProvider.notificationList[index].sentBy,
+//                       context: context);
+//                   notificationProvider.deleteNotification(
+//                       notificationProvider.notificationList[index].id);
+//                 },
+//                 text: "Deline",
+//                 height: 30,
+//                 width: 80,
+//               ),
+//             ],
+//           ],
+//         ));
+//         });
+//   }
+// }
