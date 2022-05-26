@@ -11,7 +11,7 @@ class AboutScreen extends StatelessWidget {
           'About',
           style: Theme.of(context).textTheme.headline6,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 1,
         toolbarHeight: 50,
@@ -22,10 +22,15 @@ class AboutScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('The Project'),
+              Text(
+                'The Project',
+                style: Theme.of(context).textTheme.headline4,
+              ),
               const SizedBox(height: 30),
-              const Text(
-                  'The app is an online archive that helps people connect through social networks at college.'),
+              Text(
+                'The app is an online archive that helps people connect through social networks at college.',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
               // const SizedBox(height: 30),
               // const Text(
               //     'We have opened up the app for popular consumption at KSSEM'),
@@ -66,25 +71,40 @@ class AboutScreen extends StatelessWidget {
               //   ],
               // ),
               const SizedBox(height: 30),
-              const Text('The People:'),
+              Text(
+                'The People:',
+                style: Theme.of(context).textTheme.headline4,
+              ),
               const SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Charith Bhat'),
-                  SizedBox(width: 20),
+                children: [
+                  Text(
+                    'Charith Bhat',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                          'Favorite Quote: "If democracy fails, beat em with a dandi" - probably Ghandi '))
+                    'Favorite Quote: "If democracy fails, beat em with a dandi" - probably Ghandi ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
                 ],
               ),
               const SizedBox(height: 10),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Ashish Kumar'),
-                  SizedBox(width: 20),
-                  Flexible(child: Text('No quote yet'))
+                children: [
+                  Text(
+                    'Ashish Kumar',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
+                  Flexible(
+                      child: Text(
+                    'No quote yet',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
                 ],
               ),
               const SizedBox(height: 20),

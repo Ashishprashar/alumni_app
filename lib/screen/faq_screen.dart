@@ -11,7 +11,7 @@ class FaqScreen extends StatelessWidget {
           'FAQ',
           style: Theme.of(context).textTheme.headline6,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 1,
         toolbarHeight: 50,
@@ -89,7 +89,7 @@ class CustomExpansionTile extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Text(
           question,
-          style: Theme.of(context).textTheme.displayMedium,
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
       // subtitle: Text('Trailing expansion arrow icon'),
@@ -99,7 +99,7 @@ class CustomExpansionTile extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             answer,
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
       ],

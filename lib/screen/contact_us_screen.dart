@@ -11,7 +11,7 @@ class ContactUsScreen extends StatelessWidget {
           'Contact Us',
           style: Theme.of(context).textTheme.headline6,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 1,
         toolbarHeight: 50,
@@ -22,21 +22,45 @@ class ContactUsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Contact us'),
-              const SizedBox(height: 20),
-              const Text('Email'),
-              const SizedBox(height: 20),
-              Row(
-                children: const [
-                  Flexible(child: Text('Information/Suport')),
-                  Flexible(child: Text('charsept04@gmail.com'))
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Information/Support',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    'charsept04@gmail.com',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
-              Row(
-                children: const [
-                  Flexible(child: Text('Suggestions/Requests')),
-                  Flexible(child: Text('charsept04@gmail.com'))
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Suggestions/Requests',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    'charsept04@gmail.com',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bugs',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    'charsept04@gmail.com',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ],
               ),
             ],

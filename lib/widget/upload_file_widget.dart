@@ -30,9 +30,10 @@ class UploadPostWidget extends StatelessWidget {
         child: feedProvider.isUploading
             ? Center(
                 child: Column(
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text("Uploading Post")
+                  children: [
+                    const CircularProgressIndicator(),
+                    Text("Uploading Post",
+                        style: Theme.of(context).textTheme.bodyText1),
                   ],
                 ),
               )
@@ -40,12 +41,15 @@ class UploadPostWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   child: TextField(
+                    autocorrect: true,
+                    style: Theme.of(context).textTheme.bodyText2,
                     minLines: 2,
                     maxLines: 4,
                     controller: feedProvider.postTextContent,
                     maxLength: 200,
-                    decoration: const InputDecoration(
-                        hintText: "What is in your mind?",
+                    decoration: InputDecoration(
+                        hintText: "What's on your mind?",
+                        hintStyle: Theme.of(context).textTheme.bodyText1,
                         border: InputBorder.none),
                   ),
                 ),

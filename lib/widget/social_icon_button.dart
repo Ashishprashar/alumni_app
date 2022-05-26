@@ -47,7 +47,7 @@ class SocialIconButton extends StatelessWidget {
             icon: FaIcon(theicon, size: 28,),
             color: user.linkToSocial[socialName] == ''
                 ? Colors.grey
-                : Colors.black,
+                : Theme.of(context).appBarTheme.iconTheme!.color,
             
             onPressed: () async {
               launch('mailto:${user.email}?subject=&body=');

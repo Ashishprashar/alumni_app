@@ -7,11 +7,13 @@ import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/feed_screen.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/screen/profile.dart';
+import 'package:alumni_app/services/media_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -107,6 +109,7 @@ class _HomeState extends State<Home> {
           return false;
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: currentUserProvider.isDeleting
               ? const Center(
@@ -129,7 +132,7 @@ class _HomeState extends State<Home> {
                             BoxShadow(
                                 color: Colors.transparent.withOpacity(.1),
                                 offset: const Offset(0, 15),
-                                blurRadius: 10,
+                                blurRadius: 1,
                                 spreadRadius: 10,
                                 blurStyle: BlurStyle.outer)
                           ],
@@ -139,74 +142,98 @@ class _HomeState extends State<Home> {
                               topRight: Radius.circular(20)),
                         ),
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              InkWell(
-                                  radius: 20,
-                                  borderRadius: BorderRadius.circular(20),
-                                  onTap: () {
-                                    setState(() {
-                                      _currentIndex = 0;
-                                    });
-                                    if (_currentIndex == 0) {
-                                      Provider.of<FeedProvider>(context,
-                                              listen: false)
-                                          .scrollUp();
-                                    }
-                                  },
-                                  child: NavigationTheme(
-                                    color: _currentIndex == 0
-                                        ? Theme.of(context).primaryColor
-                                        : null,
-                                    icon: Icons.feed,
-                                  )),
-                              InkWell(
-                                  radius: 20,
-                                  borderRadius: BorderRadius.circular(20),
-                                  onTap: () {
-                                    setState(() {
-                                      _currentIndex = 1;
-                                    });
-                                    // if (_currentIndex == 2) {
-                                    //   Provider.of<PeopleProvider>(context,
-                                    //           listen: false)
-                                    //       .scrollUp();
-                                    // }
-                                  },
-                                  child: NavigationTheme(
-                                    color: _currentIndex == 1
-                                        ? Theme.of(context).primaryColor
-                                        : null,
-                                    icon: Icons.chat,
-                                  )),
-                              InkWell(
-                                  radius: 20,
-                                  borderRadius: BorderRadius.circular(20),
-                                  onTap: () {
-                                    setState(() {
-                                      _currentIndex = 2;
-                                    });
-                                  },
-                                  child: NavigationTheme(
-                                    color: _currentIndex == 2
-                                        ? Theme.of(context).primaryColor
-                                        : null,
-                                    icon: Icons.group,
-                                  )),
-                              InkWell(
-                                  radius: 20,
-                                  borderRadius: BorderRadius.circular(20),
-                                  onTap: () {
-                                    setState(() {
-                                      _currentIndex = 3;
-                                    });
-                                  },
-                                  child: NavigationTheme(
-                                    color: _currentIndex == 3
-                                        ? Theme.of(context).primaryColor
-                                        : null,
-                                    icon: Icons.person,
-                                  )),
+                              SizedBox(
+                                width: SizeData.screenWidth * 0.25,
+                                child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    radius: 20,
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () {
+                                      setState(() {
+                                        _currentIndex = 0;
+                                      });
+                                      if (_currentIndex == 0) {
+                                        Provider.of<FeedProvider>(context,
+                                                listen: false)
+                                            .scrollUp();
+                                      }
+                                    },
+                                    child: NavigationTheme(
+                                      color: _currentIndex == 0
+                                          ? Theme.of(context).hoverColor
+                                          : Theme.of(context).toggleableActiveColor,
+                                      icon: Icons.home,
+                                      type: "home",
+                                    )),
+                              ),
+                              SizedBox(
+                                width: SizeData.screenWidth * 0.25,
+                                child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    radius: 20,
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () {
+                                      setState(() {
+                                        _currentIndex = 1;
+                                      });
+                                      // if (_currentIndex == 2) {
+                                      //   Provider.of<PeopleProvider>(context,
+                                      //           listen: false)
+                                      //       .scrollUp();
+                                      // }
+                                    },
+                                    child: NavigationTheme(
+                                      color: _currentIndex == 1
+                                          ? Theme.of(context).hoverColor
+                                          : Theme.of(context).toggleableActiveColor,
+                                      icon: Icons.chat_outlined,
+                                      type: 'chat',
+                                    )),
+                              ),
+                              SizedBox(
+                                width: SizeData.screenWidth * 0.25,
+                                child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    radius: 20,
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () {
+                                      setState(() {
+                                        _currentIndex = 2;
+                                      });
+                                    },
+                                    child: NavigationTheme(
+                                      color:_currentIndex == 2
+                                          ? Theme.of(context).hoverColor
+                                          : Theme.of(context).toggleableActiveColor,
+                                      icon: Icons.search_rounded,
+                                      type: "search",
+                                    )),
+                              ),
+                              SizedBox(
+                                width: SizeData.screenWidth * 0.25,
+                                child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    radius: 20,
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () {
+                                      setState(() {
+                                        _currentIndex = 3;
+                                      });
+                                    },
+                                    child: NavigationTheme(
+                                      color: _currentIndex == 3
+                                          ? Theme.of(context).hoverColor
+                                          : Theme.of(context).toggleableActiveColor,
+                                      icon: Icons.person,
+                                      type: "profile",
+                                    )),
+                              ),
                             ]),
                       ),
                     ),
@@ -221,11 +248,39 @@ class _HomeState extends State<Home> {
 class NavigationTheme extends StatelessWidget {
   Color? color;
   IconData? icon;
-  NavigationTheme({Key? key, this.color, this.icon}) : super(key: key);
+  late String type = "";
+
+  NavigationTheme({Key? key, this.color, this.icon, required this.type})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final double size = sizeDecider(type);
     return Container(
-        padding: const EdgeInsets.all(8), child: Icon(icon, color: color));
+        padding: const EdgeInsets.all(8),
+        child: Icon(
+          icon,
+          size: size,
+          color: color,
+        ));
   }
+}
+
+double sizeDecider(String type) {
+  double _size = 0;
+  switch (type) {
+    case "home":
+      _size = 30;
+      break;
+    case "chat":
+      _size = 23;
+      break;
+    case "search":
+      _size = 28;
+      break;
+    case "profile":
+      _size = 25;
+      break;
+  }
+  return _size;
 }

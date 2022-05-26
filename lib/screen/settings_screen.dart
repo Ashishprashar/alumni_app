@@ -14,12 +14,11 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
         title: Text(
           'Settings',
           style: Theme.of(context).textTheme.headline6,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 1,
         toolbarHeight: 50,
@@ -30,7 +29,8 @@ class SettingsScreen extends StatelessWidget {
           child: Center(
               child: Column(
             children: [
-              const Text('Change Theme'),
+              Text('Change Theme',
+                  style: Theme.of(context).textTheme.bodyText1),
               SizedBox(
                 height: 100,
                 child: Padding(
@@ -38,7 +38,10 @@ class SettingsScreen extends StatelessWidget {
                   child: ListView(
                     children: [
                       SwitchListTile(
-                        title: const Text('Dark Mode'),
+                        title: Text(
+                          'Dark Mode',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                         value:
                             Provider.of<AppThemeNotifier>(context, listen: true)
                                 .isDarkModeOn,
@@ -52,34 +55,63 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text('Account Details'),
+              Text(
+                'Account Details',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text('Created At: '),
+                  Text(
+                    'Created At: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                   Flexible(
-                      child: Text(_user!.metadata.creationTime.toString())),
+                      child: Text(
+                    _user!.metadata.creationTime.toString(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Flexible(child: Text('User Name: ')),
-                  Flexible(child: Text(_user.displayName.toString())),
+                  Flexible(
+                      child: Text(
+                    'User Name: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
+                  Flexible(
+                      child: Text(
+                    _user.displayName.toString(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Flexible(child: Text('email: ')),
-                  Flexible(child: Text(_user.email.toString())),
+                  Flexible(
+                      child: Text(
+                    'email: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
+                  Flexible(
+                      child: Text(
+                    _user.email.toString(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Flexible(child: Text('photo: ')),
+                  Flexible(
+                      child: Text(
+                    'photo: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
                   Flexible(
                       child: CircleAvatar(
                     radius: 30,
@@ -89,7 +121,10 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              const Text('Maybe we could have a delete account option'),
+              Text(
+                'Maybe we could have a delete account option',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             ],
           )),
         ),

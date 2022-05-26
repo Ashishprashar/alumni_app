@@ -77,7 +77,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
                   child: Icon(
-                    Icons.notifications,
+                    Icons.notifications_none,
                     color: Theme.of(context).appBarTheme.iconTheme!.color,
                   ),
                 ),

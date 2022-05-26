@@ -168,6 +168,9 @@ class _EditScreenState extends State<EditScreen> {
                                                   .focusColor)),
                                       child: Center(
                                         child: TextField(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
                                           controller: bioController,
                                           keyboardType: TextInputType.multiline,
                                           minLines: 1,
@@ -390,6 +393,7 @@ class _EditScreenState extends State<EditScreen> {
                                 child: DoneButton(
                                     height: 50,
                                     width: 200,
+                                    color: Theme.of(context).primaryColor,
                                     onTap: () async {
                                       setState(() {
                                         isLoading = true;

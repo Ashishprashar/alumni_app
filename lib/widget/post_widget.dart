@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_app/services/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _PostWidgetState extends State<PostWidget> {
               // });
               log(widget.postModel.attachments.length.toString());
               return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
+                margin: const EdgeInsets.symmetric(horizontal: 14),
                 child: Column(
                   children: [
                     Container(
@@ -74,7 +75,7 @@ class _PostWidgetState extends State<PostWidget> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15)),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(40),
                                   child: Image(
                                     image: CachedNetworkImageProvider(
                                         user.profilePic),
@@ -93,10 +94,51 @@ class _PostWidgetState extends State<PostWidget> {
                                   Text(user.name,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline2),
-                                  Text(user.type,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1)
+                                          .headline4),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(user.type,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                      const SizedBox(width: 3),
+                                      Text(user.branch,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                      const SizedBox(width: 3),
+                                      Text(user.semester,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                      if (user.semester.toString() == "1") ...[
+                                        Text("st",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                      ] else if (user.semester.toString() == 
+                                          "2") ...[
+                                        Text("nd",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                      ] else if (user.semester.toString() ==
+                                          "3") ...[
+                                        Text("rd",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                      ] else
+                                        ...[
+                                          Text("th",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                        ],
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
@@ -158,28 +200,34 @@ class _PostWidgetState extends State<PostWidget> {
                       padding: const EdgeInsets.only(top: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
                             children: [
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isLike = !isLike;
-                                    });
-                                    if (isLike) {
-                                      feedProvider.addLike(
-                                          postId: widget.postModel.id,
-                                          ownerId: widget.postModel.ownerId);
-                                    } else {
-                                      feedProvider.removeLike(
-                                          postId: widget.postModel.id);
-                                    }
-                                  },
-                                  child: Image.asset("assets/images/like.png",
-                                      color: isLike
-                                          ? null
-                                          : Theme.of(context).hintColor)),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isLike = !isLike;
+                                      });
+                                      if (isLike) {
+                                        feedProvider.addLike(
+                                            postId: widget.postModel.id,
+                                            ownerId: widget.postModel.ownerId);
+                                      } else {
+                                        feedProvider.removeLike(
+                                            postId: widget.postModel.id);
+                                      }
+                                    },
+                                    child: Image.asset("assets/images/like.png",
+                                        width: 22,
+                                        height: 22,
+                                        fit: BoxFit.cover,
+                                        color: isLike
+                                            ? null
+                                            : Theme.of(context).hintColor)),
+                              ),
                               Container(
                                   margin: const EdgeInsets.only(left: 8),
                                   child: Text(
@@ -198,16 +246,19 @@ class _PostWidgetState extends State<PostWidget> {
                                   children: [
                                     Container(
                                         padding: const EdgeInsets.only(
-                                            left: 10, right: 5),
+                                            left: 10, right: 5, top: 2),
                                         child: Image.asset(
                                           "assets/images/comment.png",
+                                          width: 22,
+                                          color: Theme.of(context).hintColor,
+                                          height: 22,
+                                          fit: BoxFit.cover,
                                         )),
                                     Text(
                                       (widget.postModel.comments.length)
                                           .toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
+                                      style:
+                                          Theme.of(context).textTheme.labelMedium,
                                     ),
                                   ],
                                 ),
@@ -215,7 +266,7 @@ class _PostWidgetState extends State<PostWidget> {
                             ],
                           ),
                           Text(
-                            DateFormat("dd-MM-yyyy hh:mma")
+                            DateFormat("dd-MMM-yyyy hh:mma")
                                 .format(widget.postModel.updatedAt.toDate()),
                             style: Theme.of(context).textTheme.caption,
                           )

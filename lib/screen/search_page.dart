@@ -44,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: TextField(
+                  style: Theme.of(context).textTheme.bodyText2,
                   autofocus: true,
                   // style: TextStyle(backgroundColor: Colors.grey),
                   controller: searchProvider.searchController,
@@ -51,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                     searchProvider.searchPeople();
                   },
                   decoration: InputDecoration(
-                      fillColor: Colors.grey[100],
+                      fillColor: Theme.of(context).selectedRowColor,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -107,38 +108,41 @@ class _SearchPageState extends State<SearchPage> {
         tag: "profile-pic$index",
         placeholderBuilder: ((ctx, size, widget) {
           return CircleAvatar(
-            radius: 30,
+            radius: 25,
             backgroundImage:
                 CachedNetworkImageProvider(individualUser.profilePic),
           );
         }),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(HeroDialogRoute(
+            Navigator.of(context).push(
+              HeroDialogRoute(
                 builder: ((context) => Center(
                       child: ProfilePicDialog(
                         index: index,
                         image: individualUser.profilePic,
                       ),
-                    ))));
+                    )),
+              ),
+            );
           },
           child: CircleAvatar(
-            radius: 30,
+            radius: 25,
             backgroundImage:
                 CachedNetworkImageProvider(individualUser.profilePic),
           ),
         ),
       ),
       title: Text(individualUser.name,
-          style: Theme.of(context).textTheme.subtitle1),
+          style: Theme.of(context).textTheme.headline4),
       subtitle: individualUser.techStack.isNotEmpty
           ? Text(individualUser.techStack.toString(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText1)
+              style: Theme.of(context).textTheme.subtitle1)
           : const Text("No skills added yet"),
       trailing: Text(individualUser.type,
-          style: Theme.of(context).textTheme.bodyText1),
+          style: Theme.of(context).textTheme.subtitle1),
     );
   }
 }

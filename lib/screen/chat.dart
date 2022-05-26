@@ -1,7 +1,6 @@
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/people.dart';
-import 'package:alumni_app/services/auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -56,8 +55,9 @@ class _ChatState extends State<Chat> {
             children: [
               const SizedBox(height: 20),
               chatProvider.chats.isEmpty
-                  ? const Center(
-                      child: Text("No Chats"),
+                  ? Center(
+                      child: Text("No Chats",
+                          style: Theme.of(context).textTheme.bodyText1),
                     )
                   : Expanded(
                       // height: SizeData.screenHeight,
@@ -91,10 +91,24 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => ChatScreen(
-                  chatWithUser: widget.chatModel.user,
-                )));
+        // Navigator.push(
+        //   context,
+        //   PageTransition(
+        //     opaque: true,
+        //     type: PageTransitionType.rightToLeft,
+        //     child: ChatScreen(
+        //       chatWithUser: widget.chatModel.user,
+        //     ),
+        //   ),
+        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              chatWithUser: widget.chatModel.user,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -103,8 +117,8 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 40,
-              width: 40,
+              height: 50,
+              width: 50,
               child: Hero(
                 placeholderBuilder: (context, heroSize, child) => Container(
                   decoration:
@@ -134,7 +148,7 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(40),
                       child: Image(
                         image: CachedNetworkImageProvider(
                             widget.chatModel.user.profilePic),
@@ -153,7 +167,7 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(widget.chatModel.user.name,
-                        style: Theme.of(context).textTheme.headline2),
+                        style: Theme.of(context).textTheme.headline4),
                     Text(widget.chatModel.lasMessage ?? "",
                         style: Theme.of(context).textTheme.subtitle1)
                   ],

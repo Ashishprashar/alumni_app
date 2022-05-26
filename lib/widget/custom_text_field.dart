@@ -27,21 +27,25 @@ class CustomTextField extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.headline4,
           ),
           Container(
             height: height,
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Theme.of(context).focusColor)),
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Theme.of(context).focusColor),
+            ),
             child: Center(
               child: TextField(
                 controller: controller,
+                style: Theme.of(context).textTheme.bodyText1,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(30),
                 ],
                 decoration: InputDecoration(
+                  // fillColor: Theme.of(context).focusColor,
+                  // filled: true,
                   border: InputBorder.none,
                   hintText: hint,
                   suffixIcon: suffix,

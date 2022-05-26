@@ -9,8 +9,9 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/services/media_query.dart';
-import 'package:alumni_app/widget/app_drawer.dart';
+import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:alumni_app/widget/post_widget.dart';
+import 'package:alumni_app/widget/profile_fields.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +28,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   AuthServices authServices = AuthServices();
   late UserModel? currentUser;
-  @override
-  void initState() {
-    super.initState();
-    // setState(() {
-    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-    //     .getCurrentUser();
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +37,18 @@ class _ProfileState extends State<Profile> {
         builder: (context, currentUserProvider, child) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Profile',
             style: Theme.of(context).textTheme.headline6,
           ),
+          actions: const [
+            BottomSheetMenu(),
+            Padding(padding: EdgeInsets.only(right: 8)),
+          ],
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 1,
           toolbarHeight: 50,
-        ),
-        endDrawer: AppDrawer(
-          currentUser: currentUser!,
         ),
         body: SafeArea(
           child: Scrollbar(
@@ -93,14 +88,11 @@ class _UserProfileState extends State<UserProfile> {
     return Consumer<ProfileProvider>(
         builder: (context, profileProvider, child) {
       return Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            // height: 170,
-            margin: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(20)),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -117,11 +109,14 @@ class _UserProfileState extends State<UserProfile> {
                             height: 63,
                             width: 63,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Image(
-                              image: CachedNetworkImageProvider(
-                                  widget.user.profilePic),
-                              fit: BoxFit.cover,
+                                borderRadius: BorderRadius.circular(40)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image(
+                                image: CachedNetworkImageProvider(
+                                    widget.user.profilePic),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             // CachedNetworkImageProvider(user.profilePic),
                           );
@@ -140,12 +135,13 @@ class _UserProfileState extends State<UserProfile> {
                               width: 63,
                               height: 63,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: const [
-                                    BoxShadow(spreadRadius: 0, blurRadius: 5)
-                                  ]),
+                                borderRadius: BorderRadius.circular(40),
+                                // boxShadow: const [
+                                //   BoxShadow(spreadRadius: 0, blurRadius: 5)
+                                // ],
+                              ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(40),
                                 child: Image(
                                   image: CachedNetworkImageProvider(
                                       widget.user.profilePic),
@@ -163,9 +159,51 @@ class _UserProfileState extends State<UserProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(widget.user.name,
-                                  style: Theme.of(context).textTheme.headline2),
-                              Text(widget.user.type,
-                                  style: Theme.of(context).textTheme.subtitle1)
+                                  style: Theme.of(context).textTheme.headline4),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(widget.user.type,
+                                      style:
+                                          Theme.of(context).textTheme.caption),
+                                  const SizedBox(width: 3),
+                                  const Text('•'),
+                                  const SizedBox(width: 3),
+                                  Text(widget.user.branch,
+                                      style:
+                                          Theme.of(context).textTheme.caption),
+                                  const SizedBox(width: 3),
+                                  const Text('•'),
+                                  const SizedBox(width: 3),
+                                  Text(widget.user.semester,
+                                      style:
+                                          Theme.of(context).textTheme.caption),
+                                  if (widget.user.semester.toString() ==
+                                      "1") ...[
+                                    Text("st",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  ] else if (widget.user.semester.toString() ==
+                                      "2") ...[
+                                    Text("nd",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  ] else if (widget.user.semester.toString() ==
+                                      "3") ...[
+                                    Text("rd",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  ] else ...[
+                                    Text("th",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  ],
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -244,10 +282,7 @@ class _UserProfileState extends State<UserProfile> {
                   Column(children: [
                     Text(
                       widget.user.postCount.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Theme.of(context).errorColor),
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Text(
                       "Posts",
@@ -257,28 +292,19 @@ class _UserProfileState extends State<UserProfile> {
                   Column(children: [
                     Text(
                       widget.user.followerCount.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Theme.of(context).errorColor),
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Text(
                       "Followers",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ]),
-                  // Container(
-                  //   width: .2,
-                  //   height: 50,
-                  //   color: Colors.black,
-                  // ),
                   Column(children: [
                     Text(
                       widget.user.followingCount.toString(),
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
-                          .copyWith(color: Theme.of(context).errorColor),
+                          .bodyText2,
                     ),
                     Text(
                       "Following",
@@ -287,7 +313,7 @@ class _UserProfileState extends State<UserProfile> {
                   ]),
                 ],
               ),
-              
+
               // only be able to poke people that you follow
               // if (widget.user.id != firebaseCurrentUser?.uid &&
               //     currentUser!.following.contains(widget.user.id))
@@ -322,127 +348,8 @@ class _UserProfileState extends State<UserProfile> {
               //       ),
               //     ),
               //   ),
-              if (widget.user.bio.isNotEmpty) const SizedBox(height: 20),
-
-              if (widget.user.bio.isNotEmpty)
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    "Bio",
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-              if (widget.user.bio.isNotEmpty)
-                Container(
-                  margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                  child: Text(
-                    widget.user.bio,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
               const SizedBox(height: 20),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Skills",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                child: Text(
-                  widget.user.techStack.join(", "),
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Interests",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                child: Text(
-                  widget.user.interests.join(", "),
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Semester",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                child: Text(
-                  widget.user.semester,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              // Container(
-              //   margin: const EdgeInsets.only(
-              //     left: 24,
-              //     right: 24,
-              //   ),
-              //   child: Text(
-              //     "Privelage",
-              //     style: Theme.of(context).textTheme.subtitle1,
-              //   ),
-              // ),
-              // Container(
-              //   margin: const EdgeInsets.only(left: 24, right: 24, bottom: 10),
-              //   child: Text(
-              //     widget.user.admin ? "Admin" : "Normal User",
-              //     style: Theme.of(context).textTheme.bodyText1,
-              //   ),
-              // ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Branch",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 20),
-                child: Text(
-                  widget.user.branch,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Text(
-                  "Gender",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                child: Text(
-                  widget.user.gender,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
+              ProfileFields(user: widget.user),
               const SizedBox(height: 10),
             ]),
           ),

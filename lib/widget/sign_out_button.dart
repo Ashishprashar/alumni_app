@@ -15,7 +15,12 @@ class _SignOutButtonState extends State<SignOutButton> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.login_rounded),
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
+      leading: Icon(
+        Icons.login_rounded,
+        color: Theme.of(context).highlightColor,
+      ),
       minLeadingWidth: 0,
       title: Text('Logout', style: Theme.of(context).textTheme.headline3),
       onTap: () async {
@@ -23,8 +28,9 @@ class _SignOutButtonState extends State<SignOutButton> {
             context: context,
             builder: (context) {
               return AlertDialog(
+                backgroundColor: Theme.of(context).selectedRowColor,
                 title: Text(
-                  "Are you sure?",
+                  "Log out of the App?",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 content: Row(
@@ -33,7 +39,7 @@ class _SignOutButtonState extends State<SignOutButton> {
                     DoneButton(
                       height: 30,
                       width: 70,
-                      text: "Yes",
+                      text: "Log out",
                       onTap: () async {
                         await authServices.signOut(context);
                       },
@@ -44,7 +50,7 @@ class _SignOutButtonState extends State<SignOutButton> {
                     DoneButton(
                       height: 30,
                       width: 70,
-                      text: "No",
+                      text: "Cancel",
                       onTap: () {
                         Navigator.pop(context);
                       },

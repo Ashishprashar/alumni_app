@@ -55,7 +55,9 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
     }
     return IconButton(
       icon: FaIcon(theicon),
-      color: widget.controllerText == '' ? Colors.grey : Colors.black,
+      color: widget.controllerText == ''
+          ? Colors.grey
+          : Theme.of(context).iconTheme.color,
       onPressed: () {
         socialLink(widget.socialName, context, temporaryController);
       },
@@ -86,10 +88,7 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                       children: [
                         Text(
                           "Add your $socialName profile link",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(color: Colors.black),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                         const SizedBox(
                           height: 20,

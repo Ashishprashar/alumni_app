@@ -18,7 +18,7 @@ class InviteScreen extends StatelessWidget {
               'Invite User',
               style: Theme.of(context).textTheme.headline6,
             ),
-            iconTheme: const IconThemeData(color: Colors.white),
+            iconTheme: Theme.of(context).appBarTheme.iconTheme,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             elevation: 1,
             toolbarHeight: 50,
@@ -27,15 +27,17 @@ class InviteScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomTextField(
-                  title: "Enter Email Id", controller: inviteUser.emailId),
+                  title: "Enter Email Id", controller: inviteUser.emailId, hint: 'Enter their google account email id',),
               Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  width: 200,
-                  child: DoneButton(
-                      onTap: () async {
-                        await inviteUser.inviteUser(context);
-                      },
-                      text: "Invite"))
+                margin: const EdgeInsets.only(top: 20),
+                width: 150,
+                height: 40,
+                child: DoneButton(
+                    onTap: () async {
+                      await inviteUser.inviteUser(context);
+                    },
+                    text: "Invite"),
+              )
             ],
           ),
         ),

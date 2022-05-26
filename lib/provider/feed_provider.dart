@@ -19,7 +19,7 @@ class FeedProvider with ChangeNotifier {
   List<XFile>? _filesToUpload;
   // final List<PostModel> _allPosts = [];
   DatabaseService databaseService = DatabaseService();
-
+  ScrollController feedScroller = ScrollController();
   TextEditingController postTextContent = TextEditingController();
   TextEditingController commentTextContent = TextEditingController();
   bool isUploading = false;

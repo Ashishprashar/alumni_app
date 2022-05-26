@@ -44,23 +44,24 @@ class _PeopleState extends State<People> {
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.all(24),
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      margin: const EdgeInsets.only(left: 12,top:12,bottom: 12,right: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 3),
                       decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(.1),
-                                blurRadius: 20,
-                                spreadRadius: 20,
-                                offset: const Offset(0, 10))
-                          ],
-                          borderRadius: BorderRadius.circular(15),
-                          color: Theme.of(context)
-                              .backgroundColor
-                              .withOpacity(.5)),
-                      height: 44,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .backgroundColor
+                                  .withOpacity(.1),
+                              blurRadius: 20,
+                              spreadRadius: 20,
+                              offset: const Offset(0, 10))
+                        ],
+                        borderRadius: BorderRadius.circular(13),
+                        // color:
+                        //     Theme.of(context).backgroundColor.withOpacity(.5),
+                        color: Theme.of(context).selectedRowColor
+                      ),
+                      height: 38,
                       child: Row(
                         children: [
                           const Icon(Icons.search),
@@ -69,12 +70,13 @@ class _PeopleState extends State<People> {
                           ),
                           Text(
                             'Search by name',
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),
                     ),
                   ),
+                  const SizedBox(height: 3),
                   const UserList(),
                 ],
               ),
@@ -162,14 +164,14 @@ class _UserListState extends State<UserList> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 40,
-              width: 40,
+              height: 50,
+              width: 50,
               child: Hero(
                 placeholderBuilder: (context, heroSize, child) => Container(
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(15)),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(40),
                     child: Image(
                       image:
                           CachedNetworkImageProvider(individualUser.profilePic),
@@ -193,7 +195,7 @@ class _UserListState extends State<UserList> {
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(15)),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(40),
                       child: Image(
                         image: CachedNetworkImageProvider(
                             individualUser.profilePic),
@@ -212,7 +214,7 @@ class _UserListState extends State<UserList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(individualUser.name,
-                        style: Theme.of(context).textTheme.headline2),
+                        style: Theme.of(context).textTheme.headline4),
                     Text(
                         individualUser.techStack.isEmpty
                             ? "Skills not added"

@@ -1,5 +1,4 @@
 import 'package:alumni_app/models/notifications_model.dart';
-import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/notification_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/services/media_query.dart';
@@ -45,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             children: [
               Expanded(
                 child: PaginateFirestore(
-                  itemsPerPage: 10,
+                  itemsPerPage: 12,
                   scrollController: notificationScroller,
                   itemBuilder: (context, documentSnapshots, index) {
                     // final data = documentSnapshots[index].data() as Map?;
@@ -62,9 +61,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     final inHour = DateTime.now()
                         .difference(notification.updatedAt)
                         .inHours;
+                    final inDays = DateTime.now()
+                        .difference(notification.updatedAt)
+                        .inDays;
                     // return getPostList(documentSnapshots, index);
 
                     return NotificationTile(
+                        inDays: inDays,
                         inHour: inHour,
                         inMin: inMin,
                         inSec: inSec,
@@ -89,6 +92,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 class NotificationTile extends StatefulWidget {
   const NotificationTile({
     Key? key,
+    required this.inDays,
     required this.inHour,
     required this.inMin,
     required this.inSec,
@@ -96,6 +100,7 @@ class NotificationTile extends StatefulWidget {
     required this.index,
   }) : super(key: key);
 
+  final int inDays;
   final int inHour;
   final int inMin;
   final int inSec;
@@ -120,7 +125,7 @@ class _NotificationTileState extends State<NotificationTile> {
             if (snapshot.hasData) {
               return Container(
                   margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: Row(
                     children: [
                       Container(
@@ -129,7 +134,7 @@ class _NotificationTileState extends State<NotificationTile> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15)),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(40),
                             child: Image(
                               image: CachedNetworkImageProvider(
                                   snapshot.data ?? ""),
@@ -147,14 +152,11 @@ class _NotificationTileState extends State<NotificationTile> {
                                   notification.content,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
-                                Text(
-                                  (widget.inHour == 0
-                                      ? widget.inMin == 0
-                                          ? "${widget.inSec} sec ago"
-                                          : "${widget.inMin} min ago"
-                                      : "${widget.inHour} hr ago"),
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
+                                NotificationDate(
+                                    inDays: widget.inDays,
+                                    inHour: widget.inHour,
+                                    inMin: widget.inMin,
+                                    inSec: widget.inSec)
                               ],
                             )),
                       ),
@@ -188,9 +190,51 @@ class _NotificationTileState extends State<NotificationTile> {
                     ],
                   ));
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return Container();
             }
           });
     });
+  }
+}
+
+class NotificationDate extends StatelessWidget {
+  const NotificationDate({
+    Key? key,
+    required this.inDays,
+    required this.inHour,
+    required this.inMin,
+    required this.inSec,
+  }) : super(key: key);
+
+  final int inDays;
+  final int inHour;
+  final int inMin;
+  final int inSec;
+
+  final String time = "";
+
+  @override
+  Widget build(BuildContext context) {
+    if (inDays > 0) {
+      return Text(
+        inDays>1 ? inDays.toString() + " days ago" : inDays.toString() + " day ago",
+        style: Theme.of(context).textTheme.caption,
+      );
+    } else if (inHour > 0) {
+      return Text(
+        inHour>1 ? inHour.toString() + " hours ago" : inHour.toString() + " hour ago",
+        style: Theme.of(context).textTheme.caption,
+      );
+    } else if (inMin > 0) {
+      return Text(
+        inMin>1 ? inMin.toString() + " minutes ago" : inMin.toString() + " minute ago",
+        style: Theme.of(context).textTheme.caption,
+      );
+    } else {
+      return Text(
+        inSec>1 ? inSec.toString() + " seconds ago" : inSec.toString() + " second ago",
+        style: Theme.of(context).textTheme.caption,
+      );
+    }
   }
 }

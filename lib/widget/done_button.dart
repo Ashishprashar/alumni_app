@@ -25,17 +25,14 @@ class DoneButton extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: color ?? Theme.of(context).highlightColor.withOpacity(.2),
+          color: color ?? Theme.of(context).primaryColor,
 
           // border: Border.all(color: Theme.of(context).hintColor)
         ),
         child: Center(
             child: Text(
           text,
-          style: Theme.of(context)
-              .textTheme
-              .button!
-              .copyWith(fontSize: 10, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
         )),
       ),
     );
