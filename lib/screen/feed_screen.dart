@@ -9,6 +9,7 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/notification_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
+import 'package:alumni_app/widget/sign_out_button.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,7 @@ class _FeedScreenState extends State<FeedScreen> {
             elevation: 2,
             toolbarHeight: 50,
             actions: [
+              // Container(child: SignOutButton(), height: 20,width: 20,),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -111,6 +113,26 @@ class _FeedScreenState extends State<FeedScreen> {
                           .orderBy("updated_at", descending: true),
                       itemBuilderType: PaginateBuilderType.listView,
                       isLive: true,
+                      onEmpty: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'No Posts Yet.',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              const SizedBox(height: 40),
+                              Text(
+                                "You can Start following people in your college to get their posts on your feed.",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   )
                 ],

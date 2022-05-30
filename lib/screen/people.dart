@@ -44,23 +44,24 @@ class _PeopleState extends State<People> {
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(left: 12,top:12,bottom: 12,right: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 3),
+                      margin: const EdgeInsets.only(
+                          left: 12, top: 12, bottom: 12, right: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 17, vertical: 3),
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context)
-                                  .backgroundColor
-                                  .withOpacity(.1),
-                              blurRadius: 20,
-                              spreadRadius: 20,
-                              offset: const Offset(0, 10))
-                        ],
-                        borderRadius: BorderRadius.circular(13),
-                        // color:
-                        //     Theme.of(context).backgroundColor.withOpacity(.5),
-                        color: Theme.of(context).selectedRowColor
-                      ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Theme.of(context)
+                                    .backgroundColor
+                                    .withOpacity(.1),
+                                blurRadius: 20,
+                                spreadRadius: 20,
+                                offset: const Offset(0, 10))
+                          ],
+                          borderRadius: BorderRadius.circular(13),
+                          // color:
+                          //     Theme.of(context).backgroundColor.withOpacity(.5),
+                          color: Theme.of(context).selectedRowColor),
                       height: 38,
                       child: Row(
                         children: [
@@ -224,8 +225,17 @@ class _UserListState extends State<UserList> {
                 ),
               ),
             ),
-            Text(individualUser.type,
-                style: Theme.of(context).textTheme.subtitle1)
+            Row(
+              children: [
+                Text(individualUser.branch,
+                    style: Theme.of(context).textTheme.subtitle1),
+                const SizedBox(width: 3),
+                const Text('•'),
+                const SizedBox(width: 3),
+                Text(individualUser.semester,
+                    style: Theme.of(context).textTheme.subtitle1),
+              ],
+            ),
           ],
         ),
       ),

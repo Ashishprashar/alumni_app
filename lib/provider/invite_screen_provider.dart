@@ -1,5 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -37,5 +40,42 @@ class InviteProvider with ChangeNotifier {
     });
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Invite Sent! Tell your friend to install the app")));
+  }
+
+  authorizeUser(BuildContext context, String name, String usn, File idCardImage,
+      String? email) async {
+    // check if all fields are entered
+    if (name == "" || usn == "" || email == "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please enter all the fields")));
+      return;
+    }
+    // var data =
+    //     await authorizedEmailDb.where("invitedTo", isEqualTo: email).get();
+
+    // run querey to get the the  uid of the invite to update
+    final doc =
+        await authorizedEmailDb.where('invitedTo', isEqualTo: email).get();
+
+    String documentId = doc.docs[0].id;
+
+    // add id card to storage
+    Timestamp now = Timestamp.now();
+    UploadTask uploadTask =
+        storageRef.child('idCards/${documentId}.jpg').putFile(idCardImage);
+    TaskSnapshot storageSnap = await uploadTask;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    //update doc
+    await authorizedEmailDb
+        .doc(documentId)
+        .update({
+          'name': name,
+          'usn': usn,
+          'id_card_image': downloadUrl,
+          'timeStamp': now
+        })
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
   }
 }

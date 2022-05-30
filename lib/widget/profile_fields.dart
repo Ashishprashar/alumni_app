@@ -23,6 +23,8 @@ class ProfileFields extends StatelessWidget {
         if (user.bio.isNotEmpty) Field(title: "Bio", attribute: user.bio),
         Field(title: "Skills", attribute: user.techStack.join(", ")),
         Field(title: "Interests", attribute: user.interests.join(", ")),
+        Field(title: "Favorite Music", attribute: user.favoriteMusic.join(", ")),
+        Field(title: "Favorite Shows/Movies", attribute: user.favoriteShowsMovies.join(", ")),
         Field(title: "Gender", attribute: user.gender),
         Field(title: "Joined On", attribute: theDate(user.createdAt)),
       ],

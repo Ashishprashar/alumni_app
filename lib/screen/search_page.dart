@@ -141,8 +141,18 @@ class _SearchPageState extends State<SearchPage> {
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle1)
           : const Text("No skills added yet"),
-      trailing: Text(individualUser.type,
-          style: Theme.of(context).textTheme.subtitle1),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(individualUser.branch,
+                    style: Theme.of(context).textTheme.subtitle1),
+                const SizedBox(width: 3),
+                const Text('•'),
+                const SizedBox(width: 3),
+                Text(individualUser.semester,
+                    style: Theme.of(context).textTheme.subtitle1),
+              ],
+            ),
     );
   }
 }

@@ -37,7 +37,7 @@ class _ChatState extends State<Chat> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text(
-              'Chat',
+              'Chats',
               style: Theme.of(context).textTheme.headline6,
             ),
             iconTheme: const IconThemeData(color: Colors.white),
@@ -52,11 +52,12 @@ class _ChatState extends State<Chat> {
             // ],
           ),
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
               chatProvider.chats.isEmpty
                   ? Center(
-                      child: Text("No Chats",
+                      child: Text("No Chats Yet.",
                           style: Theme.of(context).textTheme.bodyText1),
                     )
                   : Expanded(

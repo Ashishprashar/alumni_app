@@ -5,6 +5,7 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,15 +21,18 @@ class DatabaseService {
 
   Future createAccount(
     String name,
-    List teckStack,
-    File image,
+    String usn,
+    // List teckStack,
+    File? image,
   ) async {
+    log('hello');
     Timestamp now = Timestamp.now();
     UploadTask uploadTask = storageRef
         .child('profile/${firebaseCurrentUser?.uid}.jpg')
-        .putFile(image);
+        .putFile(image!);
     TaskSnapshot storageSnap = await uploadTask;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
+    log(downloadUrl);
 
     Map _linkToSocial = {
       'email': firebaseCurrentUser!.email,
@@ -49,8 +53,12 @@ class DatabaseService {
       name: name,
       searchName: name.toUpperCase(),
       profilePic: downloadUrl,
-      techStack: teckStack,
+      // profilePic: firebaseCurrentUser!.photoURL ?? "",
+      // techStack: teckStack,
+      techStack: [],
       interests: [],
+      favoriteMusic: [],
+      favoriteShowsMovies: [],
       type: "student",
       updatedAt: now,
       admin: false,
@@ -62,11 +70,14 @@ class DatabaseService {
       followingCount: 0,
       postCount: 0,
       followRequest: [],
-      gender: "MALE",
+      gender: "Male",
+      usn: usn,
     );
 
     Map<String, dynamic> data = (user.toJson());
-    await userCollection.doc(firebaseCurrentUser?.uid).set(data);
+
+    await userCollection.doc(firebaseCurrentUser!.uid).set(data);
+
     navigatorKey.currentContext
         ?.read<CurrentUserProvider>()
         .updateCurrentUser(user);
@@ -79,6 +90,8 @@ class DatabaseService {
     String downloadUrl,
     List techStack,
     List interests,
+    List favoriteMusic,
+    List favoriteShowsMovies,
     String branch,
     String semester,
     Map linkToSocials,
@@ -96,29 +109,33 @@ class DatabaseService {
     }
 
     UserModel updatedUser = UserModel(
-        bio: bio,
-        connection: [],
-        createdAt: createdAt,
-        email: firebaseCurrentUser!.email ?? "",
-        id: firebaseCurrentUser!.uid,
-        linkToSocial: linkToSocials,
-        name: name,
-        searchName: name.toUpperCase(),
-        profilePic: downloadUrl,
-        techStack: techStack,
-        interests: interests,
-        type: 'student',
-        updatedAt: now,
-        admin: false,
-        semester: semester,
-        branch: branch,
-        follower: currentUser!.follower,
-        following: currentUser!.following,
-        followerCount: currentUser!.followerCount,
-        followingCount: currentUser!.followingCount,
-        postCount: currentUser!.postCount,
-        followRequest: currentUser!.followRequest,
-        gender: "MALE");
+      bio: bio,
+      connection: [],
+      createdAt: createdAt,
+      email: firebaseCurrentUser!.email ?? "",
+      id: firebaseCurrentUser!.uid,
+      linkToSocial: linkToSocials,
+      name: name,
+      searchName: name.toUpperCase(),
+      profilePic: downloadUrl,
+      techStack: techStack,
+      interests: interests,
+      favoriteMusic: favoriteMusic,
+      favoriteShowsMovies: favoriteShowsMovies,
+      type: 'student',
+      updatedAt: now,
+      admin: false,
+      semester: semester,
+      branch: branch,
+      follower: currentUser!.follower,
+      following: currentUser!.following,
+      followerCount: currentUser!.followerCount,
+      followingCount: currentUser!.followingCount,
+      postCount: currentUser!.postCount,
+      followRequest: currentUser!.followRequest,
+      gender: "Male",
+      usn: currentUser!.usn,
+    );
 
     Map<String, dynamic> data = (updatedUser.toJson());
     await userCollection.doc(firebaseCurrentUser?.uid).set(data);
