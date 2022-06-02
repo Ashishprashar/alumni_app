@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -31,6 +33,8 @@ class _EditScreenState extends State<EditScreen> {
   bool isLoading = false;
   List techStackList = [];
   List interestsList = [];
+  List favoriteMusicList = [];
+  List favoriteShowsMoviesList = [];
   late UserModel? currentUser =
       navigatorKey.currentContext?.read<CurrentUserProvider>().getCurrentUser();
 
@@ -45,6 +49,8 @@ class _EditScreenState extends State<EditScreen> {
 
   late TextEditingController techStackController;
   late TextEditingController interestsController;
+  late TextEditingController favoriteMusicController;
+  late TextEditingController favoriteShowsMoviesController;
 
   String? defaultSemesterValue;
   String? defaultBranchValue;
@@ -55,6 +61,10 @@ class _EditScreenState extends State<EditScreen> {
   void initState() {
     techStackList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
     interestsList = List<dynamic>.from(currentUser!.interests.map((x) => x));
+    favoriteMusicList =
+        List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
+    favoriteShowsMoviesList =
+        List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
     twitterController =
         TextEditingController(text: currentUser!.linkToSocial['twitter']);
     linkedinController =
@@ -70,6 +80,8 @@ class _EditScreenState extends State<EditScreen> {
     bioController = TextEditingController(text: currentUser!.bio);
     techStackController = TextEditingController();
     interestsController = TextEditingController();
+    favoriteMusicController = TextEditingController();
+    favoriteShowsMoviesController = TextEditingController();
     super.initState();
   }
 
@@ -235,6 +247,55 @@ class _EditScreenState extends State<EditScreen> {
                                       techStackList.removeAt(i);
                                     });
                                   }),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: favoriteMusicController,
+                                title: "Favorite Music",
+                                hint: 'Add Something',
+                                suffix: GestureDetector(
+                                    onTap: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      setState(() {
+                                        favoriteMusicList.insert(
+                                            0, favoriteMusicController.text);
+                                      });
+                                      favoriteMusicController.text = "";
+                                    },
+                                    child: const Icon(Icons.add_box_outlined)),
+                              ),
+                              ListItemsWidget(
+                                  listItems: favoriteMusicList,
+                                  removeTechElement: (int i) {
+                                    setState(() {
+                                      favoriteMusicList.removeAt(i);
+                                    });
+                                  }),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: favoriteShowsMoviesController,
+                                title: "Favorite Shows/Movies",
+                                hint: 'Add Something',
+                                suffix: GestureDetector(
+                                    onTap: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      setState(() {
+                                        favoriteShowsMoviesList.insert(0,
+                                            favoriteShowsMoviesController.text);
+                                      });
+                                      favoriteShowsMoviesController.text = "";
+                                    },
+                                    child: const Icon(Icons.add_box_outlined)),
+                              ),
+                              ListItemsWidget(
+                                  listItems: favoriteShowsMoviesList,
+                                  removeTechElement: (int i) {
+                                    setState(() {
+                                      favoriteShowsMoviesList.removeAt(i);
+                                    });
+                                  }),
+                              const SizedBox(height: 20),
                               const SizedBox(height: 20),
                               //branch
                               Container(
@@ -460,6 +521,8 @@ class _EditScreenState extends State<EditScreen> {
         currentUser!.profilePic,
         techStackList,
         interestsList,
+        favoriteMusicList,
+        favoriteShowsMoviesList,
         defaultBranchValue!,
         defaultSemesterValue!,
         linkToSocial,

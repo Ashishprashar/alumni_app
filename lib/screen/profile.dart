@@ -302,9 +302,7 @@ class _UserProfileState extends State<UserProfile> {
                   Column(children: [
                     Text(
                       widget.user.followingCount.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Text(
                       "Following",
@@ -387,6 +385,25 @@ class _UserProfileState extends State<UserProfile> {
                         .orderBy("updated_at", descending: true),
                     itemBuilderType: PaginateBuilderType.listView,
                     isLive: true,
+                    onEmpty: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'No Posts Yet.',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            const SizedBox(height: 40),
+                            Text(
+                              "You can start posting on the feed screen, Only your followers will be able to see your posts.",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 )
               : const Padding(
