@@ -62,7 +62,7 @@ class InviteProvider with ChangeNotifier {
     // add id card to storage
     Timestamp now = Timestamp.now();
     UploadTask uploadTask =
-        storageRef.child('idCards/${documentId}.jpg').putFile(idCardImage);
+        storageRef.child('idCards/$documentId.jpg').putFile(idCardImage);
     TaskSnapshot storageSnap = await uploadTask;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
 

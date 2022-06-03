@@ -23,20 +23,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController usnController = TextEditingController();
 
-  // TextEditingController techController = TextEditingController();
   DatabaseService databaseService = DatabaseService();
   NavigatorService navigatorService = NavigatorService();
   ImagePicker imagePicker = ImagePicker();
-  // File? idCardImage;
+  File? idCardImage;
   File? profileImage;
-  // List techStack = [];
   bool isLoading = false;
 
   @override
   void dispose() {
     nameController.dispose();
     usnController.dispose();
-    // techController.dispose();
     super.dispose();
   }
 
@@ -55,34 +52,34 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // GestureDetector(
-                            //   onTap: () async {
-                            //     showDialog(
-                            //         context: context,
-                            //         builder: (ctx) {
-                            //           return ImagePickerWidget(
-                            //               onProfileChanged: (File? image) {
-                            //             setState(() {
-                            //               idCardImage = image;
-                            //             });
-                            //           });
-                            //         });
-                            //   },
-                            //   child: Container(
-                            //     margin: const EdgeInsets.only(top: 20.0),
-                            //     child: CircleAvatar(
-                            //       radius: 50.0,
-                            //       backgroundColor:
-                            //           Theme.of(context).highlightColor,
-                            //       backgroundImage: idCardImage != null
-                            //           ? FileImage(idCardImage!)
-                            //           : null,
-                            //       child: idCardImage == null
-                            //           ? const FaIcon(FontAwesomeIcons.plus)
-                            //           : null,
-                            //     ),
-                            //   ),
-                            // ),
+                            GestureDetector(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return ImagePickerWidget(
+                                          onProfileChanged: (File? image) {
+                                        setState(() {
+                                          idCardImage = image;
+                                        });
+                                      });
+                                    });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 20.0),
+                                child: CircleAvatar(
+                                  radius: 50.0,
+                                  backgroundColor:
+                                      Theme.of(context).highlightColor,
+                                  backgroundImage: idCardImage != null
+                                      ? FileImage(idCardImage!)
+                                      : null,
+                                  child: idCardImage == null
+                                      ? const FaIcon(FontAwesomeIcons.plus)
+                                      : null,
+                                ),
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () async {
                                 showDialog(
@@ -158,13 +155,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   //
                                   //        navigatorService.navigateToHome(context));
 
-                                  // inviteUser.authorizeUser(
-                                  //   context,
-                                  //   nameController.text,
-                                  //   usnController.text,
-                                  //   idCardImage!,
-                                  //   firebaseCurrentUser?.email,
-                                  // );
+                                  await inviteUser.authorizeUser(
+                                    context,
+                                    nameController.text,
+                                    usnController.text,
+                                    idCardImage!,
+                                    firebaseCurrentUser?.email,
+                                  );
                                   await databaseService
                                       .createAccount(
                                     nameController.text,
@@ -185,9 +182,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               },
                               text: "Create Account"),
                         ),
-                        // const SizedBox(
-                        //   height: 50,
-                        // ),
+                        const SizedBox(
+                          height: 50,
+                        ),
                         DoneButton(
                           height: 40,
                           width: 100,
