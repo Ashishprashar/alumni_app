@@ -117,6 +117,7 @@ class FeedProvider with ChangeNotifier {
     // No need to check the database file, does exactly what it says
     await databaseService.uploadPost(postModel: post);
     incrementPostCount();
+
     await databaseService.addNotification(
         type: kNotificationKeyPost, postID: post.id);
     _filesToUpload = null;
@@ -169,6 +170,9 @@ class FeedProvider with ChangeNotifier {
     });
 
     commentTextContent.text = "";
+    if (postModel.ownerId == currentUser!.id) {
+      return;
+    }
     await databaseService.addNotification(
         postID: postModel.id,
         type: kNotificationKeyComment,
@@ -182,6 +186,9 @@ class FeedProvider with ChangeNotifier {
       "likes": FieldValue.arrayUnion([firebaseCurrentUser?.uid]),
       "like_count": FieldValue.increment(1)
     });
+    if (ownerId == currentUser!.id) {
+      return;
+    }
     await databaseService.addNotification(
         postID: postId, type: kNotificationKeyLike, sentTo: ownerId);
   }

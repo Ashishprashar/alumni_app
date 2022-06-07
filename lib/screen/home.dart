@@ -32,7 +32,7 @@ final chatListDb = FirebaseDatabase.instance.reference().child("chat");
 final messagesDb = FirebaseDatabase.instance.reference().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
-final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 // bool isDeleting = false;
 
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;

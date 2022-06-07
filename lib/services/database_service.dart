@@ -5,7 +5,6 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
-import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -177,19 +176,20 @@ class DatabaseService {
         break;
     }
     DateTime now = DateTime.now();
+    List sentToList = currentUser!.follower;
+    sentToList.remove(currentUser!.id);
     var data = {
       "type": type,
       "sentBy": currentUser!.id,
-      "sentTo": currentUser!.follower,
+      "sentTo": sentToList,
       "content": content,
       "updated_at": now
     };
     if (type != kNotificationKeyPost) {
       data["sentTo"] = [sentTo];
-    }
-    if (type == "post") {
       data["postId"] = postID!;
     }
+
     String id = (await notificationCollection.add(data)).id;
     await notificationCollection.doc(id).update({"id": id});
   }
@@ -198,7 +198,15 @@ class DatabaseService {
     await postCollection.doc(postModel.id).set(postModel.toJson());
   }
 
+  addFcmToken(String id) async {
+    String? fcmToken = await firebaseMessaging.getToken();
+    if (fcmToken != null) {
+      await userCollection.doc(id).update({"fcmToken": fcmToken});
+    }
+  }
+
   getUserData(context, String id) async {
+    await addFcmToken(id);
     DocumentSnapshot doc = await userCollection.doc(id).get();
     log("message");
     if (doc.exists) {
