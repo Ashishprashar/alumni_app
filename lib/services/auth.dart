@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,7 @@ import '../screen/sign_in.dart';
 
 class AuthServices {
   NavigatorService navigatorService = NavigatorService();
+  DatabaseService dbService = DatabaseService();
   Future signInWith(BuildContext context, String type) async {
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
@@ -37,7 +39,9 @@ class AuthServices {
 
       if (doc.exists) {
         // UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
-        UserModel _userModel = UserModel.fromDoc(doc);
+        dbService.addFcmToken(doc.id);
+        UserModel _userModel =
+            UserModel.fromDoc(await userCollection.doc(doc.id).get());
 
         await Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);
@@ -122,7 +126,7 @@ class AuthServices {
   signOut(BuildContext context) async {
     auth.signOut();
     googleSignIn.signOut();
-  
+
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => const SignInScreen()));
   }

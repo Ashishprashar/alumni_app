@@ -11,9 +11,9 @@ import 'package:alumni_app/services/media_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +32,7 @@ final chatListDb = FirebaseDatabase.instance.reference().child("chat");
 final messagesDb = FirebaseDatabase.instance.reference().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
+final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 // bool isDeleting = false;
 
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
@@ -164,7 +165,8 @@ class _HomeState extends State<Home> {
                                     child: NavigationTheme(
                                       color: _currentIndex == 0
                                           ? Theme.of(context).hoverColor
-                                          : Theme.of(context).toggleableActiveColor,
+                                          : Theme.of(context)
+                                              .toggleableActiveColor,
                                       icon: Icons.home,
                                       type: "home",
                                     )),
@@ -189,7 +191,8 @@ class _HomeState extends State<Home> {
                                     child: NavigationTheme(
                                       color: _currentIndex == 1
                                           ? Theme.of(context).hoverColor
-                                          : Theme.of(context).toggleableActiveColor,
+                                          : Theme.of(context)
+                                              .toggleableActiveColor,
                                       icon: Icons.chat_outlined,
                                       type: 'chat',
                                     )),
@@ -207,9 +210,10 @@ class _HomeState extends State<Home> {
                                       });
                                     },
                                     child: NavigationTheme(
-                                      color:_currentIndex == 2
+                                      color: _currentIndex == 2
                                           ? Theme.of(context).hoverColor
-                                          : Theme.of(context).toggleableActiveColor,
+                                          : Theme.of(context)
+                                              .toggleableActiveColor,
                                       icon: Icons.search_rounded,
                                       type: "search",
                                     )),
@@ -229,7 +233,8 @@ class _HomeState extends State<Home> {
                                     child: NavigationTheme(
                                       color: _currentIndex == 3
                                           ? Theme.of(context).hoverColor
-                                          : Theme.of(context).toggleableActiveColor,
+                                          : Theme.of(context)
+                                              .toggleableActiveColor,
                                       icon: Icons.person,
                                       type: "profile",
                                     )),
