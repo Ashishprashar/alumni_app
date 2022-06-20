@@ -82,22 +82,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   onEmpty: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'No Notifcations Yet.',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            const SizedBox(height: 40),
-                            Text(
-                              "You get notified if someone likes/comments on your posts",
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ],
-                        ),
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'No Notifcations Yet.',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 40),
+                          Text(
+                            "You get notified if someone likes/comments on your posts",
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               )
@@ -190,6 +190,8 @@ class _NotificationTileState extends State<NotificationTile> {
                                 id: notification.sentBy, context: context);
                             profileProvider.removeFollowRequest(
                                 id: notification.sentBy, context: context);
+                            notificationProvider
+                                .deleteNotification(notification.id);
                           },
                           text: "Accept",
                           height: 30,

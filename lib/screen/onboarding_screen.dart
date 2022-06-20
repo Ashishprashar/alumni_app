@@ -43,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Consumer<InviteProvider>(
-              builder: (context, inviteUser, child) {
+              builder: (ctx, inviteUser, child) {
                 return Container(
                   margin: EdgeInsets.only(top: SizeData.padding.top),
                   child: SingleChildScrollView(
@@ -155,22 +155,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   //
                                   //        navigatorService.navigateToHome(context));
 
-                                  await inviteUser.authorizeUser(
-                                    context,
-                                    nameController.text,
-                                    usnController.text,
-                                    idCardImage!,
-                                    firebaseCurrentUser?.email,
-                                  );
-                                  await databaseService
-                                      .createAccount(
+                                  // await inviteUser.authorizeUser(
+                                  //   context,
+                                  //   nameController.text,
+                                  //   usnController.text,
+                                  //   idCardImage!,
+                                  //   firebaseCurrentUser?.email,
+                                  // );
+                                  await databaseService.createAccount(
                                     nameController.text,
                                     usnController.text,
                                     profileImage!,
-                                  )
-                                      .then((value) {
-                                    navigatorService.navigateToHome(context);
-                                  });
+                                  );
+                                  // .then((value) {
+                                  navigatorService.navigateToHome(ctx);
+                                  // });
                                 } catch (e) {
                                   setState(() {
                                     isLoading = false;
