@@ -29,7 +29,7 @@ class _CommentScreenState extends State<CommentScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Comment',
+            'Comments',
             style: Theme.of(context).textTheme.headline6,
           ),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -44,6 +44,8 @@ class _CommentScreenState extends State<CommentScreen> {
                         child: Text("No Comments"),
                       )
                     : ListView.builder(
+                      shrinkWrap: true,
+                      reverse: true,
                         itemCount: feedProvider.commentList.length,
                         itemBuilder: ((context, index) {
                           return FutureBuilder<UserModel>(
@@ -57,68 +59,78 @@ class _CommentScreenState extends State<CommentScreen> {
                                     child: Column(
                                       // crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 15,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                      snap.data!.profilePic),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: Text(
-                                                snap.data!.name,
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 15,
+                                                    backgroundImage:
+                                                        CachedNetworkImageProvider(
+                                                            snap.data!
+                                                                .profilePic),
+                                                  ),
+                                                  Container(
+                                                    margin: const EdgeInsets.only(
+                                                        right: 10),
+                                                    child: Text(
+                                                      snap.data!.name,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                alignment: Alignment.centerRight,
+                                                child: Text(
+                                                  (DateTime.now().difference(feedProvider.commentList[index].updateTime.toDate()).inHours == 0
+                                                          ? (DateTime.now().difference(feedProvider.commentList[index].updateTime.toDate()).inMinutes == 0
+                                                              ? DateTime.now()
+                                                                      .difference(feedProvider
+                                                                          .commentList[
+                                                                              index]
+                                                                          .updateTime
+                                                                          .toDate())
+                                                                      .inSeconds
+                                                                      .toString() +
+                                                                  "sec"
+                                                              : DateTime.now()
+                                                                      .difference(feedProvider
+                                                                          .commentList[
+                                                                              index]
+                                                                          .updateTime
+                                                                          .toDate())
+                                                                      .inMinutes
+                                                                      .toString() +
+                                                                  "min")
+                                                          : DateTime.now()
+                                                                  .difference(feedProvider
+                                                                      .commentList[index]
+                                                                      .updateTime
+                                                                      .toDate())
+                                                                  .inHours
+                                                                  .toString() +
+                                                              "hr") +
+                                                      " ago",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption,
+                                                ),
+                                              ),
+                                              Text(
+                                                feedProvider.commentList[index]
+                                                    .commentText,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText2,
                                               ),
-                                            ),
-                                            Text(
-                                              feedProvider.commentList[index]
-                                                  .commentText,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2,
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            (DateTime.now().difference(feedProvider.commentList[index].updateTime.toDate()).inHours == 0
-                                                    ? (DateTime.now().difference(feedProvider.commentList[index].updateTime.toDate()).inMinutes == 0
-                                                        ? DateTime.now()
-                                                                .difference(feedProvider
-                                                                    .commentList[
-                                                                        index]
-                                                                    .updateTime
-                                                                    .toDate())
-                                                                .inSeconds
-                                                                .toString() +
-                                                            "sec"
-                                                        : DateTime.now()
-                                                                .difference(feedProvider
-                                                                    .commentList[
-                                                                        index]
-                                                                    .updateTime
-                                                                    .toDate())
-                                                                .inMinutes
-                                                                .toString() +
-                                                            "min")
-                                                    : DateTime.now()
-                                                            .difference(feedProvider
-                                                                .commentList[index]
-                                                                .updateTime
-                                                                .toDate())
-                                                            .inHours
-                                                            .toString() +
-                                                        "hr") +
-                                                " ago",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption,
+                                            ],
                                           ),
                                         )
                                       ],
