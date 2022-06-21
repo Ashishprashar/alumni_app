@@ -25,164 +25,167 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    // Provider.of<SearchProvider>(context, listen: false)
-    //     .searchController
-    //     .dispose();
+    Provider.of<SearchProvider>(context, listen: false).dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<SearchProvider>(builder: (context, searchProvider, child) {
-      return GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            appBar: AppBar(
-              elevation: 0,
-              title: Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: TextField(
-                  style: Theme.of(context).textTheme.bodyText2,
-                  autofocus: true,
-                  // style: TextStyle(backgroundColor: Colors.grey),
-                  controller: searchProvider.searchController,
-                  onChanged: (v) {
-                    searchProvider.searchPeople();
-                  },
-                  decoration: InputDecoration(
-                      fillColor: Theme.of(context).selectedRowColor,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none,
-                      ),
-                      isDense: true, // Added this
-                      contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                      // prefixIcon: const Icon(Icons.search),
-                      // suffixIcon: searchProvider.searchController.text.isNotEmpty
-                      //     ? InkWell(
-                      //         onTap: () {
-                      //           searchProvider.clearSearchController();
-                      //         },
-                      //         child: const Icon(
-                      //           Icons.close,
-                      //           size: 25,
-                      //           color: Colors.grey,
-                      //         ),
-                      //       )
-                      //     : null,
-                      hintText: 'Search by name'),
+      return WillPopScope(
+        onWillPop: () async {
+          searchProvider.dispose();
+          return true;
+        },
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              appBar: AppBar(
+                elevation: 0,
+                title: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: TextField(
+                    style: Theme.of(context).textTheme.bodyText2,
+                    autofocus: true,
+                    // style: TextStyle(backgroundColor: Colors.grey),
+                    controller: searchProvider.searchController,
+                    onChanged: (v) {
+                      searchProvider.searchPeople();
+                    },
+                    decoration: InputDecoration(
+                        fillColor: Theme.of(context).selectedRowColor,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none,
+                        ),
+                        isDense: true, // Added this
+                        contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                        // prefixIcon: const Icon(Icons.search),
+                        // suffixIcon: searchProvider.searchController.text.isNotEmpty
+                        //     ? InkWell(
+                        //         onTap: () {
+                        //           searchProvider.clearSearchController();
+                        //         },
+                        //         child: const Icon(
+                        //           Icons.close,
+                        //           size: 25,
+                        //           color: Colors.grey,
+                        //         ),
+                        //       )
+                        //     : null,
+                        hintText: 'Search by name'),
+                  ),
                 ),
               ),
-            ),
-            body: SafeArea(
-              child: ListView(
-                children: [
-                  Row(children: [      Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Branch",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    Container(
-                                      width: 20,
-                                    ),
-                                    DropdownButton(
-                                      hint: searchProvider.defaultBranchValue == null
-                                          ? Text("All")
-                                          : Text(
-                                              searchProvider.defaultBranchValue!,
-                                              // style: const TextStyle(
-                                              //     color: Colors.blue),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                      value: searchProvider.defaultBranchValue,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      items:
-                                          searchProvider.possibleBranches.map((String items) {
-                                        return DropdownMenuItem(
-                                          value: items,
-                                          child: Text(items),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                        searchProvider.  defaultBranchValue = newValue!;
-                                        });
-                                        searchProvider.searchPeople();
-                                      },
-                                    ),
-                                  ],
-                                ),
+              body: SafeArea(
+                child: ListView(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Branch",
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              //Sem
                               Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 25),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Semester",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    // Container(
-                                    //   width: 20,
-                                    // ),
-                                    DropdownButton(
-                                      hint:  searchProvider.defaultSemesterValue == null
-                                          ? Text("All")
-                                          : Text(
-                                              searchProvider.defaultSemesterValue!,
-                                              // style: const TextStyle(
-                                              //     color: Colors.blue),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                      value: searchProvider.defaultSemesterValue,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      items:
-                                       searchProvider.   possibleSemesters.map((String items) {
-                                        return DropdownMenuItem<String>(
-                                          value: items,
-                                          child: Text(items),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                        searchProvider.  defaultSemesterValue = newValue!;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                width: 20,
                               ),
-                          ],),
-               for(int i =0;i< searchProvider.peopleList.length;i++)
+                              DropdownButton(
+                                hint: searchProvider.defaultBranchValue == null
+                                    ? const Text("All")
+                                    : Text(
+                                        searchProvider.defaultBranchValue!,
+                                        // style: const TextStyle(
+                                        //     color: Colors.blue),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                value: searchProvider.defaultBranchValue,
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                items: searchProvider.possibleBranches
+                                    .map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(items),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    searchProvider.defaultBranchValue =
+                                        newValue == "All" ? null : newValue!;
+                                  });
+                                  searchProvider.searchPeople();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Sem
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Semester",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              // Container(
+                              //   width: 20,
+                              // ),
+                              DropdownButton(
+                                hint: searchProvider.defaultSemesterValue ==
+                                        null
+                                    ? const Text("All")
+                                    : Text(
+                                        searchProvider.defaultSemesterValue!,
+                                        // style: const TextStyle(
+                                        //     color: Colors.blue),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                value: searchProvider.defaultSemesterValue,
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                items: searchProvider.possibleSemesters
+                                    .map((String items) {
+                                  return DropdownMenuItem<String>(
+                                    value: items,
+                                    child: Text(items),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    searchProvider.defaultSemesterValue =
+                                        newValue == "All" ? null : newValue!;
+                                  });
+                                  searchProvider.searchPeople();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    for (int i = 0; i < searchProvider.peopleList.length; i++)
                       userCard(i, searchProvider.peopleList)
-                  // ListView.builder(
-                  //   itemCount: searchProvider.peopleList.length,
-                  //   controller: searchProvider.scrollController,
-                  //   itemBuilder: (context, index) {
-                  //     return 
-                  //   },
-                  // ),
-                ],
-              ),
-            )),
+                    // ListView.builder(
+                    //   itemCount: searchProvider.peopleList.length,
+                    //   controller: searchProvider.scrollController,
+                    //   itemBuilder: (context, index) {
+                    //     return
+                    //   },
+                    // ),
+                  ],
+                ),
+              )),
+        ),
       );
     });
   }
@@ -240,16 +243,16 @@ class _SearchPageState extends State<SearchPage> {
           : const Text("No skills added yet"),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(individualUser.branch,
-                    style: Theme.of(context).textTheme.subtitle1),
-                const SizedBox(width: 3),
-                const Text('•'),
-                const SizedBox(width: 3),
-                Text(individualUser.semester,
-                    style: Theme.of(context).textTheme.subtitle1),
-              ],
-            ),
+        children: [
+          Text(individualUser.branch,
+              style: Theme.of(context).textTheme.subtitle1),
+          const SizedBox(width: 3),
+          const Text('•'),
+          const SizedBox(width: 3),
+          Text(individualUser.semester,
+              style: Theme.of(context).textTheme.subtitle1),
+        ],
+      ),
     );
   }
 }

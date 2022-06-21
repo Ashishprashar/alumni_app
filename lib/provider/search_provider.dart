@@ -12,8 +12,8 @@ class SearchProvider with ChangeNotifier {
   bool hasMore = true;
   String? defaultSemesterValue;
   String? defaultBranchValue;
-  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
+  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8', "All"];
+  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH', "All"];
   int documentLimit = 10;
   DocumentSnapshot? lastDocument;
   final ScrollController _scrollController = ScrollController();
@@ -38,84 +38,76 @@ class SearchProvider with ChangeNotifier {
 
     QuerySnapshot querySnapshot;
     // added limit to the case where lastdocument == null. limit was not there before
-    // if i should not have done that remove it. 
+    // if i should not have done that remove it.
     if (lastDocument == null) {
-      if(defaultBranchValue!=null && defaultSemesterValue!=null){
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              .where("branch",isEqualTo: defaultBranchValue)
-              // .where("sem",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          // .limit(documentLimit)
-          .get();
-
-      }
-      else if(defaultSemesterValue!=null){
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              // .where("branch",isEqualTo: defaultBranchValue)
-              .where("sem",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          // .limit(documentLimit)
-          .get();
-
-      }else{
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              // .where("branch",isEqualTo: defaultBranchValue)
-              // .where("sem",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          // .limit(documentLimit)
-          .get();
-
+      if (defaultBranchValue != null && defaultSemesterValue != null) {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            .where("branch", isEqualTo: defaultBranchValue)
+            // .where("sem",isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            // .limit(documentLimit)
+            .get();
+      } else if (defaultSemesterValue != null) {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            // .where("branch",isEqualTo: defaultBranchValue)
+            .where("sem", isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            // .limit(documentLimit)
+            .get();
+      } else {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            // .where("branch",isEqualTo: defaultBranchValue)
+            // .where("sem",isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            // .limit(documentLimit)
+            .get();
       }
     } else {
-if(defaultBranchValue!=null && defaultSemesterValue!=null){
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              .where("branch",isEqualTo: defaultBranchValue)
-              .where("semester",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          .limit(documentLimit)
-          .get();
-
-      }
-      else if(defaultSemesterValue!=null){
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              // .where("branch",isEqualTo: defaultBranchValue)
-              .where("semester",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          .limit(documentLimit)
-          .get();
-
-      }else{
-      querySnapshot = await userCollection
-          .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
-          .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
-              // .where("branch",isEqualTo: defaultBranchValue)
-              // .where("sem",isEqualTo: defaultSemesterValue)
-          .orderBy('search_name', descending: true)
-          .limit(documentLimit)
-          .get();
-
+      if (defaultBranchValue != null && defaultSemesterValue != null) {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            .where("branch", isEqualTo: defaultBranchValue)
+            .where("semester", isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            .limit(documentLimit)
+            .get();
+      } else if (defaultSemesterValue != null) {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            // .where("branch",isEqualTo: defaultBranchValue)
+            .where("semester", isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            .limit(documentLimit)
+            .get();
+      } else {
+        querySnapshot = await userCollection
+            .where('search_name',
+                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+            .where('search_name',
+                isLessThan: _searchController.text.toUpperCase() + 'z')
+            // .where("branch",isEqualTo: defaultBranchValue)
+            // .where("sem",isEqualTo: defaultSemesterValue)
+            .orderBy('search_name', descending: true)
+            .limit(documentLimit)
+            .get();
       }
       // print(1);
     }
@@ -131,7 +123,6 @@ if(defaultBranchValue!=null && defaultSemesterValue!=null){
     isLoading = false;
   }
 
-
   addListenerToScrollController() {
     _scrollController.addListener(() {
       double maxScroll = _scrollController.position.maxScrollExtent;
@@ -143,12 +134,19 @@ if(defaultBranchValue!=null && defaultSemesterValue!=null){
     });
   }
 
+  @override
+  dispose() {
+    defaultBranchValue = null;
+    defaultSemesterValue = null;
+    notifyListeners();
+  }
+
   searchPeople() async {
     peopleList = [];
     if (_searchController.text.isEmpty) {
       var query = await userCollection
-       .where("semester",isEqualTo: defaultSemesterValue)
-              .where("branch",isEqualTo: defaultBranchValue)
+          .where("semester", isEqualTo: defaultSemesterValue)
+          .where("branch", isEqualTo: defaultBranchValue)
           // .where('search_name',
           //     isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
           // .where('search_name',
@@ -164,8 +162,8 @@ if(defaultBranchValue!=null && defaultSemesterValue!=null){
               isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
           .where('search_name',
               isLessThan: _searchController.text.toUpperCase() + 'z')
-              .where("semester",isEqualTo: defaultSemesterValue)
-              .where("branch",isEqualTo: defaultBranchValue)
+          .where("semester", isEqualTo: defaultSemesterValue)
+          .where("branch", isEqualTo: defaultBranchValue)
           .orderBy('search_name', descending: true)
           .limit(documentLimit)
           .get();
