@@ -78,12 +78,109 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             body: SafeArea(
-              child: ListView.builder(
-                itemCount: searchProvider.peopleList.length,
-                controller: searchProvider.scrollController,
-                itemBuilder: (context, index) {
-                  return userCard(index, searchProvider.peopleList);
-                },
+              child: ListView(
+                children: [
+                  Row(children: [      Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Branch",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Container(
+                                      width: 20,
+                                    ),
+                                    DropdownButton(
+                                      hint: searchProvider.defaultBranchValue == null
+                                          ? Text("All")
+                                          : Text(
+                                              searchProvider.defaultBranchValue!,
+                                              // style: const TextStyle(
+                                              //     color: Colors.blue),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
+                                      value: searchProvider.defaultBranchValue,
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      items:
+                                          searchProvider.possibleBranches.map((String items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                        searchProvider.  defaultBranchValue = newValue!;
+                                        });
+                                        searchProvider.searchPeople();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //Sem
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 25),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Semester",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    // Container(
+                                    //   width: 20,
+                                    // ),
+                                    DropdownButton(
+                                      hint:  searchProvider.defaultSemesterValue == null
+                                          ? Text("All")
+                                          : Text(
+                                              searchProvider.defaultSemesterValue!,
+                                              // style: const TextStyle(
+                                              //     color: Colors.blue),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
+                                      value: searchProvider.defaultSemesterValue,
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      items:
+                                       searchProvider.   possibleSemesters.map((String items) {
+                                        return DropdownMenuItem<String>(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                        searchProvider.  defaultSemesterValue = newValue!;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],),
+               for(int i =0;i< searchProvider.peopleList.length;i++)
+                      userCard(i, searchProvider.peopleList)
+                  // ListView.builder(
+                  //   itemCount: searchProvider.peopleList.length,
+                  //   controller: searchProvider.scrollController,
+                  //   itemBuilder: (context, index) {
+                  //     return 
+                  //   },
+                  // ),
+                ],
               ),
             )),
       );
