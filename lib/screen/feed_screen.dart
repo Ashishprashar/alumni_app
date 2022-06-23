@@ -9,7 +9,6 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/notification_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
-import 'package:alumni_app/widget/sign_out_button.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
@@ -94,8 +93,8 @@ class _FeedScreenState extends State<FeedScreen> {
                   const UploadPostWidget(),
                   Expanded(
                     child: PaginateFirestore(
-                      itemsPerPage: 10,
-                      scrollController: feedScroller,
+                      itemsPerPage: 3,
+                      // scrollController: feedScroller,
                       itemBuilder: (context, documentSnapshots, index) {
                         final data = documentSnapshots[index].data() as Map?;
                         log(data.toString());

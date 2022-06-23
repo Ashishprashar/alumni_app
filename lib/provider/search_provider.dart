@@ -12,8 +12,8 @@ class SearchProvider with ChangeNotifier {
   bool hasMore = true;
   String? defaultSemesterValue;
   String? defaultBranchValue;
-  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
+  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8', "All"];
+  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH', "All"];
   int documentLimit = 10;
   DocumentSnapshot? lastDocument;
   final ScrollController _scrollController = ScrollController();
@@ -132,6 +132,13 @@ class SearchProvider with ChangeNotifier {
         fetchMore();
       }
     });
+  }
+
+  @override
+  dispose() {
+    defaultBranchValue = null;
+    defaultSemesterValue = null;
+    notifyListeners();
   }
 
   searchPeople() async {

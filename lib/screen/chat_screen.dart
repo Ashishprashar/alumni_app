@@ -103,12 +103,13 @@ class _ChatScreenState extends State<ChatScreen> {
                         builder: (context, snapshot) {
                           List listMessage = [];
                           if (snapshot.hasData) {
-                            if ((snapshot.data as Event).snapshot.value ==
-                                null) {
-                              return Container();
-                            }
-                            Map values =
-                                (snapshot.data as Event).snapshot.value;
+                            // if ((snapshot.data as Event).snapshot.value ==
+                            //     null) {
+                            //   return Container();
+                            // }
+                            Map values = (snapshot.data as DatabaseEvent)
+                                .snapshot
+                                .value as Map;
                             // chatCount =
                             //     (snapshot.data as Event).snapshot.value.keys.length;
 
