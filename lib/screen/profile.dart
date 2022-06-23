@@ -4,6 +4,8 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
+import 'package:alumni_app/screen/all_followers.dart';
+import 'package:alumni_app/screen/all_following.dart';
 import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
@@ -289,26 +291,52 @@ class _UserProfileState extends State<UserProfile> {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ]),
-                  Column(children: [
-                    Text(
-                      widget.user.followerCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Text(
-                      "Followers",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ]),
-                  Column(children: [
-                    Text(
-                      widget.user.followingCount.toString(),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Text(
-                      "Following",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ]),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllFollowers(
+                            followersCount: currentUser!.followerCount,
+                            name: currentUser!.name,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(children: [
+                      Text(
+                        widget.user.followerCount.toString(),
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      Text(
+                        "Followers",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ]),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllFollowing(
+                            followingCount: currentUser!.followingCount,
+                            name: currentUser!.name,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(children: [
+                      Text(
+                        widget.user.followingCount.toString(),
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      Text(
+                        "Following",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ]),
+                  ),
                 ],
               ),
 
