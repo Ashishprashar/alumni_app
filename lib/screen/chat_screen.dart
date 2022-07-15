@@ -149,26 +149,39 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 content:
                                                     const Text("Are you sure?"),
                                                 actions: [
-                                                  DoneButton(
-                                                      onTap: () async {
-                                                        await provider
-                                                            .deleteMessage(
-                                                                treeId,
-                                                                listMessage[
-                                                                        index][
-                                                                    "messageId"]);
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      DoneButton(
+                                                          onTap: () async {
+                                                            await provider
+                                                                .deleteMessage(
+                                                                    treeId,
+                                                                    listMessage[
+                                                                            index]
+                                                                        [
+                                                                        "messageId"]);
 
-                                                        Navigator.pop(context);
-                                                      },
-                                                      text: "Yes"),
-                                                  const SizedBox(
-                                                    height: 10,
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          height: 30,
+                                                          width: 80,
+                                                          text: "Yes"),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      DoneButton(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          height: 30,
+                                                          width: 80,
+                                                          text: "Cancel")
+                                                    ],
                                                   ),
-                                                  DoneButton(
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      text: "No")
                                                 ],
                                               ),
                                             );

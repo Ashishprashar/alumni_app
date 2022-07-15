@@ -19,52 +19,58 @@ class ImagePickerWidget extends StatelessWidget {
       child: SizedBox(
         height: 70,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            GestureDetector(
-              onTap: () async {
-                XFile? image =
-                    await imagePicker.pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  final compressedImage =
-                      await compressImage(filePath: image.path);
-
-                  onProfileChanged!(File(compressedImage.path));
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const FaIcon(FontAwesomeIcons.camera),
-                  Text(
-                    "Camera",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )
-                ],
+            Expanded(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  XFile? image =
+                      await imagePicker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    final compressedImage =
+                        await compressImage(filePath: image.path);
+            
+                    onProfileChanged!(File(compressedImage.path));
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const FaIcon(FontAwesomeIcons.camera),
+                    Text(
+                      "Camera",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                ),
               ),
             ),
-            GestureDetector(
-              onTap: () async {
-                XFile? image =
-                    await imagePicker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  final compressedImage =
-                      await compressImage(filePath: image.path);
-
-                  onProfileChanged!(File(compressedImage.path));
-                }
-                Navigator.of(context).pop();
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const FaIcon(FontAwesomeIcons.camera),
-                  Text(
-                    "Gallery",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )
-                ],
+            Expanded(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  XFile? image =
+                      await imagePicker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    final compressedImage =
+                        await compressImage(filePath: image.path);
+            
+                    onProfileChanged!(File(compressedImage.path));
+                  }
+                  Navigator.of(context).pop();
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const FaIcon(FontAwesomeIcons.camera),
+                    Text(
+                      "Gallery",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                ),
               ),
             ),
           ],

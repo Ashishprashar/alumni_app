@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                     children: [
                       SwitchListTile(
                         title: Text(
-                          'Dark Mode',
+                          'Sanity Check',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         value:
@@ -60,6 +60,12 @@ class SettingsScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: 20),
+              CircleAvatar(
+                radius: 30,
+                backgroundImage:
+                    CachedNetworkImageProvider(_user!.photoURL.toString()),
+              ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Text(
@@ -68,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Flexible(
                       child: Text(
-                    _user!.metadata.creationTime.toString(),
+                    _user.metadata.creationTime.toString(),
                     style: Theme.of(context).textTheme.bodyText1,
                   )),
                 ],
@@ -89,14 +95,14 @@ class SettingsScreen extends StatelessWidget {
                   )),
                 ],
               ),
+              const SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                      child: Text(
+                  Text(
                     'email: ',
                     style: Theme.of(context).textTheme.bodyText1,
-                  )),
+                  ),
                   Flexible(
                       child: Text(
                     _user.email.toString(),
@@ -104,25 +110,26 @@ class SettingsScreen extends StatelessWidget {
                   )),
                 ],
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                      child: Text(
-                    'photo: ',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
-                  Flexible(
-                      child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage:
-                        CachedNetworkImageProvider(_user.photoURL.toString()),
-                  )),
-                ],
-              ),
+              const SizedBox(height: 20),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Flexible(
+              //         child: Text(
+              //       'photo: ',
+              //       style: Theme.of(context).textTheme.bodyText1,
+              //     )),
+              //     Flexible(
+              //         child: CircleAvatar(
+              //       radius: 30,
+              //       backgroundImage:
+              //           CachedNetworkImageProvider(_user.photoURL.toString()),
+              //     )),
+              //   ],
+              // ),
               const SizedBox(height: 20),
               Text(
-                'Maybe we could have a delete account option',
+                'Privacy settings coming soon',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ],

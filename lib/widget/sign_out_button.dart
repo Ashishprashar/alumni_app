@@ -29,7 +29,7 @@ class _SignOutButtonState extends State<SignOutButton> {
             builder: (context) {
               return AlertDialog(
                 backgroundColor: Theme.of(context).selectedRowColor,
-                title: Text(
+                title: Text( 
                   "Log out of the App?",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),

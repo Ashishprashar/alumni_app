@@ -15,7 +15,6 @@ class AllFollowing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     ScrollController followingScroller = ScrollController();
 
     return Scaffold(
@@ -52,22 +51,23 @@ class AllFollowing extends StatelessWidget {
         ),
       ),
       body: SizedBox(
-          height: SizeData.screenHeight,
-          child: Column(
-            children: [
-              Expanded(
-                child: PaginateFirestore(
-                  itemsPerPage: 12,
-                  scrollController: followingScroller,
-                  itemBuilder: (context, documentSnapshots, index) {
-                    final data = documentSnapshots[index].data() as Map?;
-                    return Container(child: Text('hello'),);
-                    
-                  },
-                  // query: notificationCollection
-                  //     .where("sentTo", arrayContains: currentUser!.id)
-                  //     .orderBy("updated_at", descending: true),
-                  query: userCollection.where("owner_id",
+        height: SizeData.screenHeight,
+        child: Column(
+          children: [
+            Expanded(
+              child: PaginateFirestore(
+                itemsPerPage: 12,
+                scrollController: followingScroller,
+                itemBuilder: (context, documentSnapshots, index) {
+                  final data = documentSnapshots[index].data() as Map?;
+                  // replace with some basic list tile for now
+                  return Container(
+                    child: Text('hello'),
+                  );
+                },
+                // ashish can your replace this query with the actually query to get the following
+                query: postCollection
+                          .where("id",
                               whereIn: (currentUser == null)
                                   ? null
                                   : currentUser!.following.isEmpty
@@ -75,33 +75,34 @@ class AllFollowing extends StatelessWidget {
                                       : currentUser!.following +
                                           [currentUser!.id])
                           .orderBy("updated_at", descending: true),
-                  itemBuilderType: PaginateBuilderType.listView,
-                  isLive: true,
-                  onEmpty: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'No Notifcations Yet.',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const SizedBox(height: 40),
-                          Text(
-                            "You get notified if someone likes/comments on your posts",
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
+
+                itemBuilderType: PaginateBuilderType.listView,
+                isLive: true,
+                onEmpty: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Notifcations Yet.',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        const SizedBox(height: 40),
+                        Text(
+                          "You get notified if someone likes/comments on your posts",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
+      ),
     );
   }
 }

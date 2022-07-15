@@ -48,7 +48,7 @@ class _FeedScreenState extends State<FeedScreen> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text(
-              'Feed',
+              'The Hive Net',
               style: Theme.of(context).textTheme.headline6!.copyWith(
                   color: Theme.of(context).appBarTheme.iconTheme!.color),
             ),
@@ -102,7 +102,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         return getPostList(documentSnapshots, index);
                       },
                       query: postCollection
-                          .where("owner_id",
+                          .where("id",
                               whereIn: (currentUser == null)
                                   ? null
                                   : currentUser!.following.isEmpty

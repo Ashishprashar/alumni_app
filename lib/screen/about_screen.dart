@@ -1,3 +1,5 @@
+import 'package:alumni_app/screen/contact_us_screen.dart';
+import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -72,7 +74,7 @@ class AboutScreen extends StatelessWidget {
               // ),
               const SizedBox(height: 30),
               Text(
-                'The People:',
+                'The People',
                 style: Theme.of(context).textTheme.headline4,
               ),
               const SizedBox(height: 20),
@@ -80,13 +82,13 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Charith Bhat',
+                    'Charith Bhat  ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Favorite Quote: "If democracy fails, beat em with a dandi" - probably Ghandi ',
+                    'Commander of the ship, enemy of the brigade. ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
@@ -102,13 +104,48 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'No quote yet',
+                    'The Invincible engineering lead, Voodo programmer.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
               ),
               const SizedBox(height: 20),
-              const Text('Contact us'),
+              Text(
+                'Contact Us',
+                style: Theme.of(context).textTheme.headline4!,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email 1: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
+                  Flexible(
+                      child: Text(
+                    'charsept04@gmail.com',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email 2: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
+                  Flexible(
+                      child: Text(
+                    'ak2917065@gmail.com',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
+                ],
+              ),
             ],
           ),
         ),

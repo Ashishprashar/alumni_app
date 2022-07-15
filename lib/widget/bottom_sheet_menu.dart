@@ -34,7 +34,7 @@ class BottomSheetMenu extends StatelessWidget {
                     FAQ(),
                     About(),
                     Privacy(),
-                    ContactUs(),
+                    // ContactUs(),
                     SignOutButton(),
                     SizedBox(height: 10),
                   ],
@@ -222,28 +222,28 @@ class Privacy extends StatelessWidget {
   }
 }
 
-class ContactUs extends StatelessWidget {
-  const ContactUs({Key? key}) : super(key: key);
+// class ContactUs extends StatelessWidget {
+//   const ContactUs({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
-      leading: Icon(
-        Icons.contact_page,
-        color: Theme.of(context).highlightColor,
-      ),
-      minLeadingWidth: 0,
-      title: Text(
-        'Contact Us',
-        style: Theme.of(context).textTheme.headline3,
-      ),
-      onTap: () {
-        Navigator.of(context).pop();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ContactUsScreen()));
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       dense: true,
+//       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
+//       leading: Icon(
+//         Icons.contact_page,
+//         color: Theme.of(context).highlightColor,
+//       ),
+//       minLeadingWidth: 0,
+//       title: Text(
+//         'Contact Us',
+//         style: Theme.of(context).textTheme.headline3,
+//       ),
+//       onTap: () {
+//         Navigator.of(context).pop();
+//         Navigator.push(context,
+//             MaterialPageRoute(builder: (context) => const ContactUsScreen()));
+//       },
+//     );
+//   }
+// }

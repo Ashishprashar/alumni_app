@@ -22,20 +22,43 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Container(
+              //   height: SizeData.screenHeight * .4,
+              //   width: SizeData.screenWidth * .8,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(20),
+              //       color: Theme.of(context).primaryColorLight,
+              //       border:
+              //           Border.all(color: Theme.of(context).primaryColorDark)),
+              //   child: Center(
+              //     child: Text(
+              //       "Logo",
+              //       style: Theme.of(context).textTheme.bodyText1,
+              //     ),
+              //   ),
+              // ),
               Container(
-                height: SizeData.screenHeight * .4,
-                width: SizeData.screenWidth * .8,
+                height: 150,
+                width: 150,
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColorLight,
-                    border:
-                        Border.all(color: Theme.of(context).primaryColorDark)),
-                child: Center(
-                  child: Text(
-                    "Logo",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
+                  color: Colors.pink,
+                  border: Border.all(color: Colors.transparent),
+                  shape: BoxShape.circle,
                 ),
+                child: Image(
+                  image: AssetImage("assets/images/hive_logo.png"),
+                  fit: BoxFit.cover,
+                  height: 100,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'The Hive Net',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1!
+                    .copyWith(color: Colors.black),
               ),
               // Container(
               //   child: DoneButton(
@@ -46,7 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
               //   ),
               // ),
               const SizedBox(
-                height: 50,
+                height: 150,
               ),
               SizedBox(
                 height: 45,
@@ -74,8 +97,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         //Image.asset("assets/images/google_image.jpg"),
                         Text(
-                          "SignIn With Google",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          "Sign In With Google",
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black),
                         ),
                       ],
                     ),
