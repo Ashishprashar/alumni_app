@@ -5,7 +5,6 @@ import 'package:alumni_app/screen/privacy_screen.dart';
 import 'package:alumni_app/screen/settings_screen.dart';
 import 'package:alumni_app/widget/sign_out_button.dart';
 import 'package:flutter/material.dart';
-import 'package:alumni_app/screen/contact_us_screen.dart';
 
 class BottomSheetMenu extends StatelessWidget {
   const BottomSheetMenu({Key? key,}) : super(key: key);

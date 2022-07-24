@@ -1,5 +1,3 @@
-import 'package:alumni_app/screen/contact_us_screen.dart';
-import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -30,7 +28,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Text(
-                'The app is an online archive that helps people connect through social networks at college.',
+                'The HiveNet is an online archive that helps people connect through social networks at college.',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               // const SizedBox(height: 30),
@@ -105,6 +103,38 @@ class AboutScreen extends StatelessWidget {
                   Flexible(
                       child: Text(
                     'The Invincible engineering lead, Voodo programmer.',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Kalyan V          ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
+                  Flexible(
+                      child: Text(
+                    'Diplomacy and business affairs. ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bhavitha D     ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(width: 20),
+                  Flexible(
+                      child: Text(
+                    'Secret Weapon. ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],

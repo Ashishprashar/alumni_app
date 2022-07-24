@@ -26,7 +26,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   DatabaseService databaseService = DatabaseService();
   NavigatorService navigatorService = NavigatorService();
   ImagePicker imagePicker = ImagePicker();
-  File? idCardImage;
+  // File? idCardImage;
   File? profileImage;
   bool isLoading = false;
 
@@ -52,34 +52,34 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) {
-                                      return ImagePickerWidget(
-                                          onProfileChanged: (File? image) {
-                                        setState(() {
-                                          idCardImage = image;
-                                        });
-                                      });
-                                    });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 20.0),
-                                child: CircleAvatar(
-                                  radius: 50.0,
-                                  backgroundColor:
-                                      Theme.of(context).highlightColor,
-                                  backgroundImage: idCardImage != null
-                                      ? FileImage(idCardImage!)
-                                      : null,
-                                  child: idCardImage == null
-                                      ? const FaIcon(FontAwesomeIcons.plus)
-                                      : null,
-                                ),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     showDialog(
+                            //         context: context,
+                            //         builder: (ctx) {
+                            //           return ImagePickerWidget(
+                            //               onProfileChanged: (File? image) {
+                            //             setState(() {
+                            //               idCardImage = image;
+                            //             });
+                            //           });
+                            //         });
+                            //   },
+                            //   child: Container(
+                            //     margin: const EdgeInsets.only(top: 20.0),
+                            //     child: CircleAvatar(
+                            //       radius: 50.0,
+                            //       backgroundColor:
+                            //           Theme.of(context).highlightColor,
+                            //       backgroundImage: idCardImage != null
+                            //           ? FileImage(idCardImage!)
+                            //           : null,
+                            //       child: idCardImage == null
+                            //           ? const FaIcon(FontAwesomeIcons.plus)
+                            //           : null,
+                            //     ),
+                            //   ),
+                            // ),
                             GestureDetector(
                               onTap: () async {
                                 showDialog(

@@ -45,7 +45,8 @@ class ChatProvider with ChangeNotifier {
     DataSnapshot data = await chatListDb.child(firebaseCurrentUser!.uid).get();
     /* holds the map with things like lastmessage, senderId, receverId etc 
     of that conversation in which the currentuser is present*/
-    Map values = data.value as Map ?? {};
+    // Map values = data.value as Map ?? {};
+    Map values = data.value != null ? data.value as Map : {};
     // print(data.value.toString());
     // chatListCount = data.value.keys.length;
     values.forEach((key, value) async {

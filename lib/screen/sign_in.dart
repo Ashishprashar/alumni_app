@@ -16,27 +16,14 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
         backgroundColor: Theme.of(context).cardColor,
         body: SizedBox(
-          height: SizeData.screenHeight,
-          width: SizeData.screenWidth,
+          // height: SizeData.screenHeight,
+          // width: SizeData.screenWidth,
+          height: double.infinity,
+          width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Container(
-              //   height: SizeData.screenHeight * .4,
-              //   width: SizeData.screenWidth * .8,
-              //   decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(20),
-              //       color: Theme.of(context).primaryColorLight,
-              //       border:
-              //           Border.all(color: Theme.of(context).primaryColorDark)),
-              //   child: Center(
-              //     child: Text(
-              //       "Logo",
-              //       style: Theme.of(context).textTheme.bodyText1,
-              //     ),
-              //   ),
-              // ),
               Container(
                 height: 150,
                 width: 150,
@@ -98,7 +85,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         //Image.asset("assets/images/google_image.jpg"),
                         Text(
                           "Sign In With Google",
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.black),
                         ),
                       ],
                     ),

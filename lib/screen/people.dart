@@ -31,7 +31,7 @@ class _PeopleState extends State<People> {
         // ),
         body: SafeArea(
           child: Scrollbar(
-            isAlwaysShown: true,
+           thumbVisibility : true,
             child: SingleChildScrollView(
               child: Column(
                 children: [

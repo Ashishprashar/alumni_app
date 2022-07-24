@@ -44,11 +44,13 @@ class SocialIconButton extends StatelessWidget {
         ?
         // code specifically for email (since it has a different on pressed functionality)
         IconButton(
-            icon: FaIcon(theicon, size: 28,),
+            icon: FaIcon(
+              theicon,
+              size: 28,
+            ),
             color: user.linkToSocial[socialName] == ''
                 ? Colors.grey
                 : Theme.of(context).appBarTheme.iconTheme!.color,
-            
             onPressed: () async {
               launch('mailto:${user.email}?subject=&body=');
             },

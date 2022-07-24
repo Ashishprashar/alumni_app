@@ -113,7 +113,7 @@ class AuthServices {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final User? _user = (await auth.signInWithCredential(credential)).user;
+      // final User? _user = (await auth.signInWithCredential(credential)).user;
       await firebaseCurrentUser!.delete();
       // await signOut(context);
       await googleSignIn.signOut();

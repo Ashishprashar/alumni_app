@@ -56,7 +56,6 @@ class _FeedScreenState extends State<FeedScreen> {
             elevation: 2,
             toolbarHeight: 50,
             actions: [
-              // Container(child: SignOutButton(), height: 20,width: 20,),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -85,57 +84,55 @@ class _FeedScreenState extends State<FeedScreen> {
               )
             ],
           ),
-          body: SafeArea(
-            child: SizedBox(
-              height: SizeData.screenHeight,
-              child: Column(
-                children: [
-                  const UploadPostWidget(),
-                  Expanded(
-                    child: PaginateFirestore(
-                      itemsPerPage: 3,
-                      // scrollController: feedScroller,
-                      itemBuilder: (context, documentSnapshots, index) {
-                        final data = documentSnapshots[index].data() as Map?;
-                        log(data.toString());
+          body: SizedBox(
+            height: SizeData.screenHeight,
+            child: Column(
+              children: [
+                const UploadPostWidget(),
+                Expanded(
+                  child: PaginateFirestore(
+                    itemsPerPage: 7,
+                    // scrollController: feedScroller,
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      log(data.toString());
 
-                        return getPostList(documentSnapshots, index);
-                      },
-                      query: postCollection
-                          .where("id",
-                              whereIn: (currentUser == null)
-                                  ? null
-                                  : currentUser!.following.isEmpty
-                                      ? [currentUser!.id]
-                                      : currentUser!.following +
-                                          [currentUser!.id])
-                          .orderBy("updated_at", descending: true),
-                      itemBuilderType: PaginateBuilderType.listView,
-                      isLive: true,
-                      onEmpty: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'No Posts Yet.',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                              const SizedBox(height: 40),
-                              Text(
-                                "You can Start following people in your college to get their posts on your feed.",
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
-                          ),
+                      return getPostList(documentSnapshots, index);
+                    },
+                    query: postCollection
+                        .where("id",
+                            whereIn: (currentUser == null)
+                                ? null
+                                : currentUser!.following.isEmpty
+                                    ? [currentUser!.id]
+                                    : currentUser!.following +
+                                        [currentUser!.id])
+                        .orderBy("updated_at", descending: true),
+                    itemBuilderType: PaginateBuilderType.listView,
+                    isLive: false,
+                    onEmpty: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'No Posts Yet.',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            const SizedBox(height: 40),
+                            Text(
+                              "You can Start following people in your college to get their posts on your feed.",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         );

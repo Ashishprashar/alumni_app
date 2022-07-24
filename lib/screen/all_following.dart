@@ -59,22 +59,30 @@ class AllFollowing extends StatelessWidget {
                 itemsPerPage: 12,
                 scrollController: followingScroller,
                 itemBuilder: (context, documentSnapshots, index) {
-                  final data = documentSnapshots[index].data() as Map?;
+                  // final data = documentSnapshots[index].data() as Map?;
                   // replace with some basic list tile for now
                   return Container(
                     child: Text('hello'),
                   );
                 },
                 // ashish can your replace this query with the actually query to get the following
-                query: postCollection
-                          .where("id",
-                              whereIn: (currentUser == null)
-                                  ? null
-                                  : currentUser!.following.isEmpty
-                                      ? [currentUser!.id]
-                                      : currentUser!.following +
-                                          [currentUser!.id])
-                          .orderBy("updated_at", descending: true),
+                // query: postCollection
+                //           .where("id",
+                //               whereIn: (currentUser == null)
+                //                   ? null
+                //                   : currentUser!.following.isEmpty
+                //                       ? [currentUser!.id]
+                //                       : currentUser!.following +
+                //                           [currentUser!.id])
+                //           .orderBy("updated_at", descending: true),
+                query: userCollection
+                    .where('id',
+                        whereIn: (currentUser == null)
+                            ? null
+                            : currentUser!.following.isEmpty
+                                ? ['hello']
+                                : currentUser!.following)
+                    .orderBy("updated_at", descending: true),
 
                 itemBuilderType: PaginateBuilderType.listView,
                 isLive: true,

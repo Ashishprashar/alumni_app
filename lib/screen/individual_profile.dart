@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/screen/profile.dart';
+import 'package:alumni_app/widget/profile_widget.dart';
 import 'package:flutter/material.dart';
 
 class IndividualProfile extends StatelessWidget {
@@ -14,6 +16,8 @@ class IndividualProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // log(user.searchName.toString());
+    print(user.searchName.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -25,15 +29,30 @@ class IndividualProfile extends StatelessWidget {
         elevation: 1,
         toolbarHeight: 50,
       ),
+      // body: SafeArea(
+      //   child: Scrollbar(
+      //     thumbVisibility: true,
+      //     child: SingleChildScrollView(
+      //       child: Column(
+      //         children: [
+      //           // UserProfile(
+      //           //   user: user,
+      //           //   index: index,
+      //           // ) // scroll down for the widget
+      //           postsofusers(context, user),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: SafeArea(
-        child: Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                UserProfile(user: user, index: index,) // scroll down for the widget
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          // child: Postsofusers(context, user),
+          
+          child: ProfileWidget(
+            user: user,
+            index: index,
           ),
         ),
       ),

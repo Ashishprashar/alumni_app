@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
@@ -10,14 +9,12 @@ import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
-import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/bottom_sheet_menu.dart';
-import 'package:alumni_app/widget/post_widget.dart';
 import 'package:alumni_app/widget/profile_fields.dart';
+import 'package:alumni_app/widget/profile_widget.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -35,6 +32,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     currentUser = Provider.of<CurrentUserProvider>(context, listen: true)
         .getCurrentUser();
+
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
       return Scaffold(
@@ -53,15 +51,9 @@ class _ProfileState extends State<Profile> {
           toolbarHeight: 50,
         ),
         body: SafeArea(
-          child: Scrollbar(
-            isAlwaysShown: true,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  UserProfile(user: currentUser!),
-                ],
-              ),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: ProfileWidget(user: currentUser,),
           ),
         ),
       );
@@ -87,6 +79,7 @@ class _UserProfileState extends State<UserProfile> {
   ScrollController postsScroller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    log(widget.user.searchName.toString() + ' user profile');
     return Consumer<ProfileProvider>(
         builder: (context, profileProvider, child) {
       return Column(
@@ -395,63 +388,10 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
           ),
-          // only displays posts from our profile for now. We could have posts displayed for other
-          // people in our follow list too I guess. but im no expert with queries :3
-          widget.user.id == currentUser!.id
-              ? SizedBox(
-                  height: SizeData.screenHeight * 0.6,
-                  child: PaginateFirestore(
-                    itemsPerPage: 10,
-                    // scrollController: postsScroller,
-                    itemBuilder: (context, documentSnapshots, index) {
-                      final data = documentSnapshots[index].data() as Map?;
-                      log(data.toString());
-                      return getPostList(documentSnapshots, index);
-                    },
-                    query: postCollection
-                        .where('owner_id', isEqualTo: widget.user.id)
-                        .orderBy("updated_at", descending: true),
-                    itemBuilderType: PaginateBuilderType.listView,
-                    isLive: true,
-                    onEmpty: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'No Posts Yet.',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            const SizedBox(height: 40),
-                            Text(
-                              "You can start posting on the feed screen, Only your followers will be able to see your posts.",
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              : const Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Center(
-                    child: Text(
-                      'We cannot show you posts from other\'s currently.',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
         ],
       );
     });
   }
-
-  getPostList(snapshot, int i) {
-    PostModel postModel =
-        PostModel.fromJson(snapshot[i].data() as Map<String, dynamic>);
-
-    return PostWidget(postModel: postModel);
-  }
 }
+
+

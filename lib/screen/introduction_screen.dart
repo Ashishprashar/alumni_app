@@ -1,4 +1,6 @@
-import 'package:alumni_app/screen/onboarding_screen.dart';
+import 'package:alumni_app/screen/about_screen.dart';
+import 'package:alumni_app/screen/faq_screen.dart';
+import 'package:alumni_app/screen/privacy_screen.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -17,19 +19,31 @@ class IntroductionPage extends StatelessWidget {
         scrollPhysics: const BouncingScrollPhysics(),
         pages: [
           PageViewModel(
+            // image: Image.asset('assets/images/hive_logo.png', scale: 10,),
             titleWidget: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Welcome to the HiveNet',
-                textAlign: TextAlign.justify,
-                style: Theme.of(context).textTheme.headline2,
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/hive_logo.png',
+                    scale: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Welcome to the HiveNet',
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ],
               ),
             ),
             bodyWidget: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'The HiveNet is an online social directory for people to connect intra universities',
+                  'The HiveNet is an online archive that helps people connect through social networks at their college.',
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -38,15 +52,14 @@ class IntroductionPage extends StatelessWidget {
                 const SizedBox(height: 30),
                 RichText(
                   text: TextSpan(
-                    text:
-                        'We have opened up the HiveNet for popular consumption at ',
+                    text: 'We have opened up the HiveNet for consumption at ',
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
                         .copyWith(fontWeight: FontWeight.bold),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'KSSEM & KSSA.',
+                        text: 'KSSEM.',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ],
@@ -88,7 +101,7 @@ class IntroductionPage extends StatelessWidget {
                     const SizedBox(width: 20),
                     Flexible(
                       child: Text(
-                        'Check out the follow structure to get a visualization of your college\'s social network.',
+                        'Engage with your college\'s feed.',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -112,6 +125,62 @@ class IntroductionPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AboutScreen()),
+                        );
+                      },
+                      child: Text(
+                        'about',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FaqScreen()),
+                        );
+                      },
+                      child: Text(
+                        'faq',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PrivacyScreen()),
+                        );
+                      },
+                      child: Text(
+                        'privacy',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             decoration: const PageDecoration(),
@@ -127,28 +196,54 @@ class IntroductionPage extends StatelessWidget {
             // footer: const Text('Footer'), //You can add button here for instance
           ),
           PageViewModel(
-            titleWidget: Text(
-              'To get started, register with your usn and id card photo',
-              style: Theme.of(context).textTheme.headline5,
+            titleWidget: Column(
+              children: [
+                Image.asset(
+                  'assets/images/grug_picture.webp',
+                  scale: 8,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'this collection of thoughts of grug on app.',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ],
             ),
             bodyWidget: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'I have read and understood the terms of service and I agree to them',
+                  'grug not so smart but grug program many hour to learn some things, although mostly still confused.',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  'Note you cannot change your name once you hit submit. We do this to mitigate identity theft',
+                  'grug build app so young grug can learn about other young grug in college. during grug time hard to know other grug interest and skill.',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  'Make sure the usn and name given match your id card or the invite would be rejected.',
+                  'grug not like coding, compiler error make grug want pickup club and swing at system. but grug learn restrain, major difference between grug and animal.',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'grug sometime urge to go village instead to do agriculture, not much admit but honest work.',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  '(ps: but coding pay more, so grug stay)',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -169,17 +264,51 @@ class IntroductionPage extends StatelessWidget {
           ),
           PageViewModel(
             titleWidget: Text(
-              'Id card photo',
-              style: Theme.of(context).textTheme.bodyText1,
+              'many young grug think big brained in early years, make sour face at coding.',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             bodyWidget: Column(
-              children: const[
-                // name
-                // usn
-                // OnBoardingScreen(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '(note: grug once think big brained, but learn hard way)',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'is fine!',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'grug try hard to make app bug free, but grug not so naive to think bug free. ',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'dont come grug home with pitch fork and club if app crash. ',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'anyway grug go too many tangents, enjoy app! ',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ],
             ),
-            // decoration: const PageDecoration(),
+            decoration: const PageDecoration(),
             // image: Center(
             //   child: Image.asset(
             //     'assets/images/student.png',
@@ -194,7 +323,6 @@ class IntroductionPage extends StatelessWidget {
         ],
         onDone: () async {
           navigatorService.navigateToOnBoarding(context);
-          
         },
         // onSkip: () {
         //   navigatorService.navigateToOnBoarding(context);

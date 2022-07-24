@@ -17,14 +17,30 @@ class ProfileFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 10),
+        Field(title: "Last Updated", attribute: theDate(user.updatedAt)),
         Field(
-            title: "Last Updated",
-            attribute: theDate(user.updatedAt)),
-        if (user.bio.isNotEmpty) Field(title: "Bio", attribute: user.bio),
-        Field(title: "Skills", attribute: user.techStack.join(", ")),
-        Field(title: "Interests", attribute: user.interests.join(", ")),
-        Field(title: "Favorite Music", attribute: user.favoriteMusic.join(", ")),
-        Field(title: "Favorite Shows/Movies", attribute: user.favoriteShowsMovies.join(", ")),
+            title: "Skills",
+            attribute: user.techStack.isEmpty
+                ? 'No skills to show'
+                : user.techStack.join(", ")),
+        Field(
+            title: "Interests",
+            attribute: user.interests.isEmpty
+                ? 'No interests to show'
+                : user.interests.join(", ")),
+        Field(
+            title: "Favorite Music",
+            attribute: user.favoriteMusic.isEmpty
+                ? 'No favorite music to show'
+                : user.favoriteMusic.join(", ")),
+        Field(
+            title: "Favorite Shows/Movies",
+            attribute: user.favoriteShowsMovies.isEmpty
+                ? 'No favorite shows/movies to show'
+                : user.favoriteShowsMovies.join(", ")),
+        Field(
+            title: "Bio",
+            attribute: user.bio == '' ? 'No bio to show' : user.bio),
         Field(title: "Gender", attribute: user.gender),
         Field(title: "Joined On", attribute: theDate(user.createdAt)),
       ],

@@ -28,8 +28,8 @@ UserModel? currentUser;
 final commentCollection = db.collection('comment');
 final notificationCollection = db.collection('notification');
 // final chatCollection = db.collection('chat');
-final chatListDb = FirebaseDatabase.instance.reference().child("chat");
-final messagesDb = FirebaseDatabase.instance.reference().child('messages/');
+final chatListDb = FirebaseDatabase.instance.ref().child("chat");
+final messagesDb = FirebaseDatabase.instance.ref().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -145,99 +145,107 @@ class _HomeState extends State<Home> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              SizedBox(
-                                width: SizeData.screenWidth * 0.25,
-                                child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    radius: 20,
-                                    borderRadius: BorderRadius.circular(20),
-                                    onTap: () {
-                                      setState(() {
-                                        _currentIndex = 0;
-                                      });
-                                      if (_currentIndex == 0) {
-                                        Provider.of<FeedProvider>(context,
-                                                listen: false)
-                                            .scrollUp();
-                                      }
-                                    },
-                                    child: NavigationTheme(
-                                      color: _currentIndex == 0
-                                          ? Theme.of(context).hoverColor
-                                          : Theme.of(context)
-                                              .toggleableActiveColor,
-                                      icon: Icons.home,
-                                      type: "home",
-                                    )),
+                              Expanded(
+                                child: SizedBox(
+                                  // width: SizeData.screenWidth * 0.25,
+                                  child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      radius: 20,
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        setState(() {
+                                          _currentIndex = 0;
+                                        });
+                                        if (_currentIndex == 0) {
+                                          Provider.of<FeedProvider>(context,
+                                                  listen: false)
+                                              .scrollUp();
+                                        }
+                                      },
+                                      child: NavigationTheme(
+                                        color: _currentIndex == 0
+                                            ? Theme.of(context).hoverColor
+                                            : Theme.of(context)
+                                                .toggleableActiveColor,
+                                        icon: Icons.home,
+                                        type: "home",
+                                      )),
+                                ),
                               ),
-                              SizedBox(
-                                width: SizeData.screenWidth * 0.25,
-                                child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    radius: 20,
-                                    borderRadius: BorderRadius.circular(20),
-                                    onTap: () {
-                                      setState(() {
-                                        _currentIndex = 1;
-                                      });
-                                      // if (_currentIndex == 2) {
-                                      //   Provider.of<PeopleProvider>(context,
-                                      //           listen: false)
-                                      //       .scrollUp();
-                                      // }
-                                    },
-                                    child: NavigationTheme(
-                                      color: _currentIndex == 1
-                                          ? Theme.of(context).hoverColor
-                                          : Theme.of(context)
-                                              .toggleableActiveColor,
-                                      icon: Icons.chat_outlined,
-                                      type: 'chat',
-                                    )),
+                              Expanded(
+                                child: SizedBox(
+                                  // width: SizeData.screenWidth * 0.25,
+                                  child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      radius: 20,
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        setState(() {
+                                          _currentIndex = 1;
+                                        });
+                                        // if (_currentIndex == 2) {
+                                        //   Provider.of<PeopleProvider>(context,
+                                        //           listen: false)
+                                        //       .scrollUp();
+                                        // }
+                                      },
+                                      child: NavigationTheme(
+                                        color: _currentIndex == 1
+                                            ? Theme.of(context).hoverColor
+                                            : Theme.of(context)
+                                                .toggleableActiveColor,
+                                        icon: Icons.chat_outlined,
+                                        type: 'chat',
+                                      )),
+                                ),
                               ),
-                              SizedBox(
-                                width: SizeData.screenWidth * 0.25,
-                                child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    radius: 20,
-                                    borderRadius: BorderRadius.circular(20),
-                                    onTap: () {
-                                      setState(() {
-                                        _currentIndex = 2;
-                                      });
-                                    },
-                                    child: NavigationTheme(
-                                      color: _currentIndex == 2
-                                          ? Theme.of(context).hoverColor
-                                          : Theme.of(context)
-                                              .toggleableActiveColor,
-                                      icon: Icons.search_rounded,
-                                      type: "search",
-                                    )),
+                              Expanded(
+                                child: SizedBox(
+                                  // width: SizeData.screenWidth * 0.25,
+                                  child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      radius: 20,
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        setState(() {
+                                          _currentIndex = 2;
+                                        });
+                                      },
+                                      child: NavigationTheme(
+                                        color: _currentIndex == 2
+                                            ? Theme.of(context).hoverColor
+                                            : Theme.of(context)
+                                                .toggleableActiveColor,
+                                        icon: Icons.search_rounded,
+                                        type: "search",
+                                      )),
+                                ),
                               ),
-                              SizedBox(
-                                width: SizeData.screenWidth * 0.25,
-                                child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    radius: 20,
-                                    borderRadius: BorderRadius.circular(20),
-                                    onTap: () {
-                                      setState(() {
-                                        _currentIndex = 3;
-                                      });
-                                    },
-                                    child: NavigationTheme(
-                                      color: _currentIndex == 3
-                                          ? Theme.of(context).hoverColor
-                                          : Theme.of(context)
-                                              .toggleableActiveColor,
-                                      icon: Icons.person,
-                                      type: "profile",
-                                    )),
+                              Expanded(
+                                child: SizedBox(
+                                  // width: SizeData.screenWidth * 0.25,
+                                  child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      radius: 20,
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        setState(() {
+                                          _currentIndex = 3;
+                                        });
+                                      },
+                                      child: NavigationTheme(
+                                        color: _currentIndex == 3
+                                            ? Theme.of(context).hoverColor
+                                            : Theme.of(context)
+                                                .toggleableActiveColor,
+                                        icon: Icons.person,
+                                        type: "profile",
+                                      )),
+                                ),
                               ),
                             ]),
                       ),

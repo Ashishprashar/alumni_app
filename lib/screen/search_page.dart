@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/search_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
@@ -25,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    Provider.of<SearchProvider>(context, listen: false).dispose();
+    // Provider.of<SearchProvider>(context, listen: false).dispose();
     super.dispose();
   }
 
@@ -84,6 +86,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: ListView(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -136,9 +139,9 @@ class _SearchPageState extends State<SearchPage> {
                                 "Semester",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              // Container(
-                              //   width: 20,
-                              // ),
+                              Container(
+                                width: 20,
+                              ),
                               DropdownButton(
                                 hint: searchProvider.defaultSemesterValue ==
                                         null
@@ -198,6 +201,8 @@ class _SearchPageState extends State<SearchPage> {
         FocusScope.of(context).unfocus();
         // individualUser = UserModel.fromJson(snapshot[index]);
         // _searchController.clear();
+   
+        log(individualUser.searchName.toString());
         Navigator.of(context).push(MaterialPageRoute(
             builder: (ctx) => IndividualProfile(
                   user: individualUser,
