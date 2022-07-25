@@ -107,9 +107,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             //     null) {
                             //   return Container();
                             // }
-                            Map values = (snapshot.data as DatabaseEvent)
+                            Map values = ((snapshot.data as DatabaseEvent)
                                 .snapshot
-                                .value as Map;
+                                .value??{}) as Map;
                             // chatCount =
                             //     (snapshot.data as Event).snapshot.value.keys.length;
 

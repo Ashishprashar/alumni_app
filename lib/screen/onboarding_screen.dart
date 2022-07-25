@@ -147,28 +147,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   isLoading = true;
                                 });
                                 try {
-                                  // log(profileImage.toString());
-                                  // await databaseService
-                                  //     .createAccount(
-                                  //         controller.text, techStack, profileImage!)
-                                  //     .then((value) =>
-                                  //
-                                  //        navigatorService.navigateToHome(context));
-
-                                  // await inviteUser.authorizeUser(
-                                  //   context,
-                                  //   nameController.text,
-                                  //   usnController.text,
-                                  //   idCardImage!,
-                                  //   firebaseCurrentUser?.email,
-                                  // );
+                                 
                                   await databaseService.createAccount(
                                     nameController.text,
                                     usnController.text,
                                     profileImage!,
                                   );
                                   // .then((value) {
-                                  navigatorService.navigateToHome(ctx);
+                                  navigatorService.navigateToHome(context);
                                   // });
                                 } catch (e) {
                                   setState(() {
@@ -184,20 +170,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         const SizedBox(
                           height: 50,
                         ),
-                        DoneButton(
-                          height: 40,
-                          width: 100,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Home(),
-                              ),
-                            );
-                          },
-                          text: 'home',
-                        ),
                         // DoneButton(
+                        //   height: 40,
+                        //   width: 100,
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => const Home(),
+                        //       ),
+                        //     );
+                        //   },
+                        //   text: 'home',
+                        // ),
+                        // // DoneButton(
                         //   height: 50,
                         //   width: 200,
                         //   onTap: () {

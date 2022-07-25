@@ -84,57 +84,163 @@ class _FeedScreenState extends State<FeedScreen> {
               )
             ],
           ),
-          body: SizedBox(
-            height: SizeData.screenHeight,
-            child: Column(
-              children: [
-                const UploadPostWidget(),
-                Expanded(
-                  child: PaginateFirestore(
-                    itemsPerPage: 7,
-                    // scrollController: feedScroller,
-                    itemBuilder: (context, documentSnapshots, index) {
-                      final data = documentSnapshots[index].data() as Map?;
-                      log(data.toString());
+          body:      PaginateFirestore(
 
-                      return getPostList(documentSnapshots, index);
-                    },
-                    query: postCollection
-                        .where("id",
-                            whereIn: (currentUser == null)
-                                ? null
-                                : currentUser!.following.isEmpty
-                                    ? [currentUser!.id]
-                                    : currentUser!.following +
-                                        [currentUser!.id])
-                        .orderBy("updated_at", descending: true),
-                    itemBuilderType: PaginateBuilderType.listView,
-                    isLive: false,
-                    onEmpty: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'No Posts Yet.',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            const SizedBox(height: 40),
-                            Text(
-                              "You can Start following people in your college to get their posts on your feed.",
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ],
+                  itemsPerPage: 10,
+                  scrollController: feedScroller,
+                  itemBuilder: (context, documentSnapshots, index) {
+                    if(index==0){
+                      return UploadPostWidget();
+                    }
+                    final data = documentSnapshots[index-1].data() as Map?;
+                    log(data.toString());
+
+                    return getPostList(documentSnapshots, index-1);
+                  },
+                  query: postCollection
+                      .where("owner_id",
+                          whereIn: (currentUser == null)
+                              ? null
+                              : currentUser!.following.isEmpty
+                                  ? [currentUser!.id]
+                                  : currentUser!.following +
+                                      [currentUser!.id])
+                      .orderBy("updated_at", descending: true),
+                  itemBuilderType: PaginateBuilderType.listView,
+                  isLive: false,
+                onEmpty: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        UploadPostWidget(),
+                        Text(
+                          'No Posts Yet.',
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
-                      ),
+                        const SizedBox(height: 40),
+                        Text(
+                          "You can Start following people in your college to get their posts on your feed.",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
                     ),
                   ),
+                ),
                 )
-              ],
-            ),
-          ),
+           
+          // CustomScrollView(
+          //   slivers: [
+              
+            
+          //      SliverFillRemaining(
+          //       hasScrollBody: true,
+          //       child: 
+          //       PaginateFirestore(
+
+          //         itemsPerPage: 10,
+          //         scrollController: feedScroller,
+          //         itemBuilder: (context, documentSnapshots, index) {
+          //           if(index==0){
+          //             return UploadPostWidget();
+          //           }
+          //           final data = documentSnapshots[index-1].data() as Map?;
+          //           log(data.toString());
+
+          //           return getPostList(documentSnapshots, index-1);
+          //         },
+          //         query: postCollection
+          //             .where("owner_id",
+          //                 whereIn: (currentUser == null)
+          //                     ? null
+          //                     : currentUser!.following.isEmpty
+          //                         ? [currentUser!.id]
+          //                         : currentUser!.following +
+          //                             [currentUser!.id])
+          //             .orderBy("updated_at", descending: true),
+          //         itemBuilderType: PaginateBuilderType.listView,
+          //         isLive: false,
+          //       onEmpty: Padding(
+          //         padding: const EdgeInsets.all(20.0),
+          //         child: Center(
+          //           child: Column(
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             mainAxisAlignment: MainAxisAlignment.start,
+          //             children: [
+          //               Text(
+          //                 'No Posts Yet.',
+          //                 style: Theme.of(context).textTheme.bodyText1,
+          //               ),
+          //               const SizedBox(height: 40),
+          //               Text(
+          //                 "You can Start following people in your college to get their posts on your feed.",
+          //                 style: Theme.of(context).textTheme.bodyText1,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //       )
+          //      ),
+         
+          //   ],
+          // )
+          // SafeArea(
+          //   child: SizedBox(
+          //     height: SizeData.screenHeight,
+          //     child: Column(
+          //       children: [
+          //         const UploadPostWidget(),
+          //         Expanded(
+          //           child: PaginateFirestore(
+          //             itemsPerPage: 10,
+          //             scrollController: feedScroller,
+          //             itemBuilder: (context, documentSnapshots, index) {
+          //               final data = documentSnapshots[index].data() as Map?;
+          //               log(data.toString());
+
+          //               return getPostList(documentSnapshots, index);
+          //             },
+          //             query: postCollection
+          //                 .where("owner_id",
+          //                     whereIn: (currentUser == null)
+          //                         ? null
+          //                         : currentUser!.following.isEmpty
+          //                             ? [currentUser!.id]
+          //                             : currentUser!.following +
+          //                                 [currentUser!.id])
+          //                 .orderBy("updated_at", descending: true),
+          //             itemBuilderType: PaginateBuilderType.listView,
+          //             isLive: false,
+          //           onEmpty: Padding(
+          //             padding: const EdgeInsets.all(20.0),
+          //             child: Center(
+          //               child: Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.center,
+          //                 mainAxisAlignment: MainAxisAlignment.start,
+          //                 children: [
+          //                   Text(
+          //                     'No Posts Yet.',
+          //                     style: Theme.of(context).textTheme.bodyText1,
+          //                   ),
+          //                   const SizedBox(height: 40),
+          //                   Text(
+          //                     "You can Start following people in your college to get their posts on your feed.",
+          //                     style: Theme.of(context).textTheme.bodyText1,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
+       
         );
       }),
     );
