@@ -27,11 +27,11 @@ class ProfileWidget extends StatelessWidget {
         shrinkWrap: true,
         // header: const SliverToBoxAdapter(child: Text('HEADER')),
         header: SliverToBoxAdapter(
-          child: UserProfile(user: user!, index: index,),
+          child: UserProfile(user: user!, index: index),
         ),
         // footer: const SliverToBoxAdapter(child: Text('FOOTER')),
         // allowImplicitScrolling: true,
-        itemsPerPage: 5,
+        itemsPerPage: 10,
         itemBuilder: (context, documentSnapshots, index) {
           final data = documentSnapshots[index].data() as Map?;
           log(data.toString());

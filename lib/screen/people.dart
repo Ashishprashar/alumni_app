@@ -3,6 +3,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/people_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/screen/search_page.dart';
+import 'package:alumni_app/widget/user_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,8 @@ class _UserListState extends State<UserList> {
                   itemBuilder: (context, index) {
                     final data = documentSnapshots[index].data() as Map?;
                     log(data.toString());
-                    return userCard(index, documentSnapshots);
+                    // return userCard(index, documentSnapshots);
+                    return UserCard(index: index,snapshot: documentSnapshots);
                   },
                   // query: userCollection.orderBy("updated_at", descending: true),
 
@@ -142,105 +144,105 @@ class _UserListState extends State<UserList> {
   }
 
   // Widget userCard(int index, List<QueryDocumentSnapshot<Object?>> snapshot) {
-  Widget userCard(int index, List<DocumentSnapshot<Object?>> snapshot) {
-    // DocumentSnapshot document = snapshot[index];
-    // individualUser = UserModel.fromJson(document);
-    var individualUser =
-        UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
-    return InkWell(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        individualUser =
-            UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (ctx) => IndividualProfile(
-                  user: individualUser,
-                  index: index,
-                )));
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        margin: const EdgeInsets.only(bottom: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 50,
-              width: 50,
-              child: Hero(
-                placeholderBuilder: (context, heroSize, child) => Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image(
-                      image:
-                          CachedNetworkImageProvider(individualUser.profilePic),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                tag: "profile-pic$index",
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(HeroDialogRoute(
-                        builder: ((context) => Center(
-                              child: ProfilePicDialog(
-                                index: index,
-                                // image: individualUser.profilePic,
-                                image: individualUser.profilePic,
-                              ),
-                            ))));
-                  },
-                  child: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: Image(
-                        image: CachedNetworkImageProvider(
-                            individualUser.profilePic),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(individualUser.name,
-                        style: Theme.of(context).textTheme.headline4),
-                    Text(
-                        individualUser.techStack.isEmpty
-                            ? "Skills not added"
-                            : individualUser.techStack.toString(),
-                        style: Theme.of(context).textTheme.subtitle1)
-                  ],
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Text(individualUser.branch,
-                    style: Theme.of(context).textTheme.subtitle1),
-                const SizedBox(width: 3),
-                const Text('•'),
-                const SizedBox(width: 3),
-                Text(individualUser.semester,
-                    style: Theme.of(context).textTheme.subtitle1),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget userCard(int index, List<DocumentSnapshot<Object?>> snapshot) {
+  //   // DocumentSnapshot document = snapshot[index];
+  //   // individualUser = UserModel.fromJson(document);
+  //   var individualUser =
+  //       UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
+  //   return InkWell(
+  //     onTap: () {
+  //       FocusScope.of(context).unfocus();
+  //       individualUser =
+  //           UserModel.fromMap(snapshot[index].data() as Map<String, dynamic>);
+  //       Navigator.of(context).push(MaterialPageRoute(
+  //           builder: (ctx) => IndividualProfile(
+  //                 user: individualUser,
+  //                 index: index,
+  //               )));
+  //     },
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 24),
+  //       margin: const EdgeInsets.only(bottom: 16),
+  //       child: Row(
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         children: [
+  //           SizedBox(
+  //             height: 50,
+  //             width: 50,
+  //             child: Hero(
+  //               placeholderBuilder: (context, heroSize, child) => Container(
+  //                 decoration:
+  //                     BoxDecoration(borderRadius: BorderRadius.circular(15)),
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(40),
+  //                   child: Image(
+  //                     image:
+  //                         CachedNetworkImageProvider(individualUser.profilePic),
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //               ),
+  //               tag: "profile-pic$index",
+  //               child: GestureDetector(
+  //                 onTap: () {
+  //                   Navigator.of(context).push(HeroDialogRoute(
+  //                       builder: ((context) => Center(
+  //                             child: ProfilePicDialog(
+  //                               index: index,
+  //                               // image: individualUser.profilePic,
+  //                               image: individualUser.profilePic,
+  //                             ),
+  //                           ))));
+  //                 },
+  //                 child: Container(
+  //                   decoration:
+  //                       BoxDecoration(borderRadius: BorderRadius.circular(15)),
+  //                   child: ClipRRect(
+  //                     borderRadius: BorderRadius.circular(40),
+  //                     child: Image(
+  //                       image: CachedNetworkImageProvider(
+  //                           individualUser.profilePic),
+  //                       fit: BoxFit.cover,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //           Expanded(
+  //             child: Container(
+  //               margin: const EdgeInsets.only(left: 12),
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(individualUser.name,
+  //                       style: Theme.of(context).textTheme.headline4),
+  //                   Text(
+  //                       individualUser.techStack.isEmpty
+  //                           ? "Skills not added"
+  //                           : individualUser.techStack.toString(),
+  //                       style: Theme.of(context).textTheme.subtitle1)
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           Row(
+  //             children: [
+  //               Text(individualUser.branch,
+  //                   style: Theme.of(context).textTheme.subtitle1),
+  //               const SizedBox(width: 3),
+  //               const Text('•'),
+  //               const SizedBox(width: 3),
+  //               Text(individualUser.semester,
+  //                   style: Theme.of(context).textTheme.subtitle1),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class ProfilePicDialog extends StatefulWidget {

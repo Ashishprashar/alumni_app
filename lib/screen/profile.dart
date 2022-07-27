@@ -290,8 +290,9 @@ class _UserProfileState extends State<UserProfile> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AllFollowers(
-                            followersCount: currentUser!.followerCount,
-                            name: currentUser!.name,
+                            followersCount: widget.user.followerCount,
+                            name: widget.user.name,
+                            user: widget.user,
                           ),
                         ),
                       );
@@ -313,8 +314,9 @@ class _UserProfileState extends State<UserProfile> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AllFollowing(
-                            followingCount: currentUser!.followingCount,
-                            name: currentUser!.name,
+                            followingCount: widget.user.followingCount,
+                            name: widget.user.name,
+                            user: widget.user,
                           ),
                         ),
                       );

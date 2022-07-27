@@ -1,5 +1,7 @@
+import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/media_query.dart';
+import 'package:alumni_app/widget/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
@@ -8,10 +10,12 @@ class AllFollowers extends StatelessWidget {
     Key? key,
     required this.followersCount,
     required this.name,
+    required this.user,
   }) : super(key: key);
 
   final int followersCount;
   final String name;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -60,30 +64,18 @@ class AllFollowers extends StatelessWidget {
                 itemsPerPage: 12,
                 scrollController: followerScroller,
                 itemBuilder: (context, documentSnapshots, index) {
-                  // final data = documentSnapshots[index].data() as Map?;
-                  // replace with some basic list tile for now
-                  return Container(
-                    child: Text('hello'),
-                  );
+                  return UserCard(index: index, snapshot: documentSnapshots);
                 },
-                // ashish can your replace this query with the actually query to get the following
-                // query: postCollection
-                //     .where("id",
-                //         whereIn: (currentUser == null)
-                //             ? null
-                //             : currentUser!.following.isEmpty
-                //                 ? [currentUser!.id]
-                //                 : currentUser!.following + [currentUser!.id])
-                //     .orderBy("updated_at", descending: true),
                 query: userCollection
                     .where('id',
-                        whereIn: (currentUser == null)
-                            ? null
-                            : currentUser!.follower.isEmpty
+                        whereIn:
+                            // (currentUser == null)
+                            //     ? null
+                            //     :
+                            user.follower.isEmpty
                                 ? ['dummy list']
-                                : currentUser!.follower)
+                                : user.follower)
                     .orderBy("updated_at", descending: true),
-
                 itemBuilderType: PaginateBuilderType.listView,
                 isLive: true,
                 onEmpty: Padding(
@@ -94,12 +86,7 @@ class AllFollowers extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'No Notifcations Yet.',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        const SizedBox(height: 40),
-                        Text(
-                          "You get notified if someone likes/comments on your posts",
+                          'No Followers To Show',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],

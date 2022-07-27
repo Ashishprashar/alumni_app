@@ -187,7 +187,7 @@ class DatabaseService {
     };
     if (type != kNotificationKeyPost) {
       data["sentTo"] = [sentTo];
-      data["postId"] = postID!;
+      // data["postId"] = postID!;
     }
 
     String id = (await notificationCollection.add(data)).id;
