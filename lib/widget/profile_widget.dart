@@ -21,46 +21,43 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(user!.searchName.toString() + ' profile widget');
-    return SizedBox(
-      // height: SizeData.screenHeight * 0.8,
-      child: PaginateFirestore(
-        shrinkWrap: true,
-        // header: const SliverToBoxAdapter(child: Text('HEADER')),
-        header: SliverToBoxAdapter(
-          child: UserProfile(user: user!, index: index),
-        ),
-        // footer: const SliverToBoxAdapter(child: Text('FOOTER')),
-        // allowImplicitScrolling: true,
-        itemsPerPage: 10,
-        itemBuilder: (context, documentSnapshots, index) {
-          final data = documentSnapshots[index].data() as Map?;
-          log(data.toString());
-          return getPostList(documentSnapshots, index);
-        },
-        query: postCollection
-            .where('owner_id', isEqualTo: user!.id)
-            .orderBy("updated_at", descending: true),
-        itemBuilderType: PaginateBuilderType.listView,
-        isLive: true,
-        onEmpty: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  UserProfile(user: user!,index: index),
-                  Text(
-                    'No Posts Yet.',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    "You can start posting on the feed screen, Only your followers will be able to see your posts.",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
-              ),
+    return PaginateFirestore(
+      shrinkWrap: true,
+      // header: const SliverToBoxAdapter(child: Text('HEADER')),
+      header: SliverToBoxAdapter(
+        child: UserProfile(user: user!, index: index),
+      ),
+      // footer: const SliverToBoxAdapter(child: Text('FOOTER')),
+      // allowImplicitScrolling: true,
+      itemsPerPage: 10,
+      itemBuilder: (context, documentSnapshots, index) {
+        final data = documentSnapshots[index].data() as Map?;
+        log(data.toString());
+        return getPostList(documentSnapshots, index);
+      },
+      query: postCollection
+          .where('owner_id', isEqualTo: user!.id)
+          .orderBy("updated_at", descending: true),
+      itemBuilderType: PaginateBuilderType.listView,
+      isLive: true,
+      onEmpty: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                UserProfile(user: user!,index: index),
+                Text(
+                  'No Posts Yet.',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  "You can start posting on the feed screen, Only your followers will be able to see your posts.",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
             ),
           ),
         ),

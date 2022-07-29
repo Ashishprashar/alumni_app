@@ -7,7 +7,6 @@ import 'package:alumni_app/screen/chat.dart';
 import 'package:alumni_app/screen/feed_screen.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/screen/profile.dart';
-import 'package:alumni_app/services/media_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';

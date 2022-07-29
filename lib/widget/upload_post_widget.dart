@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/feed_provider.dart';
-import '../services/media_query.dart';
 
 class UploadPostWidget extends StatelessWidget {
   const UploadPostWidget({Key? key}) : super(key: key);
@@ -11,6 +10,7 @@ class UploadPostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ImagePicker imagePicker = ImagePicker();
+    ScrollController _scrollController = ScrollController();
 
     return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
       return Container(
@@ -40,17 +40,23 @@ class UploadPostWidget extends StatelessWidget {
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  child: TextField(
-                    autocorrect: true,
-                    style: Theme.of(context).textTheme.bodyText2,
-                    minLines: 2,
-                    maxLines: 4,
-                    controller: feedProvider.postTextContent,
-                    maxLength: 200,
-                    decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        hintStyle: Theme.of(context).textTheme.bodyText1,
-                        border: InputBorder.none),
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    controller: _scrollController,
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      scrollController: _scrollController,
+                      autocorrect: true,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      minLines: 2,
+                      maxLines: 10,
+                      controller: feedProvider.postTextContent,
+                      maxLength: 280,
+                      decoration: InputDecoration(
+                          hintText: "What's on your mind?",
+                          hintStyle: Theme.of(context).textTheme.bodyText1,
+                          border: InputBorder.none),
+                    ),
                   ),
                 ),
                 // if (feedProvider.getUploadFiles != null)
@@ -174,10 +180,11 @@ class UploadPostWidget extends StatelessWidget {
                           await feedProvider.handlePostButton();
                           const _snackBar = SnackBar(
                             content: Text('Post has been published!'),
+                            duration:  Duration(milliseconds: 500),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(_snackBar);
                         },
-                        width: SizeData.screenWidth * .2,
+                        width: 80,
                         text: "Post"),
                   ],
                 ),

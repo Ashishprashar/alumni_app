@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/widget/profile_widget.dart';
 import 'package:flutter/material.dart';

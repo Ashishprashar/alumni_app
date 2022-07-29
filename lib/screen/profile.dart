@@ -70,7 +70,6 @@ class UserProfile extends StatefulWidget {
 
   UserModel user;
   final int? index;
-
   @override
   State<UserProfile> createState() => _UserProfileState();
 }

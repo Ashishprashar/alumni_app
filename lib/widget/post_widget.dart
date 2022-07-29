@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,7 @@ class _PostWidgetState extends State<PostWidget> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .caption),
-                                      ] else if (user.semester.toString() == 
+                                      ] else if (user.semester.toString() ==
                                           "2") ...[
                                         Text("nd",
                                             style: Theme.of(context)
@@ -129,13 +130,12 @@ class _PostWidgetState extends State<PostWidget> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .caption),
-                                      ] else
-                                        ...[
-                                          Text("th",
+                                      ] else ...[
+                                        Text("th",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .caption),
-                                        ],
+                                      ],
                                     ],
                                   ),
                                 ],
@@ -147,14 +147,39 @@ class _PostWidgetState extends State<PostWidget> {
                             widget.postModel.ownerId)
                           GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (ctx) {
-                                      return MorePostOptionBottomSheet(
-                                        postModel: widget.postModel,
-                                      );
-                                    });
+                                // showModalBottomSheet(
+                                //     context: context,
+                                //     isScrollControlled: true,
+                                //     builder: (ctx) {
+                                //       return MorePostOptionBottomSheet(
+                                //         postModel: widget.postModel,
+                                //       );
+                                //     });
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(25),
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  builder: (BuildContext context) {
+                                    return MorePostOptionBottomSheet(
+                                      postModel: widget.postModel,
+                                    );
+                                    // return Wrap(
+                                    //   children: [
+                                    //     Column(
+                                    //       children: const [
+                                    //         DragIcon(),
+
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // );
+                                  },
+                                );
                               },
                               child: const Icon(Icons.more_vert))
                       ],
@@ -256,8 +281,9 @@ class _PostWidgetState extends State<PostWidget> {
                                     Text(
                                       (widget.postModel.comments.length)
                                           .toString(),
-                                      style:
-                                          Theme.of(context).textTheme.labelMedium,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
                                     ),
                                   ],
                                 ),

@@ -115,7 +115,7 @@ class _EditScreenState extends State<EditScreen> {
               ? const Center(child: CircularProgressIndicator())
               : SafeArea(
                   child: Scrollbar(
-                    isAlwaysShown: true,
+                    thumbVisibility: true,
                     child: SingleChildScrollView(
                       child: Container(
                         margin: EdgeInsets.only(top: SizeData.padding.top),
@@ -475,6 +475,7 @@ class _EditScreenState extends State<EditScreen> {
                                           isLoading = false;
                                         });
                                       }
+                                      
                                       setState(() {
                                         profileImage = null;
                                         isLoading = false;
@@ -511,6 +512,8 @@ class _EditScreenState extends State<EditScreen> {
 
     defaultBranchValue ??= currentUser!.branch;
     defaultSemesterValue ??= currentUser!.semester;
+
+
 
     await databaseService.updateAccount(
         nameController.text,

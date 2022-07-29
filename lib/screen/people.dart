@@ -1,7 +1,6 @@
 import 'dart:developer';
-import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/people_provider.dart';
-import 'package:alumni_app/screen/individual_profile.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/search_page.dart';
 import 'package:alumni_app/widget/user_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -32,7 +31,7 @@ class _PeopleState extends State<People> {
         // ),
         body: SafeArea(
           child: Scrollbar(
-           thumbVisibility : true,
+            thumbVisibility: true,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -121,6 +120,7 @@ class _UserListState extends State<UserList> {
                     peopleProvider.peopleList;
                 return ListView.builder(
                   shrinkWrap: true,
+
                   // itemsPerPage: 10,
                   //item builder type is compulsory.
                   controller: peopleProvider.peopleScroller,
@@ -128,8 +128,13 @@ class _UserListState extends State<UserList> {
                   itemBuilder: (context, index) {
                     final data = documentSnapshots[index].data() as Map?;
                     log(data.toString());
+                    // doing this check so that current user is not shown
+                    if (data!['id'] != currentUser!.id) {
+                      return UserCard(
+                          index: index, snapshot: documentSnapshots);
+                    }
+                    return Container();
                     // return userCard(index, documentSnapshots);
-                    return UserCard(index: index,snapshot: documentSnapshots);
                   },
                   // query: userCollection.orderBy("updated_at", descending: true),
 

@@ -8,13 +8,13 @@ import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/notification_screen.dart';
-import 'package:alumni_app/services/media_query.dart';
+import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 import '../widget/post_widget.dart';
-import '../widget/upload_file_widget.dart';
+import '../widget/upload_post_widget.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   late UserModel? currentUser;
-  ScrollController feedScroller = ScrollController();
+  // ScrollController feedScroller = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -45,6 +45,7 @@ class _FeedScreenState extends State<FeedScreen> {
       child: Consumer2<FeedProvider, CurrentUserProvider>(
           builder: (context, feedProvider, currentUserProvider, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
             appBar: AppBar(
               automaticallyImplyLeading: false,
               title: Text(
@@ -86,7 +87,7 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
             body: PaginateFirestore(
               itemsPerPage: 5,
-              scrollController: feedScroller,
+              // scrollController: feedScroller,
               shrinkWrap: true,
               header: SliverToBoxAdapter(child: UploadPostWidget()),
               itemBuilder: (context, documentSnapshots, index) {
@@ -107,24 +108,33 @@ class _FeedScreenState extends State<FeedScreen> {
                               : currentUser!.following + [currentUser!.id])
                   .orderBy("updated_at", descending: true),
               itemBuilderType: PaginateBuilderType.listView,
-              isLive: false,
+              isLive: true,
               onEmpty: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(bottom: 0.0),
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       UploadPostWidget(),
-                      Text(
-                        'No Posts Yet.',
-                        style: Theme.of(context).textTheme.bodyText1,
+                      Column(
+                        children: [
+                          Text(
+                            'No Posts Yet.',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 40),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(
+                              "You can Start following people in your college to get their posts on your feed.",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 40),
-                      Text(
-                        "You can Start following people in your college to get their posts on your feed.",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
+                      Container(),
                     ],
                   ),
                 ),
@@ -261,54 +271,67 @@ class MorePostOptionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, onStateChange) {
-      return Container(
-        padding: const EdgeInsets.all(10),
-        height: SizeData.screenHeight * .2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: () async {
-                await Provider.of<FeedProvider>(context, listen: false)
-                    .deletePost(postId: postModel.id);
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.delete),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Delete Post"),
-                    ],
-                  )),
+      return Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          DragIcon(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    await Provider.of<FeedProvider>(context, listen: false)
+                        .deletePost(postId: postModel.id);
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: Theme.of(context).highlightColor,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("Delete Post", style: Theme.of(context).textTheme.headline3,),
+                        ],
+                      )),
+                ),
+                SizedBox(height: 10,),
+                InkWell(
+                  onTap: () {
+                    Provider.of<FeedProvider>(context, listen: false)
+                        .putTextInController(postModel.textContent);
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => EditPostScreen(
+                              postModel: postModel,
+                            )));
+                  },
+                  child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.edit,
+                            color: Theme.of(context).highlightColor,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("Edit Post", style: Theme.of(context).textTheme.headline3,),
+                        ],
+                      )),
+                ),
+                SizedBox(height: 15,),
+              ],
             ),
-            InkWell(
-              onTap: () {
-                Provider.of<FeedProvider>(context, listen: false)
-                    .putTextInController(postModel.textContent);
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => EditPostScreen(
-                          postModel: postModel,
-                        )));
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.edit),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Edit Post"),
-                    ],
-                  )),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }

@@ -2,8 +2,6 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../services/media_query.dart';
 import '../widget/done_button.dart';
 
 class EditPostScreen extends StatefulWidget {
@@ -13,6 +11,8 @@ class EditPostScreen extends StatefulWidget {
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
 }
+
+ScrollController _scrollController = ScrollController();
 
 class _EditPostScreenState extends State<EditPostScreen> {
   @override
@@ -42,42 +42,55 @@ class _EditPostScreenState extends State<EditPostScreen> {
             elevation: 1,
             toolbarHeight: 50,
           ),
-          body: Column(children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Theme.of(context).highlightColor)),
-              child: TextField(
-                minLines: 2,
-                maxLines: 4,
-                controller: feedProvider.postTextContent,
-                maxLength: 200,
-                decoration: const InputDecoration(
-                    hintText: "What is in your mind?",
-                    border: InputBorder.none),
+          body: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                // decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //     border:
+                //         Border.all(color: Theme.of(context).highlightColor)),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  controller: _scrollController,
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    scrollController: _scrollController,
+                    minLines: 2,
+                    maxLines: 10,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    controller: feedProvider.postTextContent,
+                    maxLength: 280,
+                    decoration: InputDecoration(
+                        hintText: "What's on your mind?",
+                        hintStyle: Theme.of(context).textTheme.bodyText1,
+                        border: InputBorder.none),
+                  ),
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: DoneButton(
-                  onTap: () async {
-                    await feedProvider.updatePost(widget.postModel);
-                    //  Provider.of<FeedProvider>(context, listen: false)
-                    //     .updatePost(widget.postModel);
-                    const _snackBar = SnackBar(
-                      content: Text('Post has been Edited!'),
-                    );
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                    // Navigator.of(context).pop();
-                    // Navigator.of(context).pop();
-                  },
-                  width: SizeData.screenWidth * .2,
-                  text: "Done"),
-            ),
-          ]),
+              Container(
+                margin: const EdgeInsets.all(8),
+                alignment: Alignment.centerRight,
+                child: DoneButton(
+                    onTap: () async {
+                      await feedProvider.updatePost(widget.postModel);
+                      //  Provider.of<FeedProvider>(context, listen: false)
+                      //     .updatePost(widget.postModel);
+                      const _snackBar = SnackBar(
+                        content: Text('Post has been Edited!'),
+                        duration: Duration(milliseconds: 500),
+                      );
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                      // Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
+                    },
+                    width: 80,
+                    text: "Save"),
+              ),
+            ],
+          ),
         ),
       );
     });
