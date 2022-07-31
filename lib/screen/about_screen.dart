@@ -31,45 +31,6 @@ class AboutScreen extends StatelessWidget {
                 'The HiveNet is an online archive that helps people connect through social networks at college.',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              // const SizedBox(height: 30),
-              // const Text(
-              //     'We have opened up the app for popular consumption at KSSEM'),
-              // const SizedBox(height: 30),
-              // const Text('You can use the app to:'),
-              // const SizedBox(height: 20),
-              // // \u2022 is the short hand for bullet points
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: const [
-              //     Text('●'),
-              //     SizedBox(width: 20),
-              //     Flexible(child: Text('Look up people at your college.')),
-              //   ],
-              // ),
-              // const SizedBox(height: 10),
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: const [
-              //     Text('●'),
-              //     SizedBox(width: 20),
-              //     Flexible(
-              //       child: Text(
-              //           'Check out the follow structure to get a visualization of your college\'s social network.'),
-              //     ),
-              //   ],
-              // ),
-              // const SizedBox(height: 10),
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: const [
-              //     Text('●'),
-              //     SizedBox(width: 20),
-              //     Flexible(
-              //       child: Text(
-              //           'Start chatting with friends and friends of friends in the network.'),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 30),
               Text(
                 'The People',
@@ -118,7 +79,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Diplomacy and business affairs. ',
+                    'Diplomacy and business affairs. Part time Warchief.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
@@ -134,7 +95,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Secret Weapon. ',
+                    'The Secret Weapon. ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],

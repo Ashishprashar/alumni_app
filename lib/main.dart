@@ -1,10 +1,13 @@
 import 'package:alumni_app/provider/app_theme.dart';
 import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/edit_screen_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/provider/invite_screen_provider.dart';
 import 'package:alumni_app/provider/notification_provider.dart';
+import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/provider/people_provider.dart';
+import 'package:alumni_app/provider/privacy_settings_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/provider/search_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SearchProvider()),
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
         ChangeNotifierProvider(create: (context) => AppThemeNotifier()),
+        ChangeNotifierProvider(create: (context) => PrivacySettingsProvider()),
+        ChangeNotifierProvider(create: (context) => OnboardingProvider()),
+        ChangeNotifierProvider(create: (context) => EditScreenProvider()),
       ],
       child: Consumer<AppThemeNotifier>(
         builder: (context, appTheme, child) {

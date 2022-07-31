@@ -8,6 +8,7 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:provider/provider.dart';
@@ -21,17 +22,26 @@ class DatabaseService {
   Future createAccount(
     String name,
     String usn,
-    // List teckStack,
+    String gender,
+    String status,
+    String branch,
+    String? semester,
     File? image,
   ) async {
-    log('hello');
+    
+    String downloadUrl = "";
     Timestamp now = Timestamp.now();
-    UploadTask uploadTask = storageRef
-        .child('profile/${firebaseCurrentUser?.uid}.jpg')
-        .putFile(image!);
-    TaskSnapshot storageSnap = await uploadTask;
-    String downloadUrl = await storageSnap.ref.getDownloadURL();
-    log(downloadUrl);
+    if (image != null) {
+      UploadTask uploadTask = storageRef
+          .child('profile/${firebaseCurrentUser?.uid}.jpg')
+          .putFile(image);
+      TaskSnapshot storageSnap = await uploadTask;
+      downloadUrl = await storageSnap.ref.getDownloadURL();
+      log(downloadUrl);
+    } else {
+      User? _user = auth.currentUser;
+      downloadUrl = _user!.photoURL.toString();
+    }
 
     Map _linkToSocial = {
       'email': firebaseCurrentUser!.email,
@@ -58,19 +68,22 @@ class DatabaseService {
       interests: [],
       favoriteMusic: [],
       favoriteShowsMovies: [],
-      type: "student",
+      // type: "student",
       updatedAt: now,
       admin: false,
-      semester: "8",
-      branch: "CSE",
+      semester: semester ?? '',
+      branch: branch,
       follower: [],
       following: [],
       followerCount: 0,
       followingCount: 0,
       postCount: 0,
       followRequest: [],
-      gender: "Male",
+      gender: gender,
       usn: usn,
+      profilePrivacySetting: kDefaultPrivacySetting,
+      postPrivacySetting: kDefaultPrivacySetting,
+      status: status,
     );
 
     Map<String, dynamic> data = (user.toJson());
@@ -96,6 +109,8 @@ class DatabaseService {
     Map linkToSocials,
     Timestamp createdAt,
     String email,
+    String? profilePrivacySetting,
+    String? postPrivacySetting,
   ) async {
     Timestamp now = Timestamp.now();
 
@@ -121,7 +136,7 @@ class DatabaseService {
       interests: interests,
       favoriteMusic: favoriteMusic,
       favoriteShowsMovies: favoriteShowsMovies,
-      type: 'student',
+      // type: 'student',
       updatedAt: now,
       admin: false,
       semester: semester,
@@ -134,6 +149,10 @@ class DatabaseService {
       followRequest: currentUser!.followRequest,
       gender: "Male",
       usn: currentUser!.usn,
+      profilePrivacySetting:
+          profilePrivacySetting ?? currentUser!.profilePrivacySetting,
+      postPrivacySetting: postPrivacySetting ?? currentUser!.postPrivacySetting,
+      status: currentUser!.status,
     );
 
     Map<String, dynamic> data = (updatedUser.toJson());

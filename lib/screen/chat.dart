@@ -175,7 +175,7 @@ class _ChatUserWidgetState extends State<ChatUserWidget> {
                 ),
               ),
             ),
-            Text(widget.chatModel.user.type,
+            Text(widget.chatModel.user.status,
                 style: Theme.of(context).textTheme.subtitle1)
           ],
         ),

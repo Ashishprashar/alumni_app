@@ -99,7 +99,7 @@ class _PostWidgetState extends State<PostWidget> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(user.type,
+                                      Text(user.status,
                                           style: Theme.of(context)
                                               .textTheme
                                               .caption),

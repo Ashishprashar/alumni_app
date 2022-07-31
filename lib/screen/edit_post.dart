@@ -63,7 +63,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     controller: feedProvider.postTextContent,
                     maxLength: 280,
                     decoration: InputDecoration(
-                        hintText: "What's on your mind?",
+                        hintText: "What's Going on?",
                         hintStyle: Theme.of(context).textTheme.bodyText1,
                         border: InputBorder.none),
                   ),

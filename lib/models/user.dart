@@ -24,7 +24,6 @@ class UserModel {
     required this.searchName,
     required this.profilePic,
     required this.techStack,
-    required this.type,
     required this.updatedAt,
     required this.admin,
     required this.semester,
@@ -39,6 +38,9 @@ class UserModel {
     required this.favoriteMusic,
     required this.favoriteShowsMovies,
     required this.usn,
+    required this.profilePrivacySetting,
+    required this.postPrivacySetting,
+    required this.status,
   });
 
   String bio;
@@ -60,13 +62,15 @@ class UserModel {
   List interests;
   List favoriteMusic;
   List favoriteShowsMovies;
-  String type;
   Timestamp updatedAt;
   bool admin;
   String semester;
   String branch;
   String gender;
   String usn;
+  String profilePrivacySetting;
+  String postPrivacySetting;
+  String status;
 
   factory UserModel.fromDoc(DocumentSnapshot json) => UserModel(
         bio: json["bio"] ?? "",
@@ -97,13 +101,15 @@ class UserModel {
         favoriteShowsMovies: json["favorite_shows_movies"] == null
             ? []
             : List<dynamic>.from(json["favorite_shows_movies"].map((x) => x)),
-        type: json["type"] ?? "student",
         updatedAt: json["updated_at"],
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
         gender: json["gender"] ?? "Male",
         usn: json["usn"] ?? "",
+        profilePrivacySetting: json["profile_privacy_setting"] ?? "Everyone In College",
+        postPrivacySetting: json["post_privacy_setting"] ?? "Everyone In Colleg",
+        status: json["status"] ?? "Student",
       );
 
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
@@ -135,13 +141,15 @@ class UserModel {
         favoriteShowsMovies: json["favorite_shows_movies"] == null
             ? []
             : List<dynamic>.from(json["favorite_shows_movies"].map((x) => x)),
-        type: json["type"] ?? "student",
         updatedAt: json["updated_at"],
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
         gender: json["gender"] ?? "Male",
         usn: json["usn"] ?? "",
+        profilePrivacySetting: json["profile_privacy_setting"] ?? "Everyone In College",
+        postPrivacySetting: json["post_privacy_setting"] ?? "Everyone In Colleg",
+        status: json["status"] ?? "Student",
       );
 
   Map<String, dynamic> toJson() => {
@@ -159,7 +167,6 @@ class UserModel {
         "favorite_music": List<dynamic>.from((favoriteMusic).map((x) => x)),
         "favorite_shows_movies":
             List<dynamic>.from((favoriteShowsMovies).map((x) => x)),
-        "type": type,
         "follower": follower,
         "following": following,
         "follow_request": followRequest,
@@ -172,6 +179,9 @@ class UserModel {
         "branch": branch,
         "gender": gender,
         "usn": usn,
+        "profile_privacy_setting": profilePrivacySetting,
+        "post_privacy_setting": postPrivacySetting,
+        "status": status,
       };
   addFollower(String id) {
     follower.add(id);

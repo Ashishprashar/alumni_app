@@ -17,7 +17,11 @@ class ProfileFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 10),
+        Field(title: "Member Since", attribute: theDate(user.createdAt)),
         Field(title: "Last Updated", attribute: theDate(user.updatedAt)),
+        Field(title: "Gender", attribute: user.gender),
+        Field(title: "Status", attribute: user.status),
+        Field(title: "usn", attribute: user.usn),
         Field(
             title: "Skills",
             attribute: user.techStack.isEmpty
@@ -41,8 +45,6 @@ class ProfileFields extends StatelessWidget {
         Field(
             title: "Bio",
             attribute: user.bio == '' ? 'No bio to show' : user.bio),
-        Field(title: "Gender", attribute: user.gender),
-        Field(title: "Joined On", attribute: theDate(user.createdAt)),
       ],
     );
   }

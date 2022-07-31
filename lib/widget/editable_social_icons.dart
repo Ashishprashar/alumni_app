@@ -119,6 +119,9 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                            ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 widget.onControllerChanged(temporaryController);
@@ -130,7 +133,7 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                             },
                             child: Text(
                               'Submit',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              // style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
                         ),

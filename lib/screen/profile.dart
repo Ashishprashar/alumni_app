@@ -53,7 +53,9 @@ class _ProfileState extends State<Profile> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 15.0),
-            child: ProfileWidget(user: currentUser,),
+            child: ProfileWidget(
+              user: currentUser,
+            ),
           ),
         ),
       );
@@ -157,7 +159,7 @@ class _UserProfileState extends State<UserProfile> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(widget.user.type,
+                                  Text(widget.user.status,
                                       style:
                                           Theme.of(context).textTheme.caption),
                                   const SizedBox(width: 3),
@@ -167,34 +169,39 @@ class _UserProfileState extends State<UserProfile> {
                                       style:
                                           Theme.of(context).textTheme.caption),
                                   const SizedBox(width: 3),
-                                  const Text('•'),
-                                  const SizedBox(width: 3),
-                                  Text(widget.user.semester,
-                                      style:
-                                          Theme.of(context).textTheme.caption),
-                                  if (widget.user.semester.toString() ==
-                                      "1") ...[
-                                    Text("st",
+                                  if (currentUser!.status == "Student") ...[
+                                    const Text('•'),
+                                    const SizedBox(width: 3),
+                                    Text(widget.user.semester,
                                         style: Theme.of(context)
                                             .textTheme
                                             .caption),
-                                  ] else if (widget.user.semester.toString() ==
-                                      "2") ...[
-                                    Text("nd",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
-                                  ] else if (widget.user.semester.toString() ==
-                                      "3") ...[
-                                    Text("rd",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
-                                  ] else ...[
-                                    Text("th",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
+                                    if (widget.user.semester.toString() ==
+                                        "1") ...[
+                                      Text("st",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                    ] else if (widget.user.semester
+                                            .toString() ==
+                                        "2") ...[
+                                      Text("nd",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                    ] else if (widget.user.semester
+                                            .toString() ==
+                                        "3") ...[
+                                      Text("rd",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                    ] else ...[
+                                      Text("th",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                    ],
                                   ],
                                 ],
                               ),
@@ -394,5 +401,3 @@ class _UserProfileState extends State<UserProfile> {
     });
   }
 }
-
-

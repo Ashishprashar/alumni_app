@@ -1,7 +1,5 @@
-import 'package:alumni_app/screen/about_screen.dart';
-import 'package:alumni_app/screen/faq_screen.dart';
-import 'package:alumni_app/screen/privacy_screen.dart';
 import 'package:alumni_app/services/navigator_services.dart';
+import 'package:alumni_app/widget/footer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -126,61 +124,7 @@ class IntroductionPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AboutScreen()),
-                        );
-                      },
-                      child: Text(
-                        'about',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FaqScreen()),
-                        );
-                      },
-                      child: Text(
-                        'faq',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PrivacyScreen()),
-                        );
-                      },
-                      child: Text(
-                        'privacy',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                  ],
-                ),
+                FooterWidget(),
               ],
             ),
             decoration: const PageDecoration(),
@@ -206,7 +150,7 @@ class IntroductionPage extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  'this collection of thoughts of grug on app.',
+                  'this collection of thoughts of grug on app and life.',
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ],
@@ -222,14 +166,14 @@ class IntroductionPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  'grug build app so young grug can learn about other young grug in college. during grug time hard to know other grug interest and skill.',
+                  'grug build app with tribe grug\'s so young grug can learn about other young grug in college. during grug time hard to know other grug interest and skill.',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  'grug not like coding, compiler error make grug want pickup club and swing at system. but grug learn restrain, major difference between grug and animal.',
+                  'grug not like coding, compiler error make grug want pickup club and swing at monitor. but grug learn restrain, major difference between grug and animal.',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
