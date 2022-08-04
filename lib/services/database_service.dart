@@ -98,6 +98,8 @@ class DatabaseService {
   Future updateAccount(
     String name,
     String bio,
+    String usn,
+    String gender,
     File? image,
     String downloadUrl,
     List techStack,
@@ -130,6 +132,7 @@ class DatabaseService {
       id: firebaseCurrentUser!.uid,
       linkToSocial: linkToSocials,
       name: name,
+      usn: usn,
       searchName: name.toUpperCase(),
       profilePic: downloadUrl,
       techStack: techStack,
@@ -147,8 +150,7 @@ class DatabaseService {
       followingCount: currentUser!.followingCount,
       postCount: currentUser!.postCount,
       followRequest: currentUser!.followRequest,
-      gender: "Male",
-      usn: currentUser!.usn,
+      gender: gender,
       profilePrivacySetting:
           profilePrivacySetting ?? currentUser!.profilePrivacySetting,
       postPrivacySetting: postPrivacySetting ?? currentUser!.postPrivacySetting,

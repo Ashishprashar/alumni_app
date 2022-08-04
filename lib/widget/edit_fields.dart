@@ -60,19 +60,31 @@ class _EditFieldsState extends State<EditFields> {
           ),
           const SizedBox(height: 20),
           CustomTextField(
+            controller: editProvider.usnController,
+            title: "Usn",
+          ),
+          const SizedBox(height: 20),
+          CustomTextField(
             controller: editProvider.skillsController,
             title: "Skills",
             hint: 'Add Something',
             suffix: GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  setState(() {
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                setState(() {
+                  if (editProvider.skillsController.text != '') {
                     editProvider.tempSkillsList
                         .insert(0, editProvider.skillsController.text);
-                  });
-                  editProvider.skillsController.text = "";
-                },
-                child: const Icon(Icons.add_box_outlined)),
+                  }
+                });
+                editProvider.skillsController.text = "";
+              },
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).hoverColor,
+                size: 30,
+              ),
+            ),
           ),
           ListItemsWidget(
             listItems: editProvider.tempSkillsList,
@@ -88,15 +100,22 @@ class _EditFieldsState extends State<EditFields> {
             title: "Interests",
             hint: 'Add Something',
             suffix: GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  setState(() {
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                setState(() {
+                  if (editProvider.interestsController.text != '') {
                     editProvider.tempInterestsList
                         .insert(0, editProvider.interestsController.text);
-                  });
-                  editProvider.interestsController.text = "";
-                },
-                child: const Icon(Icons.add_box_outlined)),
+                  }
+                });
+                editProvider.interestsController.text = "";
+              },
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).hoverColor,
+                size: 30,
+              ),
+            ),
           ),
           ListItemsWidget(
               listItems: editProvider.tempInterestsList,
@@ -112,15 +131,22 @@ class _EditFieldsState extends State<EditFields> {
             title: "Favorite Music",
             hint: 'Add Something',
             suffix: GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  setState(() {
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                setState(() {
+                  if (editProvider.favoriteMusicController.text != '') {
                     editProvider.tempFavoriteMusicList
                         .insert(0, editProvider.favoriteMusicController.text);
-                  });
-                  editProvider.favoriteMusicController.text = "";
-                },
-                child: const Icon(Icons.add_box_outlined)),
+                  }
+                });
+                editProvider.favoriteMusicController.text = "";
+              },
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).hoverColor,
+                size: 30,
+              ),
+            ),
           ),
           ListItemsWidget(
               listItems: editProvider.tempFavoriteMusicList,
@@ -135,15 +161,22 @@ class _EditFieldsState extends State<EditFields> {
             title: "Favorite Shows/Movies",
             hint: 'Add Something',
             suffix: GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  setState(() {
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                setState(() {
+                  if (editProvider.favoriteShowsMoviesController.text != '') {
                     editProvider.tempFavoriteShowsMoviesList.insert(
                         0, editProvider.favoriteShowsMoviesController.text);
-                  });
-                  editProvider.favoriteShowsMoviesController.text = "";
-                },
-                child: const Icon(Icons.add_box_outlined)),
+                  }
+                });
+                editProvider.favoriteShowsMoviesController.text = "";
+              },
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).hoverColor,
+                size: 30,
+              ),
+            ),
           ),
           ListItemsWidget(
               listItems: editProvider.tempFavoriteShowsMoviesList,
@@ -153,6 +186,45 @@ class _EditFieldsState extends State<EditFields> {
                 });
               }),
           const SizedBox(height: 10),
+
+          //Gender
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              children: [
+                Text(
+                  "Gender",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Container(
+                  width: 33,
+                ),
+                DropdownButton(
+                  hint: editProvider.defaultGender == null
+                      ? Text(currentUser!.gender)
+                      : Text(
+                          editProvider.defaultGender!,
+                          // style: const TextStyle(
+                          //     color: Colors.blue),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                  value: editProvider.defaultGender,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  items: editProvider.possibleGenders.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      editProvider.defaultGender = newValue!;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
 
           //branch
           Container(
@@ -164,7 +236,7 @@ class _EditFieldsState extends State<EditFields> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Container(
-                  width: 39,
+                  width: 35,
                 ),
                 DropdownButton(
                   hint: editProvider.defaultBranchValue == null
@@ -193,44 +265,44 @@ class _EditFieldsState extends State<EditFields> {
             ),
           ),
           //Sem
-          if(currentUser!.status == 'Student')
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
-              children: [
-                Text(
-                  "Semester",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Container(
-                  width: 20,
-                ),
-                DropdownButton(
-                  hint: editProvider.defaultSemesterValue == null
-                      ? Text(currentUser!.semester)
-                      : Text(
-                          editProvider.defaultSemesterValue!,
-                          // style: const TextStyle(
-                          //     color: Colors.blue),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                  value: editProvider.defaultSemesterValue,
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  items: editProvider.possibleSemesters.map((String items) {
-                    return DropdownMenuItem<String>(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      editProvider.defaultSemesterValue = newValue!;
-                    });
-                  },
-                ),
-              ],
+          if (currentUser!.status == 'Student')
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                children: [
+                  Text(
+                    "Semester",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Container(
+                    width: 20,
+                  ),
+                  DropdownButton(
+                    hint: editProvider.defaultSemesterValue == null
+                        ? Text(currentUser!.semester)
+                        : Text(
+                            editProvider.defaultSemesterValue!,
+                            // style: const TextStyle(
+                            //     color: Colors.blue),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                    value: editProvider.defaultSemesterValue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: editProvider.possibleSemesters.map((String items) {
+                      return DropdownMenuItem<String>(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        editProvider.defaultSemesterValue = newValue!;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
           const SizedBox(height: 16),
         ],
       );

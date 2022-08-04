@@ -27,22 +27,6 @@ class IndividualProfile extends StatelessWidget {
         elevation: 1,
         toolbarHeight: 50,
       ),
-      // body: SafeArea(
-      //   child: Scrollbar(
-      //     thumbVisibility: true,
-      //     child: SingleChildScrollView(
-      //       child: Column(
-      //         children: [
-      //           // UserProfile(
-      //           //   user: user,
-      //           //   index: index,
-      //           // ) // scroll down for the widget
-      //           postsofusers(context, user),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 15.0),

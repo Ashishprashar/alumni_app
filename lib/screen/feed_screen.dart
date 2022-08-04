@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:alumni_app/models/post_model.dart';
-import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/edit_post.dart';
@@ -24,16 +23,16 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  late UserModel? currentUser;
-  // ScrollController feedScroller = ScrollController();
+  // late UserModel? currentUser;
+  ScrollController feedScroller = ScrollController();
   @override
   void initState() {
     super.initState();
     // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
-    setState(() {
-      currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-          .getCurrentUser();
-    });
+    // setState(() {
+    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+    //     .getCurrentUser();
+    // });
   }
 
   @override
@@ -45,7 +44,7 @@ class _FeedScreenState extends State<FeedScreen> {
       child: Consumer2<FeedProvider, CurrentUserProvider>(
           builder: (context, feedProvider, currentUserProvider, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               automaticallyImplyLeading: false,
               title: Text(
@@ -85,57 +84,62 @@ class _FeedScreenState extends State<FeedScreen> {
                 )
               ],
             ),
-            body: PaginateFirestore(
-              itemsPerPage: 5,
-              // scrollController: feedScroller,
-              shrinkWrap: true,
-              header: SliverToBoxAdapter(child: UploadPostWidget()),
-              itemBuilder: (context, documentSnapshots, index) {
-                // if (index == 0) {
-                //   return UploadPostWidget();
-                // }
-                final data = documentSnapshots[index].data() as Map?;
-                log(data.toString());
-
-                return getPostList(documentSnapshots, index);
-              },
-              query: postCollection
-                  .where("owner_id",
-                      whereIn: (currentUser == null)
-                          ? null
-                          : currentUser!.following.isEmpty
-                              ? [currentUser!.id]
-                              : currentUser!.following + [currentUser!.id])
-                  .orderBy("updated_at", descending: true),
-              itemBuilderType: PaginateBuilderType.listView,
-              isLive: true,
-              onEmpty: Padding(
-                padding: const EdgeInsets.only(bottom: 0.0),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      UploadPostWidget(),
-                      Column(
-                        children: [
-                          Text(
-                            'No Posts Yet.',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const SizedBox(height: 40),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
-                              "You can Start following people in your college to get their posts on your feed.",
+            body: Scrollbar(
+              thumbVisibility: true,
+              controller: feedScroller,
+              child: PaginateFirestore(
+                allowImplicitScrolling: true,
+                itemsPerPage: 5,
+                scrollController: feedScroller,
+                shrinkWrap: true,
+                header: SliverToBoxAdapter(child: UploadPostWidget()),
+                itemBuilder: (context, documentSnapshots, index) {
+                  // if (index == 0) {
+                  //   return UploadPostWidget();
+                  // }
+                  final data = documentSnapshots[index].data() as Map?;
+                  log(data.toString());
+            
+                  return getPostList(documentSnapshots, index);
+                },
+                query: postCollection
+                    .where("owner_id",
+                        whereIn: (currentUser == null)
+                            ? ['hello']
+                            : currentUser!.following.isEmpty
+                                ? [currentUser!.id]
+                                : currentUser!.following + [currentUser!.id])
+                    .orderBy("updated_at", descending: true),
+                itemBuilderType: PaginateBuilderType.listView,
+                isLive: true,
+                onEmpty: Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        UploadPostWidget(),
+                        Column(
+                          children: [
+                            Text(
+                              'No Posts Yet.',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
-                          ),
-                        ],
-                      ),
-                      Container(),
-                    ],
+                            const SizedBox(height: 40),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                "You can Start following people in your college to get their posts on your feed.",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -297,11 +301,16 @@ class MorePostOptionBottomSheet extends StatelessWidget {
                           SizedBox(
                             width: 10,
                           ),
-                          Text("Delete Post", style: Theme.of(context).textTheme.headline3,),
+                          Text(
+                            "Delete Post",
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
                         ],
                       )),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 InkWell(
                   onTap: () {
                     Provider.of<FeedProvider>(context, listen: false)
@@ -323,11 +332,16 @@ class MorePostOptionBottomSheet extends StatelessWidget {
                           SizedBox(
                             width: 10,
                           ),
-                          Text("Edit Post", style: Theme.of(context).textTheme.headline3,),
+                          Text(
+                            "Edit Post",
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
                         ],
                       )),
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
               ],
             ),
           ),

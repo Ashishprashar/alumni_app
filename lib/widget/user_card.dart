@@ -63,7 +63,7 @@ class UserCard extends StatelessWidget {
         ),
       ),
       title: Text(individualUser.name,
-          style: Theme.of(context).textTheme.headline4),
+          style: Theme.of(context).textTheme.headline4, overflow: TextOverflow.ellipsis,),
       subtitle: individualUser.techStack.isNotEmpty
           ? Text(individualUser.techStack.toString(),
               maxLines: 1,
@@ -78,7 +78,11 @@ class UserCard extends StatelessWidget {
           const SizedBox(width: 3),
           const Text('•'),
           const SizedBox(width: 3),
+          if(individualUser.status == "Student")
           Text(individualUser.semester,
+              style: Theme.of(context).textTheme.subtitle1),
+          if(individualUser.status != "Student")
+          Text("Alumni",
               style: Theme.of(context).textTheme.subtitle1),
         ],
       ),

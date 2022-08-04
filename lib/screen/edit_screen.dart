@@ -15,7 +15,7 @@ class EditScreen extends StatefulWidget {
   const EditScreen({Key? key}) : super(key: key);
 
   @override
-  _EditScreenState createState() => _EditScreenState(); 
+  _EditScreenState createState() => _EditScreenState();
 }
 
 class _EditScreenState extends State<EditScreen> {
@@ -168,21 +168,16 @@ class _EditScreenState extends State<EditScreen> {
                                           editProvider.isLoading = true;
                                         });
                                         try {
-                                          editProvider.nameController.text =
-                                              editProvider.nameController.text
-                                                  .trim();
-                                          editProvider.bioController.text =
-                                              editProvider.bioController.text
-                                                  .trim();
+                                          // editProvider.nameController.text =
+                                          //     editProvider.nameController.text
+                                          //         .trim();
+                                          // editProvider.bioController.text =
+                                          //     editProvider.bioController.text
+                                          //         .trim();
                                           await editProvider
                                               .updateUserDetails()
                                               .then((value) =>
                                                   Navigator.of(context).pop());
-                                          // const _snackBar = SnackBar(
-                                          //   content: Text('Profile Updated!'),
-                                          // );
-                                          // ScaffoldMessenger.of(context)
-                                          //     .showSnackBar(_snackBar);
                                         } catch (e) {
                                           setState(() {
                                             editProvider.isLoading = false;
@@ -192,11 +187,6 @@ class _EditScreenState extends State<EditScreen> {
                                         setState(() {
                                           editProvider.profileImage = null;
                                           editProvider.isLoading = false;
-                                          // const _snackBar = SnackBar(
-                                          //   content: Text('Profile Updated!'),
-                                          // );
-                                          // ScaffoldMessenger.of(context)
-                                          //     .showSnackBar(_snackBar);
                                         });
                                       },
                                       text: "Save"),

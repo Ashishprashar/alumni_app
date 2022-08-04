@@ -55,6 +55,7 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.only(bottom: 15.0),
             child: ProfileWidget(
               user: currentUser,
+              isProfile: true,
             ),
           ),
         ),
@@ -68,10 +69,12 @@ class UserProfile extends StatefulWidget {
     Key? key,
     required this.user,
     this.index = 1,
+    this.showProfile = true,
   }) : super(key: key);
 
   UserModel user;
   final int? index;
+  final bool showProfile;
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
@@ -84,7 +87,9 @@ class _UserProfileState extends State<UserProfile> {
     return Consumer<ProfileProvider>(
         builder: (context, profileProvider, child) {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: widget.showProfile
+            ? MainAxisAlignment.spaceEvenly
+            : MainAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -169,7 +174,7 @@ class _UserProfileState extends State<UserProfile> {
                                       style:
                                           Theme.of(context).textTheme.caption),
                                   const SizedBox(width: 3),
-                                  if (currentUser!.status == "Student") ...[
+                                  if (widget.user.status == "Student") ...[
                                     const Text('•'),
                                     const SizedBox(width: 3),
                                     Text(widget.user.semester,
@@ -376,7 +381,29 @@ class _UserProfileState extends State<UserProfile> {
               //     ),
               //   ),
               const SizedBox(height: 20),
-              ProfileFields(user: widget.user),
+              widget.showProfile
+                  ? ProfileFields(user: widget.user)
+                  : Center(
+                      child: Container(
+                        height: 200,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.lock,
+                                size: 50,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text('Account is Private', style: Theme.of(context).textTheme.bodyText2),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
               const SizedBox(height: 10),
             ]),
           ),

@@ -6,9 +6,9 @@ class CustomTextField extends StatelessWidget {
   final double height;
   final String hint;
   final String title;
-  final Widget? suffix;
+  Widget? suffix;
 
-  const CustomTextField({
+  CustomTextField({
     Key? key,
     required this.title,
     required this.controller,
@@ -19,6 +19,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: height + 30,
       margin: const EdgeInsets.symmetric(horizontal: 20),

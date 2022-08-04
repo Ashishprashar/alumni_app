@@ -57,7 +57,7 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
       icon: FaIcon(theicon),
       color: widget.controllerText == ''
           ? Colors.grey
-          : Theme.of(context).iconTheme.color,
+          : Theme.of(context).appBarTheme.iconTheme!.color,
       onPressed: () {
         socialLink(widget.socialName, context, temporaryController);
       },

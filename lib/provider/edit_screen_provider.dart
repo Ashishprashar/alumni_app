@@ -50,13 +50,17 @@ class EditScreenProvider with ChangeNotifier {
       TextEditingController(text: currentUser!.name);
   TextEditingController bioController =
       TextEditingController(text: currentUser!.bio);
+  TextEditingController usnController =
+      TextEditingController(text: currentUser!.usn);
   TextEditingController skillsController = TextEditingController(text: '');
   TextEditingController interestsController = TextEditingController();
   TextEditingController favoriteMusicController = TextEditingController();
   TextEditingController favoriteShowsMoviesController = TextEditingController();
 
+  String? defaultGender;
   String? defaultSemesterValue;
   String? defaultBranchValue;
+  var possibleGenders = ['Male', 'Female'];
   var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
   var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
 
@@ -72,6 +76,37 @@ class EditScreenProvider with ChangeNotifier {
 
     defaultBranchValue ??= currentUser!.branch;
     defaultSemesterValue ??= currentUser!.semester;
+    defaultGender ??= currentUser!.gender;
+
+    // trim all the text controllers
+    nameController.text = nameController.text.trim();
+    bioController.text = bioController.text.trim();
+    usnController.text = usnController.text.trim();
+    skillsController.text = skillsController.text.trim();
+    interestsController.text = interestsController.text.trim();
+    favoriteMusicController.text = favoriteMusicController.text.trim();
+    favoriteShowsMoviesController.text =
+        favoriteShowsMoviesController.text.trim();
+
+    // Add text that is in the  controller into the list aswell
+    if (interestsController.text != '') {
+      tempInterestsList.insert(0, interestsController.text);
+    }
+    if (skillsController.text != '') {
+      tempSkillsList.insert(0, skillsController.text);
+    }
+    if (favoriteMusicController.text != '') {
+      tempFavoriteMusicList.insert(0, favoriteMusicController.text);
+    }
+    if (favoriteShowsMoviesController.text != '') {
+      tempFavoriteShowsMoviesList.insert(0, favoriteShowsMoviesController.text);
+    }
+
+    // clear the controllers
+    skillsController.text = '';
+    interestsController.text = '';
+    favoriteMusicController.text = '';
+    favoriteShowsMoviesController.text = '';
 
     // update the real lists with temporary versions of the lists.
     interestsList = List.from(tempInterestsList);
@@ -82,6 +117,8 @@ class EditScreenProvider with ChangeNotifier {
     await databaseService.updateAccount(
       nameController.text,
       bioController.text,
+      usnController.text,
+      defaultGender!,
       profileImage,
       currentUser!.profilePic,
       tempSkillsList,
@@ -103,10 +140,23 @@ class EditScreenProvider with ChangeNotifier {
     profileImage = null;
     nameController.text = currentUser.name;
     bioController.text = currentUser.bio;
+    usnController.text = currentUser.usn;
     interestsController.text = '';
-    skillsController.text = '';
+    skillsController.text = ''; 
     favoriteMusicController.text = '';
     favoriteShowsMoviesController.text = '';
+
+    // clear social controllers
+    twitterController.text = currentUser.linkToSocial['twitter'];
+    linkedinController.text = currentUser.linkToSocial['linkedin'];
+    facebookController.text = currentUser.linkToSocial['facebook'];
+    instagramController.text = currentUser.linkToSocial['instagram'];
+    githubController.text = currentUser.linkToSocial['github'];
+
+    // reset gender, branch, semester
+    defaultBranchValue = currentUser.branch;
+    defaultSemesterValue = currentUser.semester;
+    defaultGender = currentUser.gender;
 
     // update the temporary lists with the real versions of those lists.
     tempSkillsList = List.from(skillsList);

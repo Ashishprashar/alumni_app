@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:alumni_app/provider/app_theme.dart';
 import 'package:alumni_app/provider/privacy_settings_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -146,107 +144,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        "Who Can See My Profile?",
-                        style: Theme.of(context).textTheme.bodyText1,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Who Can See My Profile?",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            Container(
+                              width: 20,
+                            ),
+                            Consumer<PrivacySettingsProvider>(builder:
+                                (context, privacySettingsProvider, child) {
+                              return DropdownButton(
+                                hint: privacySettingsProvider
+                                            .defaultProfilePrivacySetting ==
+                                        "Everyone In College"
+                                    ? Text(
+                                        "Everyone In College",
+                                        style:
+                                            Theme.of(context).textTheme.bodyText1,
+                                      )
+                                    : Text(
+                                        privacySettingsProvider
+                                            .defaultProfilePrivacySetting!,
+                                        style:
+                                            Theme.of(context).textTheme.bodyText1,
+                                      ),
+                                value: privacySettingsProvider
+                                    .defaultProfilePrivacySetting,
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                items: privacySettingsProvider
+                                    .possibleProfilePrivacySettings
+                                    .map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    privacySettingsProvider
+                                            .defaultProfilePrivacySetting =
+                                        newValue == "Everyone In College"
+                                            ? "Everyone In College"
+                                            : newValue!;
+                                  });
+                                },
+                              );
+                            }),
+                            const SizedBox(height: 20),
+                            Text(
+                              "Who Can See My Posts?",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            Container(
+                              width: 20,
+                            ),
+                            Consumer<PrivacySettingsProvider>(builder:
+                                (context, privacySettingsProvider, child) {
+                              return DropdownButton(
+                                hint: privacySettingsProvider
+                                            .defaultPostPrivacySetting ==
+                                        "Everyone In College"
+                                    ? Text(
+                                        "Everyone In College",
+                                        style:
+                                            Theme.of(context).textTheme.bodyText1,
+                                      )
+                                    : Text(
+                                        privacySettingsProvider
+                                            .defaultPostPrivacySetting!,
+                                        style:
+                                            Theme.of(context).textTheme.bodyText1,
+                                      ),
+                                value: privacySettingsProvider
+                                    .defaultPostPrivacySetting,
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                items: privacySettingsProvider
+                                    .possiblePostPrivacySettings
+                                    .map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    privacySettingsProvider
+                                            .defaultPostPrivacySetting =
+                                        newValue == "Everyone In College"
+                                            ? "Everyone In College"
+                                            : newValue!;
+                                  });
+                                  // privacySettingsProvider.searchPeople();
+                                },
+                              );
+                            }),
+                          ],
+                        ),
                       ),
-                      Container(
-                        width: 20,
-                      ),
-                      Consumer<PrivacySettingsProvider>(
-                          builder: (context, privacySettingsProvider, child) {
-                        return DropdownButton(
-                          hint: privacySettingsProvider
-                                      .defaultProfilePrivacySetting ==
-                                  "Everyone In College"
-                              ? Text(
-                                  "Everyone In College",
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                )
-                              : Text(
-                                  privacySettingsProvider
-                                      .defaultProfilePrivacySetting!,
-                                  // style: const TextStyle(
-                                  //     color: Colors.blue),
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                          value: privacySettingsProvider
-                              .defaultProfilePrivacySetting,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: privacySettingsProvider
-                              .possibleProfilePrivacySettings
-                              .map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(
-                                items,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              privacySettingsProvider
-                                      .defaultProfilePrivacySetting =
-                                  newValue == "Everyone In College"
-                                      ? "Everyone In College"
-                                      : newValue!;
-                            });
-                            // privacySettingsProvider.searchPeople();
-                          },
-                        );
-                      }),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Who Can See My Posts?",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Container(
-                        width: 20,
-                      ),
-                      Consumer<PrivacySettingsProvider>(
-                          builder: (context, privacySettingsProvider, child) {
-                        return DropdownButton(
-                          hint: privacySettingsProvider
-                                      .defaultPostPrivacySetting ==
-                                  "Everyone In College"
-                              ? Text(
-                                  "Everyone In College",
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                )
-                              : Text(
-                                  privacySettingsProvider
-                                      .defaultPostPrivacySetting!,
-                                  // style: const TextStyle(
-                                  //     color: Colors.blue),
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                          value:
-                              privacySettingsProvider.defaultPostPrivacySetting,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: privacySettingsProvider
-                              .possiblePostPrivacySettings
-                              .map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(
-                                items,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              privacySettingsProvider
-                                      .defaultPostPrivacySetting =
-                                  newValue == "Everyone In College"
-                                      ? "Everyone In College"
-                                      : newValue!;
-                            });
-                            // privacySettingsProvider.searchPeople();
-                          },
-                        );
-                      }),
                     ],
                   )),
                 ),
@@ -270,6 +277,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await databaseService.updateAccount(
         currentUser!.name,
         currentUser!.bio,
+        currentUser!.usn,
+        currentUser!.gender,
         null,
         currentUser!.profilePic,
         currentUser!.techStack,
