@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
-import 'package:alumni_app/screen/edit_post.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/notification_screen.dart';
-import 'package:alumni_app/widget/bottom_sheet_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -59,19 +58,6 @@ class _FeedScreenState extends State<FeedScreen> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: ((context) => const InviteScreen())));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 20),
-                    child: Icon(
-                      Icons.share,
-                      color: Theme.of(context).appBarTheme.iconTheme!.color,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
                         builder: ((context) => const NotificationScreen())));
                   },
                   child: Container(
@@ -84,66 +70,67 @@ class _FeedScreenState extends State<FeedScreen> {
                 )
               ],
             ),
-            body: Scrollbar(
-              thumbVisibility: true,
-              controller: feedScroller,
-              child: PaginateFirestore(
-                allowImplicitScrolling: true,
-                itemsPerPage: 5,
-                scrollController: feedScroller,
-                shrinkWrap: true,
-                header: SliverToBoxAdapter(child: UploadPostWidget()),
-                itemBuilder: (context, documentSnapshots, index) {
-                  // if (index == 0) {
-                  //   return UploadPostWidget();
-                  // }
-                  final data = documentSnapshots[index].data() as Map?;
-                  log(data.toString());
-            
-                  return getPostList(documentSnapshots, index);
-                },
-                query: postCollection
-                    .where("owner_id",
-                        whereIn: (currentUser == null)
-                            ? ['hello']
-                            : currentUser!.following.isEmpty
-                                ? [currentUser!.id]
-                                : currentUser!.following + [currentUser!.id])
-                    .orderBy("updated_at", descending: true),
-                itemBuilderType: PaginateBuilderType.listView,
-                isLive: true,
-                onEmpty: Padding(
-                  padding: const EdgeInsets.only(bottom: 0.0),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        UploadPostWidget(),
-                        Column(
+            body: currentUser == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : PaginateFirestore(
+                    allowImplicitScrolling: true,
+                    listeners: [feedProvider.refreshChangeListener],
+                    itemsPerPage: 5,
+                    shrinkWrap: true,
+                    header: SliverToBoxAdapter(child: UploadPostWidget()),
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      log(data.toString());
+
+                      return getPostList(documentSnapshots, index);
+                    },
+                    query: postCollection
+                        .where("owner_id",
+                            whereIn: 
+                            // (currentUser == null)
+                            //     ? ['hello']
+                            //     : 
+                                currentUser!.following.isEmpty
+                                    ? [currentUser!.id]
+                                    : currentUser!.following +
+                                        [currentUser!.id])
+                        .orderBy("updated_at", descending: true),
+                    itemBuilderType: PaginateBuilderType.listView,
+                    isLive: false,
+                    onEmpty: Padding(
+                      padding: const EdgeInsets.only(bottom: 0.0),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              'No Posts Yet.',
-                              style: Theme.of(context).textTheme.bodyText1,
+                            UploadPostWidget(),
+                            Column(
+                              children: [
+                                Text(
+                                  'No Posts Yet.',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 40),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
+                                  child: Text(
+                                    "You can Start following people in your college to get their posts on your feed.",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 40),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                "You can Start following people in your college to get their posts on your feed.",
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ),
+                            Container(),
                           ],
                         ),
-                        Container(),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            )
+                  )
 
             // CustomScrollView(
             //   slivers: [
@@ -267,86 +254,86 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 }
 
-class MorePostOptionBottomSheet extends StatelessWidget {
-  final PostModel postModel;
-  const MorePostOptionBottomSheet({Key? key, required this.postModel})
-      : super(key: key);
+// class MorePostOptionBottomSheet extends StatelessWidget {
+//   final PostModel postModel;
+//   const MorePostOptionBottomSheet({Key? key, required this.postModel})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, onStateChange) {
-      return Wrap(
-        alignment: WrapAlignment.center,
-        children: [
-          DragIcon(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await Provider.of<FeedProvider>(context, listen: false)
-                        .deletePost(postId: postModel.id);
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.delete,
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Delete Post",
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                        ],
-                      )),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    Provider.of<FeedProvider>(context, listen: false)
-                        .putTextInController(postModel.textContent);
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => EditPostScreen(
-                              postModel: postModel,
-                            )));
-                  },
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.edit,
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Edit Post",
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                        ],
-                      )),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return StatefulBuilder(builder: (context, onStateChange) {
+//       return Wrap(
+//         alignment: WrapAlignment.center,
+//         children: [
+//           DragIcon(),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 14.0),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 InkWell(
+//                   onTap: () async {
+//                     await Provider.of<FeedProvider>(context, listen: false)
+//                         .deletePost(postId: postModel.id);
+//                     Navigator.of(context).pop();
+//                   },
+//                   child: Container(
+//                       margin: const EdgeInsets.only(bottom: 10),
+//                       child: Row(
+//                         children: [
+//                           Icon(
+//                             Icons.delete,
+//                             color: Theme.of(context).highlightColor,
+//                           ),
+//                           SizedBox(
+//                             width: 10,
+//                           ),
+//                           Text(
+//                             "Delete Post",
+//                             style: Theme.of(context).textTheme.headline3,
+//                           ),
+//                         ],
+//                       )),
+//                 ),
+//                 SizedBox(
+//                   height: 10,
+//                 ),
+//                 InkWell(
+//                   onTap: () {
+//                     Provider.of<FeedProvider>(context, listen: false)
+//                         .putTextInController(postModel.textContent);
+//                     Navigator.of(context).pop();
+//                     Navigator.of(context).push(MaterialPageRoute(
+//                         builder: (ctx) => EditPostScreen(
+//                               postModel: postModel,
+//                             )));
+//                   },
+//                   child: Container(
+//                       margin: const EdgeInsets.only(bottom: 10),
+//                       child: Row(
+//                         children: [
+//                           Icon(
+//                             Icons.edit,
+//                             color: Theme.of(context).highlightColor,
+//                           ),
+//                           SizedBox(
+//                             width: 10,
+//                           ),
+//                           Text(
+//                             "Edit Post",
+//                             style: Theme.of(context).textTheme.headline3,
+//                           ),
+//                         ],
+//                       )),
+//                 ),
+//                 SizedBox(
+//                   height: 15,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       );
+//     });
+//   }
+// }

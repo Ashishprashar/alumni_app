@@ -74,7 +74,7 @@ class AllFollowing extends StatelessWidget {
                             user.following.isEmpty ? ['hello'] : user.following)
                     .orderBy("updated_at", descending: true),
                 itemBuilderType: PaginateBuilderType.listView,
-                isLive: true,
+                isLive: false,
                 onEmpty: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Center(

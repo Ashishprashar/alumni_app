@@ -74,11 +74,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 alignment: Alignment.centerRight,
                 child: DoneButton(
                     onTap: () async {
-                      await feedProvider.updatePost(widget.postModel);
+                      feedProvider.updatePost(widget.postModel);
+                      feedProvider.refreshChangeListener.refreshed = true;
                       //  Provider.of<FeedProvider>(context, listen: false)
                       //     .updatePost(widget.postModel);
-                      const _snackBar = SnackBar(
-                        content: Text('Post has been Edited!'),
+                      final _snackBar = SnackBar(
+                        content: Text(
+                          'Post has been Edited!',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                         duration: Duration(milliseconds: 500),
                       );
                       Navigator.of(context).pop();

@@ -26,40 +26,42 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   AuthServices authServices = AuthServices();
-  late UserModel? currentUser;
+  // late UserModel? currentUser;
 
   @override
   Widget build(BuildContext context) {
-    currentUser = Provider.of<CurrentUserProvider>(context, listen: true)
-        .getCurrentUser();
+    // currentUser = Provider.of<CurrentUserProvider>(context, listen: true)
+    //     .getCurrentUser();
 
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
-      return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Profile',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          actions: const [
-            BottomSheetMenu(),
-            Padding(padding: EdgeInsets.only(right: 8)),
-          ],
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          elevation: 1,
-          toolbarHeight: 50,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Profile',
+          style: Theme.of(context).textTheme.headline6,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: ProfileWidget(
-              user: currentUser,
-              isProfile: true,
-            ),
-          ),
+        actions: const [
+          BottomSheetMenu(),
+          Padding(padding: EdgeInsets.only(right: 8)),
+        ],
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        elevation: 1,
+        toolbarHeight: 50,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: currentUser == null
+              ? Center(child: CircularProgressIndicator())
+              : ProfileWidget(
+                  user: currentUser!,
+                  isProfile: true,
+                ),
         ),
-      );
+      ),
+    );
     });
   }
 }
@@ -398,7 +400,8 @@ class _UserProfileState extends State<UserProfile> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text('Account is Private', style: Theme.of(context).textTheme.bodyText2),
+                              Text('Account is Private',
+                                  style: Theme.of(context).textTheme.bodyText2),
                             ],
                           ),
                         ),

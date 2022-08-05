@@ -115,7 +115,7 @@ class IntroductionPage extends StatelessWidget {
                     const SizedBox(width: 20),
                     Flexible(
                       child: Text(
-                        'Start chatting with friends and friends of friends in the network.',
+                        'Find like-minded people.',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_app/widget/more_post_options.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import '../models/post_model.dart';
 import '../models/user.dart';
 import '../provider/feed_provider.dart';
 import '../screen/comment_screen.dart';
-import '../screen/feed_screen.dart';
 import '../screen/home.dart';
 import '../screen/individual_profile.dart';
 
@@ -233,6 +233,10 @@ class _PostWidgetState extends State<PostWidget> {
                                     onTap: () {
                                       setState(() {
                                         isLike = !isLike;
+                                        Provider.of<FeedProvider>(context,
+                                                listen: false)
+                                            .refreshChangeListener
+                                            .refreshed = true;
                                       });
                                       if (isLike) {
                                         feedProvider.addLike(

@@ -177,9 +177,10 @@ class UploadPostWidget extends StatelessWidget {
                     //     text: "format"),
                     DoneButton(
                         onTap: () async {
+                          feedProvider.refreshChangeListener.refreshed = true;
                           await feedProvider.handlePostButton();
-                          const _snackBar = SnackBar(
-                            content: Text('Post has been published!'),
+                           final _snackBar = SnackBar(
+                            content: Text('Post has been published!', style: Theme.of(context).textTheme.bodyText1,),
                             duration:  Duration(milliseconds: 500),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(_snackBar);

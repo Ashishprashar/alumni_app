@@ -232,12 +232,13 @@ class DatabaseService {
     log("message");
     if (doc.exists) {
       UserModel _userModel =
-          UserModel.fromMap(doc.data() as Map<String, dynamic>);
+         await UserModel.fromMap(doc.data() as Map<String, dynamic>);
       // UserModel _userModel = UserModel.fromDoc(doc);
 
-      navigatorKey.currentContext
-          ?.read<CurrentUserProvider>()
-          .updateCurrentUser(_userModel);
+      // await navigatorKey.currentContext
+      //     ?.read<CurrentUserProvider>()
+      //     .updateCurrentUser(_userModel);
+      await Provider.of<CurrentUserProvider>(context, listen: false).updateCurrentUser(_userModel);
 
       navigatorService.navigateToHome(context);
     } else {

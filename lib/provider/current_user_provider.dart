@@ -8,7 +8,7 @@ class CurrentUserProvider extends ChangeNotifier {
 
   // maybe need to make current user a part of this provider instead of a global variable
   UserModel? getCurrentUser() {
-    return currentUser;
+    return currentUser!;
   }
 
   setDeleting() {

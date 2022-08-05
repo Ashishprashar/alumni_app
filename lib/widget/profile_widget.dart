@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/profile.dart';
 import 'package:alumni_app/widget/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
+import 'package:provider/provider.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({
@@ -29,7 +31,8 @@ class ProfileWidget extends StatelessWidget {
     return PaginateFirestore(
       shrinkWrap: true,
       header: profileWidgetGetter(profilePrivacySetting, user!, index, true),
-      itemsPerPage: 5,
+      itemsPerPage: 3,
+      listeners: [Provider.of<FeedProvider>(context).refreshChangeListener],
       itemBuilder: (context, documentSnapshots, index) {
         final data = documentSnapshots[index].data() as Map?;
         log(data.toString());
@@ -41,7 +44,7 @@ class ProfileWidget extends StatelessWidget {
               .orderBy("updated_at", descending: true)
           : postCollection.where('owner_id', isEqualTo: 'hello'),
       itemBuilderType: PaginateBuilderType.listView,
-      isLive: true,
+      isLive: false,
       onEmpty: Scrollbar(
         thumbVisibility: true,
         child: SingleChildScrollView(

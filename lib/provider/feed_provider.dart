@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,6 +24,7 @@ class FeedProvider with ChangeNotifier {
   TextEditingController postTextContent = TextEditingController();
   TextEditingController commentTextContent = TextEditingController();
   bool isUploading = false;
+  PaginateRefreshedChangeListener refreshChangeListener = PaginateRefreshedChangeListener();
   List<CommentModel> _commentList = [];
   addSingleFile({required XFile? file}) {
     if (_filesToUpload == null) {
