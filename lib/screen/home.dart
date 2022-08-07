@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/chat_provider.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -64,9 +63,9 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero).then((value) async =>
-        await Provider.of<ChatProvider>(context, listen: false)
-            .fetchChatList());
+    // Future.delayed(Duration.zero).then((value) async =>
+    //     await Provider.of<ChatProvider>(context, listen: false)
+    //         .fetchChatList());
   }
 
   @override

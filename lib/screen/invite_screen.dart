@@ -15,7 +15,7 @@ class InviteScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              'Invite User',
+              'Invite A Friend',
               style: Theme.of(context).textTheme.headline6,
             ),
             iconTheme: Theme.of(context).appBarTheme.iconTheme,

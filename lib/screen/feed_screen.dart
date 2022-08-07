@@ -4,10 +4,8 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
 import 'package:alumni_app/screen/home.dart';
-import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/notification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 

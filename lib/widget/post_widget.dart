@@ -263,34 +263,34 @@ class _PostWidgetState extends State<PostWidget> {
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   )),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) => CommentScreen(
-                                          postModel: widget.postModel))));
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 5, top: 2),
-                                        child: Image.asset(
-                                          "assets/images/comment.png",
-                                          width: 22,
-                                          color: Theme.of(context).hintColor,
-                                          height: 22,
-                                          fit: BoxFit.cover,
-                                        )),
-                                    Text(
-                                      (widget.postModel.comments.length)
-                                          .toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     Navigator.of(context).push(MaterialPageRoute(
+                              //         builder: ((context) => CommentScreen(
+                              //             postModel: widget.postModel))));
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Container(
+                              //           padding: const EdgeInsets.only(
+                              //               left: 10, right: 5, top: 2),
+                              //           child: Image.asset(
+                              //             "assets/images/comment.png",
+                              //             width: 22,
+                              //             color: Theme.of(context).hintColor,
+                              //             height: 22,
+                              //             fit: BoxFit.cover,
+                              //           )),
+                              //       Text(
+                              //         (widget.postModel.comments.length)
+                              //             .toString(),
+                              //         style: Theme.of(context)
+                              //             .textTheme
+                              //             .labelMedium,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                           Text(

@@ -14,43 +14,49 @@ class EditScreenProvider with ChangeNotifier {
   File? profileImage;
   bool isLoading = false;
 
-  // Real version of the lists.
-  List skillsList = List<dynamic>.from(currentUser!.techStack.map((x) => x));
+  // UserModel? _currentUser =
+  //         Provider.of<CurrentUserProvider>(context, listen: false)
+  //             .getCurrentUser();
 
-  List interestsList = List<dynamic>.from(currentUser!.interests.map((x) => x));
-  List favoriteMusicList =
+
+  // Real version of the lists.
+  List skillsList = currentUser == null ? [] : 
+  List<dynamic>.from(currentUser!.techStack.map((x) => x));
+
+  List interestsList = currentUser == null ? [] : List<dynamic>.from(currentUser!.interests.map((x) => x));
+  List favoriteMusicList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
-  List favoriteShowsMoviesList =
+  List favoriteShowsMoviesList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
 
   // temporary versions of the lists.
-  List tempSkillsList =
+  List tempSkillsList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.techStack.map((x) => x));
-  List tempInterestsList =
+  List tempInterestsList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.interests.map((x) => x));
-  List tempFavoriteMusicList =
+  List tempFavoriteMusicList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
-  List tempFavoriteShowsMoviesList =
+  List tempFavoriteShowsMoviesList = currentUser == null ? [] :
       List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
 
   // Social Controllers
-  TextEditingController twitterController =
+  TextEditingController twitterController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.linkToSocial['twitter']);
-  TextEditingController linkedinController =
+  TextEditingController linkedinController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.linkToSocial['linkedin']);
-  TextEditingController facebookController =
+  TextEditingController facebookController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.linkToSocial['facebook']);
-  TextEditingController instagramController =
+  TextEditingController instagramController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.linkToSocial['instagram']);
-  TextEditingController githubController =
+  TextEditingController githubController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.linkToSocial['github']);
 
   // Other Controllers
-  TextEditingController nameController =
+  TextEditingController nameController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.name);
-  TextEditingController bioController =
+  TextEditingController bioController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.bio);
-  TextEditingController usnController =
+  TextEditingController usnController = currentUser == null ? TextEditingController() :
       TextEditingController(text: currentUser!.usn);
   TextEditingController skillsController = TextEditingController(text: '');
   TextEditingController interestsController = TextEditingController();
@@ -142,7 +148,7 @@ class EditScreenProvider with ChangeNotifier {
     bioController.text = currentUser.bio;
     usnController.text = currentUser.usn;
     interestsController.text = '';
-    skillsController.text = ''; 
+    skillsController.text = '';
     favoriteMusicController.text = '';
     favoriteShowsMoviesController.text = '';
 

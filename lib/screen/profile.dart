@@ -5,7 +5,6 @@ import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/screen/all_followers.dart';
 import 'package:alumni_app/screen/all_following.dart';
-import 'package:alumni_app/screen/chat_screen.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
@@ -216,18 +215,18 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                       ),
-                      if (widget.user.id != firebaseCurrentUser?.uid)
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                          child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => ChatScreen(
-                                          chatWithUser: widget.user,
-                                        )));
-                              },
-                              child: Image.asset("assets/images/message.png")),
-                        ),
+                      // if (widget.user.id != firebaseCurrentUser?.uid)
+                      //   Container(
+                      //     margin: const EdgeInsets.symmetric(horizontal: 15),
+                      //     child: InkWell(
+                      //         onTap: () {
+                      //           Navigator.of(context).push(MaterialPageRoute(
+                      //               builder: (ctx) => ChatScreen(
+                      //                     chatWithUser: widget.user,
+                      //                   )));
+                      //         },
+                      //         child: Image.asset("assets/images/message.png")),
+                      //   ),
                       if (widget.user.id != firebaseCurrentUser?.uid)
                         InkWell(
                             onTap: () async {
