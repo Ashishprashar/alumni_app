@@ -11,13 +11,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-
-import '../provider/chat_provider.dart';
 import '../screen/sign_in.dart';
 
 class AuthServices {
   NavigatorService navigatorService = NavigatorService();
   DatabaseService dbService = DatabaseService();
+
   Future signInWith(BuildContext context, String type) async {
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
@@ -45,7 +44,7 @@ class AuthServices {
 
         await Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_userModel);
-        await Provider.of<ChatProvider>(context, listen: false).fetchChatList();
+        // await Provider.of<ChatProvider>(context, listen: false).fetchChatList();
         navigatorService.navigateToHome(context);
       } else {
         // navigatorService.navigateToOnBoarding(context);
@@ -68,6 +67,7 @@ class AuthServices {
     return true;
   }
 
+  // not using this anywhere as of now
   deleteAccount(BuildContext context) async {
     log("values");
 

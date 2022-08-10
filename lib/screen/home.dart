@@ -16,12 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-
 final FirebaseAuth auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
 final postCollection = db.collection('post');
+final applicationCollection = db.collection('application');
 UserModel? currentUser;
 final commentCollection = db.collection('comment');
 final notificationCollection = db.collection('notification');

@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
+import 'package:alumni_app/screen/admin_screen.dart';
 import 'package:alumni_app/screen/all_followers.dart';
 import 'package:alumni_app/screen/all_following.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/widget/bottom_sheet_menu.dart';
@@ -34,33 +36,47 @@ class _ProfileState extends State<Profile> {
 
     return Consumer<CurrentUserProvider>(
         builder: (context, currentUserProvider, child) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Profile',
-          style: Theme.of(context).textTheme.headline6,
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          actions: [
+            if (currentUser!.admin)
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AdminScreen()));
+                  },
+                  icon: Icon(Icons.admin_panel_settings)),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => InviteScreen()));
+              },
+              icon: Icon(Icons.share),
+            ),
+            BottomSheetMenu(),
+            Padding(padding: EdgeInsets.only(right: 8)),
+          ],
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 1,
+          toolbarHeight: 50,
         ),
-        actions: const [
-          BottomSheetMenu(),
-          Padding(padding: EdgeInsets.only(right: 8)),
-        ],
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 1,
-        toolbarHeight: 50,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 15.0),
-          child: currentUser == null
-              ? Center(child: CircularProgressIndicator())
-              : ProfileWidget(
-                  user: currentUser!,
-                  isProfile: true,
-                ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: currentUser == null
+                ? Center(child: CircularProgressIndicator())
+                : ProfileWidget(
+                    user: currentUser!,
+                    isProfile: true,
+                  ),
+          ),
         ),
-      ),
-    );
+      );
     });
   }
 }

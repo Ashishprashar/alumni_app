@@ -23,6 +23,7 @@ class UserModel {
     required this.name,
     required this.searchName,
     required this.profilePic,
+    // required this.idPic,
     required this.techStack,
     required this.updatedAt,
     required this.admin,
@@ -58,6 +59,7 @@ class UserModel {
   String name;
   String searchName;
   String profilePic;
+  // String idPic;
   List techStack;
   List interests;
   List favoriteMusic;
@@ -89,6 +91,7 @@ class UserModel {
         name: json["name"],
         searchName: json["search_name"],
         profilePic: json["profile_pic"],
+        // idPic: json["id_pic"],
         techStack: json["tech_stack"] == null
             ? []
             : List<dynamic>.from(json["tech_stack"].map((x) => x)),
@@ -107,8 +110,10 @@ class UserModel {
         branch: json["branch"] ?? "CSE",
         gender: json["gender"] ?? "Male",
         usn: json["usn"] ?? "",
-        profilePrivacySetting: json["profile_privacy_setting"] ?? "Everyone In College",
-        postPrivacySetting: json["post_privacy_setting"] ?? "Everyone In Colleg",
+        profilePrivacySetting:
+            json["profile_privacy_setting"] ?? "Everyone In College",
+        postPrivacySetting:
+            json["post_privacy_setting"] ?? "Everyone In Colleg",
         status: json["status"] ?? "Student",
       );
 
@@ -129,6 +134,8 @@ class UserModel {
         name: json["name"],
         searchName: json["search_name"],
         profilePic: json["profile_pic"],
+        // idPic: json["id_pic"] ?? "",
+
         techStack: json["tech_stack"] == null
             ? []
             : List<dynamic>.from(json["tech_stack"].map((x) => x)),
@@ -147,8 +154,10 @@ class UserModel {
         branch: json["branch"] ?? "CSE",
         gender: json["gender"] ?? "Male",
         usn: json["usn"] ?? "",
-        profilePrivacySetting: json["profile_privacy_setting"] ?? "Everyone In College",
-        postPrivacySetting: json["post_privacy_setting"] ?? "Everyone In Colleg",
+        profilePrivacySetting:
+            json["profile_privacy_setting"] ?? "Everyone In College",
+        postPrivacySetting:
+            json["post_privacy_setting"] ?? "Everyone In Colleg",
         status: json["status"] ?? "Student",
       );
 
@@ -162,6 +171,7 @@ class UserModel {
         "name": name,
         "search_name": searchName,
         "profile_pic": profilePic,
+        // "id_pic": idPic,
         "tech_stack": List<dynamic>.from((techStack).map((x) => x)),
         "interests": List<dynamic>.from((interests).map((x) => x)),
         "favorite_music": List<dynamic>.from((favoriteMusic).map((x) => x)),

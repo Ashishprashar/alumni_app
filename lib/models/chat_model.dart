@@ -1,31 +1,31 @@
-// To parse this JSON data, do
-//
-//     final chatModel = chatModelFromJson(jsonString);
+// // To parse this JSON data, do
+// //
+// //     final chatModel = chatModelFromJson(jsonString);
 
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:alumni_app/models/user.dart';
+// import 'package:alumni_app/models/user.dart';
 
-ChatModel chatModelFromJson(String str) => ChatModel.fromJson(json.decode(str));
+// ChatModel chatModelFromJson(String str) => ChatModel.fromJson(json.decode(str));
 
-String chatModelToJson(ChatModel data) => json.encode(data.toJson());
+// String chatModelToJson(ChatModel data) => json.encode(data.toJson());
 
-class ChatModel {
-  ChatModel({
-    required this.user,
-    required this.lasMessage,
-  });
+// class ChatModel {
+//   ChatModel({
+//     required this.user,
+//     required this.lasMessage,
+//   });
 
-  UserModel user;
-  String? lasMessage;
+//   UserModel user;
+//   String? lasMessage;
 
-  factory ChatModel.fromJson(json) => ChatModel(
-        user: UserModel.fromMap(json["user"]),
-        lasMessage: json["lastMessage"],
-      );
+//   factory ChatModel.fromJson(json) => ChatModel(
+//         user: UserModel.fromMap(json["user"]),
+//         lasMessage: json["lastMessage"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "user": user.toJson(),
-        "lasMessage": lasMessage,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "user": user.toJson(),
+//         "lasMessage": lasMessage,
+//       };
+// }

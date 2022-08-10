@@ -22,15 +22,15 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   // late UserModel? currentUser;
   ScrollController feedScroller = ScrollController();
-  @override
-  void initState() {
-    super.initState();
-    // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
-    // setState(() {
-    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-    //     .getCurrentUser();
-    // });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
+  //   // setState(() {
+  //   // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+  //   //     .getCurrentUser();
+  //   // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 : PaginateFirestore(
                     allowImplicitScrolling: true,
                     listeners: [feedProvider.refreshChangeListener],
-                    itemsPerPage: 5,
+                    itemsPerPage: 10,
                     shrinkWrap: true,
                     header: SliverToBoxAdapter(child: UploadPostWidget()),
                     itemBuilder: (context, documentSnapshots, index) {

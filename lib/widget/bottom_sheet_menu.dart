@@ -31,7 +31,6 @@ class BottomSheetMenu extends StatelessWidget {
                 Column(
                   children: const [
                     DragIcon(),
-               
                     BottomSheetWidget(
                         title: 'Edit Profile',
                         icon: Icons.edit,
@@ -41,7 +40,7 @@ class BottomSheetMenu extends StatelessWidget {
                         icon: Icons.settings,
                         pushScreen: SettingsScreen()),
                     BottomSheetWidget(
-                        title: 'Invite a Friend',
+                        title: 'Invite',
                         icon: Icons.share,
                         pushScreen: InviteScreen()),
                     BottomSheetWidget(
@@ -56,11 +55,11 @@ class BottomSheetMenu extends StatelessWidget {
                         title: 'Privacy & Terms',
                         icon: Icons.privacy_tip,
                         pushScreen: PrivacyScreen()),
-                    BottomSheetWidget(
-                        title: 'Logout',
-                        icon: Icons.logout,
-                        pushScreen: SignOutButton()),
-
+                    // BottomSheetWidget(
+                    //     title: 'Logout',
+                    //     icon: Icons.logout,
+                    //     pushScreen: SignOutButton()),
+                    SignOutButton(),
                     SizedBox(height: 10),
                   ],
                 ),
@@ -118,5 +117,3 @@ class DragIcon extends StatelessWidget {
     );
   }
 }
-
-

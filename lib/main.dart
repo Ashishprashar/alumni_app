@@ -1,5 +1,4 @@
 import 'package:alumni_app/provider/app_theme.dart';
-import 'package:alumni_app/provider/chat_provider.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/edit_screen_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
@@ -28,7 +27,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -45,7 +43,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => CurrentUserProvider()),
         ChangeNotifierProvider(create: (context) => FeedProvider()),
-        ChangeNotifierProvider(create: (context) => ChatProvider()),
+        // ChangeNotifierProvider(create: (context) => ChatProvider()),
         ChangeNotifierProvider(create: (context) => InviteProvider()),
         ChangeNotifierProvider(create: (context) => PeopleProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),

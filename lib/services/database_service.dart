@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:alumni_app/models/application.dart';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class DatabaseService {
   final String? uid;
@@ -26,22 +28,21 @@ class DatabaseService {
     String status,
     String branch,
     String? semester,
-    File? image,
+    File idCardImage,
   ) async {
-    
-    String downloadUrl = "";
+    String idDownloadUrl = "";
+    String profileDownloadUrl = "";
     Timestamp now = Timestamp.now();
-    if (image != null) {
-      UploadTask uploadTask = storageRef
-          .child('profile/${firebaseCurrentUser?.uid}.jpg')
-          .putFile(image);
-      TaskSnapshot storageSnap = await uploadTask;
-      downloadUrl = await storageSnap.ref.getDownloadURL();
-      log(downloadUrl);
-    } else {
-      User? _user = auth.currentUser;
-      downloadUrl = _user!.photoURL.toString();
-    }
+
+    UploadTask uploadTask = storageRef
+        .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
+        .putFile(idCardImage);
+    TaskSnapshot storageSnap = await uploadTask;
+    idDownloadUrl = await storageSnap.ref.getDownloadURL();
+    log(idDownloadUrl);
+
+    User? _user = auth.currentUser;
+    profileDownloadUrl = _user!.photoURL.toString();
 
     Map _linkToSocial = {
       'email': firebaseCurrentUser!.email,
@@ -61,14 +62,12 @@ class DatabaseService {
       linkToSocial: _linkToSocial,
       name: name,
       searchName: name.toUpperCase(),
-      profilePic: downloadUrl,
-      // profilePic: firebaseCurrentUser!.photoURL ?? "",
-      // techStack: teckStack,
+      profilePic: profileDownloadUrl,
+      // idPic: idDownloadUrl,
       techStack: [],
       interests: [],
       favoriteMusic: [],
       favoriteShowsMovies: [],
-      // type: "student",
       updatedAt: now,
       admin: false,
       semester: semester ?? '',
@@ -135,11 +134,11 @@ class DatabaseService {
       usn: usn,
       searchName: name.toUpperCase(),
       profilePic: downloadUrl,
+      // idPic: currentUser!.idPic,
       techStack: techStack,
       interests: interests,
       favoriteMusic: favoriteMusic,
       favoriteShowsMovies: favoriteShowsMovies,
-      // type: 'student',
       updatedAt: now,
       admin: false,
       semester: semester,
@@ -162,6 +161,33 @@ class DatabaseService {
     navigatorKey.currentContext
         ?.read<CurrentUserProvider>()
         .updateCurrentUser(updatedUser);
+  }
+
+  Future pushRequestToAdmins(
+    String name,
+    String usn,
+    File image,
+  ) async {
+    UploadTask _uploadTask = storageRef
+        .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
+        .putFile(image);
+    TaskSnapshot storageSnap = await _uploadTask;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    var uuid = const Uuid();
+
+    ApplicationModel application = ApplicationModel(
+      applicationId: uuid.v1(),
+      ownerId: firebaseCurrentUser?.uid ?? "",
+      name: name,
+      usn: usn,
+      downloadUrl: downloadUrl,
+      createdTime: Timestamp.now(),
+    );
+
+    Map<String, dynamic> data = (application.toJson());
+
+    await applicationCollection.doc(firebaseCurrentUser!.uid).set(data);
   }
 
   addNotification({
@@ -232,13 +258,14 @@ class DatabaseService {
     log("message");
     if (doc.exists) {
       UserModel _userModel =
-         await UserModel.fromMap(doc.data() as Map<String, dynamic>);
+          await UserModel.fromMap(doc.data() as Map<String, dynamic>);
       // UserModel _userModel = UserModel.fromDoc(doc);
 
       // await navigatorKey.currentContext
       //     ?.read<CurrentUserProvider>()
       //     .updateCurrentUser(_userModel);
-      await Provider.of<CurrentUserProvider>(context, listen: false).updateCurrentUser(_userModel);
+      await Provider.of<CurrentUserProvider>(context, listen: false)
+          .updateCurrentUser(_userModel);
 
       navigatorService.navigateToHome(context);
     } else {

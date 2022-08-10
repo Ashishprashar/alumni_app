@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/privacy_screen.dart';
 import 'package:alumni_app/widget/check_box_widget.dart';
 import 'package:alumni_app/widget/custom_text_field.dart';
+import 'package:alumni_app/widget/image_picker_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class OnboardingFields extends StatefulWidget {
@@ -23,6 +26,21 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
       return Column(
         children: [
           SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/hive_logo.png',
+                scale: 15,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Registration',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
@@ -34,10 +52,14 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
           CustomTextField(
             controller: onboardingProvider.nameController,
             title: "Name",
+            isRichText: true,
+            title2: '  (Same as the name in your ID Card)',
           ),
           CustomTextField(
             controller: onboardingProvider.usnController,
             title: "Usn",
+            isRichText: true,
+            title2: '  (Same as the usn in your ID Card)',
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 21),
@@ -105,7 +127,8 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
                   onChanged: (String? newValue) {
                     setState(() {
                       onboardingProvider.defaultStatus = newValue!;
-                      log("Onboarding Field:  "+ onboardingProvider.defaultStatus!);
+                      log("Onboarding Field:  " +
+                          onboardingProvider.defaultStatus!);
                     });
                   },
                 ),
@@ -188,6 +211,64 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
                 ],
               ),
             ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'Upload ID Card',
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return ImagePickerWidget(onProfileChanged: (File? image) {
+                      setState(() {
+                        onboardingProvider.idCardImage = image;
+                      });
+                    });
+                  });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 20.0),
+              child: CircleAvatar(
+                radius: 50.0,
+                backgroundColor: Theme.of(context).highlightColor,
+                backgroundImage: onboardingProvider.idCardImage != null
+                    ? FileImage(onboardingProvider.idCardImage!)
+                    : null,
+                child: onboardingProvider.idCardImage == null
+                    ? const FaIcon(FontAwesomeIcons.plus)
+                    : null,
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'Note: We use the name and usn in your ID Card to check if its the same as the name and usn you provided in the first 2 fields in this screen. If they are not the same the registration will fail.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'Your ID Card will not be displayed anywhere in the app. It is only needed for the registration to prove your identity.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'After pressing create account there will be some waiting time, since we have to manually validate your details before allowing you into the app. We hope you understand.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
           SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 8, right: 20),

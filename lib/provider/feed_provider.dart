@@ -24,7 +24,8 @@ class FeedProvider with ChangeNotifier {
   TextEditingController postTextContent = TextEditingController();
   TextEditingController commentTextContent = TextEditingController();
   bool isUploading = false;
-  PaginateRefreshedChangeListener refreshChangeListener = PaginateRefreshedChangeListener();
+  PaginateRefreshedChangeListener refreshChangeListener =
+      PaginateRefreshedChangeListener();
   List<CommentModel> _commentList = [];
   addSingleFile({required XFile? file}) {
     if (_filesToUpload == null) {

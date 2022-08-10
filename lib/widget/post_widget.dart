@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../models/post_model.dart';
 import '../models/user.dart';
 import '../provider/feed_provider.dart';
-import '../screen/comment_screen.dart';
 import '../screen/home.dart';
 import '../screen/individual_profile.dart';
 

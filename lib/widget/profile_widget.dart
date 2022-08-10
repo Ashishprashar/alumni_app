@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({
     Key? key,
     this.user,
@@ -23,14 +23,23 @@ class ProfileWidget extends StatelessWidget {
   final bool? isProfile;
 
   @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+
+  ScrollController _scrollController = ScrollController();
+  
+  @override
   Widget build(BuildContext context) {
-    String profilePrivacySetting = user!.profilePrivacySetting.toString();
-    String postPrivacySetting = user!.postPrivacySetting.toString();
-    ScrollController _scrollController = ScrollController();
+    String profilePrivacySetting =
+        widget.user!.profilePrivacySetting.toString();
+    String postPrivacySetting = widget.user!.postPrivacySetting.toString();
 
     return PaginateFirestore(
       shrinkWrap: true,
-      header: profileWidgetGetter(profilePrivacySetting, user!, index, true),
+      header: profileWidgetGetter(
+          profilePrivacySetting, widget.user!, widget.index, true),
       itemsPerPage: 3,
       listeners: [Provider.of<FeedProvider>(context).refreshChangeListener],
       itemBuilder: (context, documentSnapshots, index) {
@@ -38,14 +47,15 @@ class ProfileWidget extends StatelessWidget {
         log(data.toString());
         return getPostList(documentSnapshots, index);
       },
-      query: shouldPostsDisplay(postPrivacySetting, user!)
+      query: shouldPostsDisplay(postPrivacySetting, widget.user!)
           ? postCollection
-              .where('owner_id', isEqualTo: user!.id)
+              .where('owner_id', isEqualTo: widget.user!.id)
               .orderBy("updated_at", descending: true)
           : postCollection.where('owner_id', isEqualTo: 'hello'),
       itemBuilderType: PaginateBuilderType.listView,
       isLive: false,
       onEmpty: Scrollbar(
+        controller: _scrollController,
         thumbVisibility: true,
         child: SingleChildScrollView(
           controller: _scrollController,
@@ -54,11 +64,12 @@ class ProfileWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                profileWidgetGetter(profilePrivacySetting, user!, index, false),
-                user!.postCount > 0
+                profileWidgetGetter(
+                    profilePrivacySetting, widget.user!, widget.index, false),
+                widget.user!.postCount > 0
                     ? Container(
-                      height: 200,
-                      child: Column(
+                        height: 200,
+                        child: Column(
                           children: [
                             SizedBox(height: 20),
                             Icon(
@@ -72,12 +83,12 @@ class ProfileWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                    )
+                      )
                     : Text(
                         'No Posts Yet.',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                if (isProfile ?? false) const SizedBox(height: 100),
+                if (widget.isProfile ?? false) const SizedBox(height: 100),
               ],
             ),
           ),

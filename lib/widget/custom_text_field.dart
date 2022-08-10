@@ -6,30 +6,45 @@ class CustomTextField extends StatelessWidget {
   final double height;
   final String hint;
   final String title;
-  Widget? suffix;
+  final String? title2;
+  final Widget? suffix;
+  final bool? isRichText;
 
   CustomTextField({
     Key? key,
     required this.title,
+    this.title2,
     required this.controller,
     this.height = 50,
     this.hint = "",
     this.suffix,
+    this.isRichText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: height + 30,
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headline4,
-          ),
+          isRichText == null
+              ? Text(
+                  title,
+                  style: Theme.of(context).textTheme.headline4,
+                )
+              : Flexible(
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyText1,
+                      children: <TextSpan>[
+                        TextSpan(text: title , style: Theme.of(context).textTheme.bodyText2),
+                        TextSpan(text: title2.toString(),style: Theme.of(context).textTheme.bodyText1),
+                      ],
+                    ),
+                  ),
+                ),
           Container(
             height: height,
             padding: const EdgeInsets.symmetric(horizontal: 8),

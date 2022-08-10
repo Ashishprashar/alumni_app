@@ -15,7 +15,7 @@ class InviteScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              'Invite A Friend',
+              'Invite',
               style: Theme.of(context).textTheme.headline6,
             ),
             iconTheme: Theme.of(context).appBarTheme.iconTheme,
@@ -23,22 +23,53 @@ class InviteScreen extends StatelessWidget {
             elevation: 1,
             toolbarHeight: 50,
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomTextField(
-                  title: "Enter Email Id", controller: inviteUser.emailId, hint: 'Enter their google account email id',),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                width: 150,
-                height: 40,
-                child: DoneButton(
-                    onTap: () async {
-                      await inviteUser.inviteUser(context);
-                    },
-                    text: "Invite"),
-              )
-            ],
+          body: Scrollbar(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Note: The user you are inviting has to be somone from either KSSEM or KSSSA. Other users are currently not accepted.',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'Remember to enter their google account email id. As they will need that to signup',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'The invited user will then need to validate that they belong to the college with their name and id on registration screen',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    title: "Enter Email Id",
+                    controller: inviteUser.emailId,
+                    hint: 'Enter their google account email id',
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    width: 150,
+                    height: 40,
+                    child: DoneButton(
+                        onTap: () async {
+                          await inviteUser.inviteUser(context);
+                        },
+                        text: "Invite"),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       );
