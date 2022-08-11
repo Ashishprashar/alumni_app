@@ -31,9 +31,13 @@ class AdminScreen extends StatelessWidget {
                   itemsPerPage: 5,
                   scrollController: adminScroller,
                   itemBuilder: (context, documentSnapshots, index) {
-                    return ApplicationCard(
-                      index: index,
-                      snapshot: documentSnapshots,
+                    return Column(
+                      children: [
+                        ApplicationCard(
+                          index: index,
+                          snapshot: documentSnapshots,
+                        ),
+                      ],
                     );
                   },
                   query: applicationCollection.orderBy("created_time",

@@ -107,7 +107,12 @@ class OnboardingProvider with ChangeNotifier {
           log("Create account:  " + defaultStatus!);
           databaseService
               .pushRequestToAdmins(
-                  nameController.text, usnController.text, idCardImage!)
+                  nameController.text,
+                  usnController.text,
+                  defaultSemesterValue!,
+                  defaultBranchValue!,
+                  defaultStatus!,
+                  idCardImage!)
               .then(
                 (value) => databaseService
                     .createAccount(

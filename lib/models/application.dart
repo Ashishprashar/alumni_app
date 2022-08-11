@@ -11,6 +11,9 @@ class ApplicationModel {
     required this.usn,
     required this.downloadUrl,
     required this.createdTime,
+    required this.semester,
+    required this.branch,
+    required this.status,
   });
 
   String applicationId;
@@ -18,6 +21,9 @@ class ApplicationModel {
   String name;
   String usn;
   String downloadUrl;
+  String semester;
+  String branch;
+  String status;
   Timestamp createdTime;
 
   factory ApplicationModel.fromJson(Map<String, dynamic> json) =>
@@ -28,6 +34,9 @@ class ApplicationModel {
         name: json['name'],
         usn: json['usn'],
         downloadUrl: json['download_url'],
+        semester: json['semester'],
+        branch: json['branch'],
+        status: json['status'],
       );
 
   factory ApplicationModel.fromMap(Map<String, dynamic> json) =>
@@ -38,6 +47,9 @@ class ApplicationModel {
         name: json['name'],
         usn: json['usn'],
         downloadUrl: json['download_url'],
+        semester: json['semester'],
+        branch: json['branch'],
+        status: json['status'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +59,8 @@ class ApplicationModel {
         "name": name,
         "usn": usn,
         "download_url": downloadUrl,
+        "semester": semester,
+        "branch": branch,
+        "status": status,
       };
 }

@@ -1,4 +1,5 @@
 import 'package:alumni_app/models/application.dart';
+import 'package:alumni_app/screen/rejection_application_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/time_widget.dart';
@@ -20,11 +21,6 @@ class ApplicationCard extends StatefulWidget {
   State<ApplicationCard> createState() => _ApplicationCardState();
 }
 
-enum SingingCharacter {
-  notIDImage,
-  NotClear,
-}
-
 class _ApplicationCardState extends State<ApplicationCard> {
   @override
   Widget build(BuildContext context) {
@@ -32,27 +28,45 @@ class _ApplicationCardState extends State<ApplicationCard> {
         widget.snapshot![widget.index].data() as Map<String, dynamic>);
 
     return Card(
+      color: Theme.of(context).backgroundColor,
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
+          SizedBox(height: 10),
           ListTile(
             title: Text(
               'Name: ' + individualApplication.name,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('USN: ' + individualApplication.usn,
-                    style: Theme.of(context).textTheme.bodyText2),
+                    style: Theme.of(context).textTheme.bodyText1),
                 // Text(
                 //     'Created At: ' +
                 //         individualApplication.createdTime.toString(),
                 //     style: Theme.of(context).textTheme.bodyText2),
+                SizedBox(height: 10),
+                Text(
+                  'Semester: ${individualApplication.semester}',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Branch: ${individualApplication.branch}',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'status: ${individualApplication.status}',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 TimeWidget(individualApplication: individualApplication),
               ],
             ),
           ),
+          SizedBox(height: 10),
           Text('Id Card Photo', style: Theme.of(context).textTheme.bodyText2),
           SizedBox(height: 20),
           CachedNetworkImage(
@@ -77,7 +91,10 @@ class _ApplicationCardState extends State<ApplicationCard> {
               SizedBox(width: 20),
               DoneButton(
                 onTap: () {
-                  showRejectionSheet(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RejectionApplicationScreen()));
                 },
                 text: 'Reject',
                 height: 40,
@@ -99,63 +116,4 @@ class AcceptWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container();
   }
-}
-
-dynamic showRejectionSheet(BuildContext context) {
-  SingingCharacter? _character = SingingCharacter.notIDImage;
-
-  return showModalBottomSheet<void>(
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setModalState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Reason for rejection.',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  ListTile(
-                    title: const Text('Lafayette'),
-                    leading: Radio<SingingCharacter>(
-                      value: SingingCharacter.notIDImage,
-                      groupValue: _character,
-                      onChanged: (SingingCharacter? value) {
-                        // setState(() {
-                        //   _character = value;
-                        // });
-                        setModalState(() {
-                          _character = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('Thomas Jefferson'),
-                    leading: Radio<SingingCharacter>(
-                      value: SingingCharacter.NotClear,
-                      groupValue: _character,
-                      onChanged: (SingingCharacter? value) {
-                        // setState(() {
-                        //   _character = value;
-                        // });
-                        setModalState(() {
-                          _character = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-      });
 }

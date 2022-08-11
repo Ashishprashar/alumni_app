@@ -140,7 +140,7 @@ class DatabaseService {
       favoriteMusic: favoriteMusic,
       favoriteShowsMovies: favoriteShowsMovies,
       updatedAt: now,
-      admin: false,
+      admin: currentUser!.admin,
       semester: semester,
       branch: branch,
       follower: currentUser!.follower,
@@ -166,6 +166,9 @@ class DatabaseService {
   Future pushRequestToAdmins(
     String name,
     String usn,
+    String semester,
+    String branch,
+    String status,
     File image,
   ) async {
     UploadTask _uploadTask = storageRef
@@ -183,6 +186,9 @@ class DatabaseService {
       usn: usn,
       downloadUrl: downloadUrl,
       createdTime: Timestamp.now(),
+      semester: semester,
+      branch: branch,
+      status: status,
     );
 
     Map<String, dynamic> data = (application.toJson());
