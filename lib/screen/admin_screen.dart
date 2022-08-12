@@ -26,44 +26,39 @@ class AdminScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: RefreshIndicator(
-                child: PaginateFirestore(
-                  itemsPerPage: 5,
-                  scrollController: adminScroller,
-                  itemBuilder: (context, documentSnapshots, index) {
-                    return Column(
+              child: PaginateFirestore(
+                itemsPerPage: 5,
+                scrollController: adminScroller,
+                itemBuilder: (context, documentSnapshots, index) {
+                  return Column(
+                    children: [
+                      ApplicationCard(
+                        index: index,
+                        snapshot: documentSnapshots,
+                      ),
+                    ],
+                  );
+                },
+                query: applicationCollection.orderBy("created_time",
+                    descending: true),
+                // listeners: [refreshChangeListener],
+                itemBuilderType: PaginateBuilderType.listView,
+                isLive: true,
+                onEmpty: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ApplicationCard(
-                          index: index,
-                          snapshot: documentSnapshots,
+                        Text(
+                          'No applications left for the time being.',
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
-                    );
-                  },
-                  query: applicationCollection.orderBy("created_time",
-                      descending: true),
-                  listeners: [refreshChangeListener],
-                  itemBuilderType: PaginateBuilderType.listView,
-                  isLive: false,
-                  onEmpty: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'No applications left for the time being.',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),
-                onRefresh: () async {
-                  refreshChangeListener.refreshed = true;
-                },
               ),
             )
           ],

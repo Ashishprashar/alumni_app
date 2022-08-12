@@ -27,12 +27,18 @@ class OnboardingProvider with ChangeNotifier {
   File? idCardImage;
   bool isLoading = false;
   bool isChecked = false;
+  bool showOnboardingWidget = false;
   // used to decide if regular onboarding screen should be used or a different one
   bool applicationRequested = false;
 
   // helps show circular progress indicator while the account is being created.
   void changeIsLoading() {
     isLoading = !isLoading;
+    notifyListeners();
+  }
+
+  void changeOnboardingWidgetStatus() {
+    showOnboardingWidget = !showOnboardingWidget;
     notifyListeners();
   }
 
@@ -106,7 +112,7 @@ class OnboardingProvider with ChangeNotifier {
           changeIsLoading();
           log("Create account:  " + defaultStatus!);
           databaseService
-              .pushRequestToAdmins(
+              .pushApplicationToAdmins(
                   nameController.text,
                   usnController.text,
                   defaultSemesterValue!,

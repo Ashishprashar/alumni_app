@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:alumni_app/models/application.dart';
 import 'package:alumni_app/models/post_model.dart';
+import 'package:alumni_app/models/rejection_message_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -163,7 +164,8 @@ class DatabaseService {
         .updateCurrentUser(updatedUser);
   }
 
-  Future pushRequestToAdmins(
+  //Runs when user tries to create account. The admin neeeds to approved it.
+  Future pushApplicationToAdmins(
     String name,
     String usn,
     String semester,
@@ -194,6 +196,26 @@ class DatabaseService {
     Map<String, dynamic> data = (application.toJson());
 
     await applicationCollection.doc(firebaseCurrentUser!.uid).set(data);
+  }
+
+  // Function runs if admin rejects someeone's application.
+  Future pushRejectionMessage(
+    String rejectionTitle,
+    String additionalMessage,
+    String adminId,
+    String idOfRejectedUser,
+  ) async {
+    var uuid = const Uuid();
+    RejectionMessageModel rejectionMessage = RejectionMessageModel(
+      rejectionTitle: rejectionTitle,
+      idOfRejectedUser: idOfRejectedUser,
+      additionalMessage: additionalMessage,
+      adminId: adminId,
+      rejectionTime: Timestamp.now(),
+      rejectionMessageId: uuid.v1(),
+    );
+    Map<String, dynamic> data = (rejectionMessage.toJson());
+    await rejectionMessageCollection.doc(firebaseCurrentUser!.uid).set(data);
   }
 
   addNotification({

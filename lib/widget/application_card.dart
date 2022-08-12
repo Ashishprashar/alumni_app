@@ -2,7 +2,7 @@ import 'package:alumni_app/models/application.dart';
 import 'package:alumni_app/screen/rejection_application_screen.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
-import 'package:alumni_app/widget/time_widget.dart';
+import 'package:alumni_app/widget/time_widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,8 @@ class _ApplicationCardState extends State<ApplicationCard> {
                   'status: ${individualApplication.status}',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                TimeWidget(individualApplication: individualApplication),
+                TimeWidgetForApplicationCard(
+                    individualApplication: individualApplication),
               ],
             ),
           ),
@@ -92,9 +93,14 @@ class _ApplicationCardState extends State<ApplicationCard> {
               DoneButton(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RejectionApplicationScreen()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RejectionApplicationScreen(
+                        idOfRejectedUser: individualApplication.ownerId,
+                        applicationID: individualApplication.applicationId,
+                      ),
+                    ),
+                  );
                 },
                 text: 'Reject',
                 height: 40,
