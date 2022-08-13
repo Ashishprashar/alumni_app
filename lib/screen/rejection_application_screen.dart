@@ -198,7 +198,7 @@ class _RejectionApplicationScreenState
                     widget.idOfRejectedUser,
                   );
                   // Need to delete the application.
-                  deleteApplication(applicationId: widget.applicationID);
+                  db.deleteApplication(applicationId: widget.applicationID);
                   // Need to let the user know that their applicaiton was rejected. Try again
 
                   // Need to notifiy the user that they have been approved.
@@ -219,9 +219,6 @@ class _RejectionApplicationScreenState
 
 // We call this functin regardless of wheather we approve or rejectin the application. Since it would
 // no longer be required.
-deleteApplication({required String applicationId}) async {
-  await applicationCollection.doc(applicationId).delete();
-}
 
 String getRejectionTitle(RejectionReason reason) {
   switch (reason) {

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/navigator_services.dart';
+import 'package:alumni_app/utilites/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -30,6 +31,16 @@ class OnboardingProvider with ChangeNotifier {
   bool showOnboardingWidget = false;
   // used to decide if regular onboarding screen should be used or a different one
   bool applicationRequested = false;
+  bool isApplicationAccepted = false;
+
+  // default state of application status
+  ApplicationStatus applicationStatus = ApplicationStatus.NotYetApplied;
+
+  void changeApplicationStatustemporary(
+      ApplicationStatus newApplicationStatus) {
+    applicationStatus = newApplicationStatus;
+    notifyListeners();
+  }
 
   // helps show circular progress indicator while the account is being created.
   void changeIsLoading() {
@@ -39,6 +50,11 @@ class OnboardingProvider with ChangeNotifier {
 
   void changeOnboardingWidgetStatus() {
     showOnboardingWidget = !showOnboardingWidget;
+    notifyListeners();
+  }
+
+  void changeIsApplicationAccepted() {
+    isApplicationAccepted = isApplicationAccepted;
     notifyListeners();
   }
 
@@ -67,7 +83,6 @@ class OnboardingProvider with ChangeNotifier {
                 defaultStatus!,
                 defaultBranchValue!,
                 defaultSemesterValue,
-                idCardImage!,
               )
               .then(
                 (value) => navigatorService.navigateToHome(context),
@@ -111,29 +126,16 @@ class OnboardingProvider with ChangeNotifier {
             (defaultStatus != "Student")) {
           changeIsLoading();
           log("Create account:  " + defaultStatus!);
-          databaseService
-              .pushApplicationToAdmins(
-                  nameController.text,
-                  usnController.text,
-                  defaultSemesterValue!,
-                  defaultBranchValue!,
-                  defaultStatus!,
-                  idCardImage!)
-              .then(
-                (value) => databaseService
-                    .createAccount(
-                      nameController.text,
-                      usnController.text,
-                      defaultGender!,
-                      defaultStatus!,
-                      defaultBranchValue!,
-                      defaultSemesterValue,
-                      idCardImage!,
-                    )
-                    .then(
-                      (value) => navigatorService.navigateToHome(context),
-                    ),
-              );
+          databaseService.pushApplicationToAdmins(
+            nameController.text,
+            usnController.text,
+            defaultSemesterValue!,
+            defaultBranchValue!,
+            defaultStatus!,
+            idCardImage!,
+            defaultGender!,
+            // change to application pending somehow
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }

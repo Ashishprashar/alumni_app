@@ -1,5 +1,5 @@
 import 'package:alumni_app/models/application.dart';
-import 'package:alumni_app/models/rejection_message_model.dart';
+import 'package:alumni_app/models/application_reponse.dart';
 import 'package:flutter/material.dart';
 
 class TimeWidgetForApplicationCard extends StatelessWidget {
@@ -54,7 +54,7 @@ class TimeWidgetForRejectionCard extends StatelessWidget {
     required this.individualRejection,
   }) : super(key: key);
 
-  final RejectionMessageModel individualRejection;
+  final ApplicationResponseModel individualRejection;
 
   @override
   Widget build(BuildContext context) {
@@ -62,28 +62,33 @@ class TimeWidgetForRejectionCard extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Text(
         (DateTime.now()
-                        .difference(individualRejection.rejectionTime.toDate())
+                        .difference(individualRejection.applicationResponseTime
+                            .toDate())
                         .inHours ==
                     0
                 ? (DateTime.now()
-                            .difference(
-                                individualRejection.rejectionTime.toDate())
+                            .difference(individualRejection
+                                .applicationResponseTime
+                                .toDate())
                             .inMinutes ==
                         0
                     ? DateTime.now()
-                            .difference(
-                                individualRejection.rejectionTime.toDate())
+                            .difference(individualRejection
+                                .applicationResponseTime
+                                .toDate())
                             .inSeconds
                             .toString() +
                         " sec"
                     : DateTime.now()
-                            .difference(
-                                individualRejection.rejectionTime.toDate())
+                            .difference(individualRejection
+                                .applicationResponseTime
+                                .toDate())
                             .inMinutes
                             .toString() +
                         " min")
                 : DateTime.now()
-                        .difference(individualRejection.rejectionTime.toDate())
+                        .difference(individualRejection.applicationResponseTime
+                            .toDate())
                         .inHours
                         .toString() +
                     " hr") +

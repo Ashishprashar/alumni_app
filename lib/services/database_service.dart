@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:alumni_app/models/application.dart';
 import 'package:alumni_app/models/post_model.dart';
-import 'package:alumni_app/models/rejection_message_model.dart';
+import 'package:alumni_app/models/application_reponse.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -29,18 +29,17 @@ class DatabaseService {
     String status,
     String branch,
     String? semester,
-    File idCardImage,
   ) async {
-    String idDownloadUrl = "";
+    // String idDownloadUrl = "";
     String profileDownloadUrl = "";
     Timestamp now = Timestamp.now();
 
-    UploadTask uploadTask = storageRef
-        .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
-        .putFile(idCardImage);
-    TaskSnapshot storageSnap = await uploadTask;
-    idDownloadUrl = await storageSnap.ref.getDownloadURL();
-    log(idDownloadUrl);
+    // UploadTask uploadTask = storageRef
+    //     .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
+    //     .putFile(idCardImage);
+    // TaskSnapshot storageSnap = await uploadTask;
+    // idDownloadUrl = await storageSnap.ref.getDownloadURL();
+    // log(idDownloadUrl);
 
     User? _user = auth.currentUser;
     profileDownloadUrl = _user!.photoURL.toString();
@@ -172,6 +171,7 @@ class DatabaseService {
     String branch,
     String status,
     File image,
+    String gender,
   ) async {
     UploadTask _uploadTask = storageRef
         .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
@@ -191,6 +191,7 @@ class DatabaseService {
       semester: semester,
       branch: branch,
       status: status,
+      gender: gender,
     );
 
     Map<String, dynamic> data = (application.toJson());
@@ -203,19 +204,24 @@ class DatabaseService {
     String rejectionTitle,
     String additionalMessage,
     String adminId,
-    String idOfRejectedUser,
+    String idOfApplicant,
   ) async {
     var uuid = const Uuid();
-    RejectionMessageModel rejectionMessage = RejectionMessageModel(
+    ApplicationResponseModel applicationResponse = ApplicationResponseModel(
+      responseType: 'Rejected',
       rejectionTitle: rejectionTitle,
-      idOfRejectedUser: idOfRejectedUser,
+      idOfApplicant: idOfApplicant,
       additionalMessage: additionalMessage,
       adminId: adminId,
-      rejectionTime: Timestamp.now(),
-      rejectionMessageId: uuid.v1(),
+      applicationResponseTime: Timestamp.now(),
+      applicationResponseId: uuid.v1(),
     );
-    Map<String, dynamic> data = (rejectionMessage.toJson());
+    Map<String, dynamic> data = (applicationResponse.toJson());
     await rejectionMessageCollection.doc(firebaseCurrentUser!.uid).set(data);
+  }
+
+  deleteApplication({required String applicationId}) async {
+    await applicationCollection.doc(applicationId).delete();
   }
 
   addNotification({

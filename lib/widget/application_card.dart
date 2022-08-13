@@ -1,11 +1,14 @@
 import 'package:alumni_app/models/application.dart';
+import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/rejection_application_screen.dart';
+import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/time_widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ApplicationCard extends StatefulWidget {
   const ApplicationCard({
@@ -26,6 +29,8 @@ class _ApplicationCardState extends State<ApplicationCard> {
   Widget build(BuildContext context) {
     final individualApplication = ApplicationModel.fromMap(
         widget.snapshot![widget.index].data() as Map<String, dynamic>);
+
+    DatabaseService db = DatabaseService();
 
     return Card(
       color: Theme.of(context).backgroundColor,
@@ -83,7 +88,22 @@ class _ApplicationCardState extends State<ApplicationCard> {
             children: [
               DoneButton(
                 onTap: () {
-                  AcceptWidget();
+                  // allow the user to bipass onboarding and go directly the home
+                  // create the user account
+                  db.createAccount(
+                    individualApplication.name,
+                    individualApplication.usn,
+                    individualApplication.gender,
+                    individualApplication.status,
+                    individualApplication.branch,
+                    individualApplication.semester,
+                  );
+                  // respond to the user's applicaiton
+                  // maybe change the enum to accepted? will need to think about this
+                  // delete the users application
+                  db.deleteApplication(
+                      applicationId: individualApplication.applicationId);
+                  // delete the id card image of the applicaiton aswell
                 },
                 text: 'Accept',
                 height: 40,
@@ -112,14 +132,5 @@ class _ApplicationCardState extends State<ApplicationCard> {
         ],
       ),
     );
-  }
-}
-
-class AcceptWidget extends StatelessWidget {
-  const AcceptWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

@@ -3,6 +3,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// need to update with the users account creation detials.
+
 class ApplicationModel {
   ApplicationModel({
     required this.applicationId,
@@ -13,6 +15,7 @@ class ApplicationModel {
     required this.createdTime,
     required this.semester,
     required this.branch,
+    required this.gender,
     required this.status,
   });
 
@@ -24,6 +27,7 @@ class ApplicationModel {
   String semester;
   String branch;
   String status;
+  String gender;
   Timestamp createdTime;
 
   factory ApplicationModel.fromJson(Map<String, dynamic> json) =>
@@ -37,6 +41,7 @@ class ApplicationModel {
         semester: json['semester'],
         branch: json['branch'],
         status: json['status'],
+        gender: json['gender'],
       );
 
   factory ApplicationModel.fromMap(Map<String, dynamic> json) =>
@@ -50,6 +55,7 @@ class ApplicationModel {
         semester: json['semester'],
         branch: json['branch'],
         status: json['status'],
+        gender: json['gender'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,5 +68,6 @@ class ApplicationModel {
         "semester": semester,
         "branch": branch,
         "status": status,
+        "gender": gender,
       };
 }

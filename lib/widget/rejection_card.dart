@@ -1,4 +1,4 @@
-import 'package:alumni_app/models/rejection_message_model.dart';
+import 'package:alumni_app/models/application_reponse.dart';
 import 'package:alumni_app/widget/time_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class RejectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final individualRejection = RejectionMessageModel.fromMap(
+    final individualRejection = ApplicationResponseModel.fromMap(
         snapshot![index].data() as Map<String, dynamic>);
 
     return Card(
