@@ -1,5 +1,6 @@
 import 'package:alumni_app/provider/edit_screen_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/widget/admin_login.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/edit_fields.dart';
 import 'package:alumni_app/widget/editable_social_icons.dart';
@@ -34,6 +35,16 @@ class _EditScreenState extends State<EditScreen> {
                 'Edit Screen',
                 style: Theme.of(context).textTheme.headline6,
               ),
+              actions: [
+                currentUser!.admin
+                    ? GestureDetector(
+                        onTap: () {
+                          showAdminLogin(context);
+                        },
+                        child: Icon(Icons.admin_panel_settings_outlined),
+                      )
+                    : Container(),
+              ],
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               elevation: 1,
               toolbarHeight: 50,

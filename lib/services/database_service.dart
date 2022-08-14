@@ -6,6 +6,7 @@ import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/application_reponse.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
@@ -31,6 +32,7 @@ class DatabaseService {
     String profileDownloadUrl,
     String email,
     String ownerId,
+    bool? admin,
   ) async {
     Timestamp now = Timestamp.now();
     Map _linkToSocial = {
@@ -294,16 +296,20 @@ class DatabaseService {
     if (doc.exists) {
       UserModel _userModel =
           await UserModel.fromMap(doc.data() as Map<String, dynamic>);
-      // UserModel _userModel = UserModel.fromDoc(doc);
 
-      // await navigatorKey.currentContext
-      //     ?.read<CurrentUserProvider>()
-      //     .updateCurrentUser(_userModel);
       await Provider.of<CurrentUserProvider>(context, listen: false)
           .updateCurrentUser(_userModel);
 
       navigatorService.navigateToHome(context);
-    } else {
+    }
+    // check if we should show onboarding widget, check response widget
+    else {
+      bool _showResponseScreen =
+          Provider.of<OnboardingProvider>(context, listen: false)
+              .showResponseScreen;
+      if (_showResponseScreen) {
+        navigatorService.navigateToOnBoarding(context);
+      }
       navigatorService.navigateToIntroductionPage(context);
     }
   }

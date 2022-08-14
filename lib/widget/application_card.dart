@@ -87,7 +87,6 @@ class _ApplicationCardState extends State<ApplicationCard> {
             children: [
               DoneButton(
                 onTap: () async {
-                  // allow the user to bipass onboarding and go directly the home
                   // create the user account and then make the user update his current user property
                   await db.createAccount(
                     individualApplication.name,
@@ -99,6 +98,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     individualApplication.profileDownloadUrl,
                     individualApplication.email,
                     individualApplication.ownerId,
+                    false, // admin = false
                   );
                   // respond to the user's applicaiton
                   await db.pushApplicationResponse(
@@ -108,11 +108,10 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     currentUser!.id,
                     individualApplication.ownerId,
                   );
-                  // maybe change the enum to accepted? will need to think about this and update sharedPrefernces
+
                   // delete the users application
                   await db.deleteApplication(
                       applicationId: individualApplication.ownerId);
-                  // delete the id card image of the applicaiton aswell
                 },
                 text: 'Accept',
                 height: 40,

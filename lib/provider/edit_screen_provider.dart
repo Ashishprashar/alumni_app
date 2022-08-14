@@ -18,46 +18,62 @@ class EditScreenProvider with ChangeNotifier {
   //         Provider.of<CurrentUserProvider>(context, listen: false)
   //             .getCurrentUser();
 
-
   // Real version of the lists.
-  List skillsList = currentUser == null ? [] : 
-  List<dynamic>.from(currentUser!.techStack.map((x) => x));
+  List skillsList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.techStack.map((x) => x));
 
-  List interestsList = currentUser == null ? [] : List<dynamic>.from(currentUser!.interests.map((x) => x));
-  List favoriteMusicList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
-  List favoriteShowsMoviesList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
+  List interestsList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.interests.map((x) => x));
+  List favoriteMusicList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
+  List favoriteShowsMoviesList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
 
   // temporary versions of the lists.
-  List tempSkillsList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.techStack.map((x) => x));
-  List tempInterestsList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.interests.map((x) => x));
-  List tempFavoriteMusicList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
-  List tempFavoriteShowsMoviesList = currentUser == null ? [] :
-      List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
+  List tempSkillsList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.techStack.map((x) => x));
+  List tempInterestsList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.interests.map((x) => x));
+  List tempFavoriteMusicList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.favoriteMusic.map((x) => x));
+  List tempFavoriteShowsMoviesList = currentUser == null
+      ? []
+      : List<dynamic>.from(currentUser!.favoriteShowsMovies.map((x) => x));
 
   // Social Controllers
-  TextEditingController twitterController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.linkToSocial['twitter']);
-  TextEditingController linkedinController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.linkToSocial['linkedin']);
-  TextEditingController facebookController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.linkToSocial['facebook']);
-  TextEditingController instagramController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.linkToSocial['instagram']);
-  TextEditingController githubController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.linkToSocial['github']);
+  TextEditingController twitterController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.linkToSocial['twitter']);
+  TextEditingController linkedinController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.linkToSocial['linkedin']);
+  TextEditingController facebookController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.linkToSocial['facebook']);
+  TextEditingController instagramController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.linkToSocial['instagram']);
+  TextEditingController githubController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.linkToSocial['github']);
 
   // Other Controllers
-  TextEditingController nameController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.name);
-  TextEditingController bioController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.bio);
-  TextEditingController usnController = currentUser == null ? TextEditingController() :
-      TextEditingController(text: currentUser!.usn);
+  TextEditingController nameController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.name);
+  TextEditingController bioController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.bio);
+  TextEditingController usnController = currentUser == null
+      ? TextEditingController()
+      : TextEditingController(text: currentUser!.usn);
   TextEditingController skillsController = TextEditingController(text: '');
   TextEditingController interestsController = TextEditingController();
   TextEditingController favoriteMusicController = TextEditingController();

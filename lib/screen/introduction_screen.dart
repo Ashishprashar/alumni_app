@@ -1,7 +1,9 @@
+import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/widget/footer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:provider/provider.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({Key? key}) : super(key: key);
@@ -266,6 +268,8 @@ class IntroductionPage extends StatelessWidget {
           ),
         ],
         onDone: () async {
+          Provider.of<OnboardingProvider>(context, listen: false)
+              .changeShowResponseWidgetStatus();
           navigatorService.navigateToOnBoarding(context);
         },
         // onSkip: () {
