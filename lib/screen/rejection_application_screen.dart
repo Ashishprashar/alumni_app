@@ -7,11 +7,9 @@ class RejectionApplicationScreen extends StatefulWidget {
   const RejectionApplicationScreen({
     Key? key,
     required this.idOfRejectedUser,
-    required this.applicationID,
   }) : super(key: key);
 
   final String idOfRejectedUser;
-  final String applicationID;
 
   @override
   State<RejectionApplicationScreen> createState() =>
@@ -191,14 +189,15 @@ class _RejectionApplicationScreenState
               DoneButton(
                 onTap: () {
                   // Need to create rejection message.
-                  db.pushRejectionMessage(
+                  db.pushApplicationResponse(
+                    'Rejected',
                     getRejectionTitle(_reason!),
                     textController.text,
                     currentUser!.id,
                     widget.idOfRejectedUser,
                   );
                   // Need to delete the application.
-                  db.deleteApplication(applicationId: widget.applicationID);
+                  db.deleteApplication(applicationId: widget.idOfRejectedUser);
                   // Need to let the user know that their applicaiton was rejected. Try again
 
                   // Need to notifiy the user that they have been approved.

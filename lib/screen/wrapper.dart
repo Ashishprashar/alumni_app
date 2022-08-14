@@ -24,7 +24,6 @@ class _WrapperState extends State<Wrapper> {
   void initState() {
     checkSignIn();
     super.initState();
-    // navigateToMainPage();
   }
 
   bool get wantKeepAlive => true;
@@ -44,11 +43,9 @@ class _WrapperState extends State<Wrapper> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     SizeData().init(context);
     return isAuth == "AUTH" ? const Home() : const SignInScreen();
   }
-
 }

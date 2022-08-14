@@ -17,10 +17,13 @@ class ApplicationModel {
     required this.branch,
     required this.gender,
     required this.status,
+    required this.profileDownloadUrl,
+    required this.email,
   });
 
   String applicationId;
   String ownerId;
+  String email;
   String name;
   String usn;
   String downloadUrl;
@@ -28,6 +31,7 @@ class ApplicationModel {
   String branch;
   String status;
   String gender;
+  String profileDownloadUrl;
   Timestamp createdTime;
 
   factory ApplicationModel.fromJson(Map<String, dynamic> json) =>
@@ -42,6 +46,8 @@ class ApplicationModel {
         branch: json['branch'],
         status: json['status'],
         gender: json['gender'],
+        profileDownloadUrl: json['profile_download_url'],
+        email: json['email'],
       );
 
   factory ApplicationModel.fromMap(Map<String, dynamic> json) =>
@@ -56,6 +62,8 @@ class ApplicationModel {
         branch: json['branch'],
         status: json['status'],
         gender: json['gender'],
+        profileDownloadUrl: json['profile_download_url'],
+        email: json['email'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,5 +77,7 @@ class ApplicationModel {
         "branch": branch,
         "status": status,
         "gender": gender,
+        'profile_download_url': profileDownloadUrl,
+        'email': email,
       };
 }

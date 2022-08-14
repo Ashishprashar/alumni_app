@@ -1,5 +1,5 @@
 import 'package:alumni_app/models/application.dart';
-import 'package:alumni_app/provider/onboarding_provider.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/rejection_application_screen.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
@@ -8,7 +8,6 @@ import 'package:alumni_app/widget/time_widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ApplicationCard extends StatefulWidget {
   const ApplicationCard({
@@ -87,22 +86,32 @@ class _ApplicationCardState extends State<ApplicationCard> {
             alignment: MainAxisAlignment.center,
             children: [
               DoneButton(
-                onTap: () {
+                onTap: () async {
                   // allow the user to bipass onboarding and go directly the home
-                  // create the user account
-                  db.createAccount(
+                  // create the user account and then make the user update his current user property
+                  await db.createAccount(
                     individualApplication.name,
                     individualApplication.usn,
                     individualApplication.gender,
                     individualApplication.status,
                     individualApplication.branch,
                     individualApplication.semester,
+                    individualApplication.profileDownloadUrl,
+                    individualApplication.email,
+                    individualApplication.ownerId,
                   );
                   // respond to the user's applicaiton
-                  // maybe change the enum to accepted? will need to think about this
+                  await db.pushApplicationResponse(
+                    'Accepted',
+                    '',
+                    '',
+                    currentUser!.id,
+                    individualApplication.ownerId,
+                  );
+                  // maybe change the enum to accepted? will need to think about this and update sharedPrefernces
                   // delete the users application
-                  db.deleteApplication(
-                      applicationId: individualApplication.applicationId);
+                  await db.deleteApplication(
+                      applicationId: individualApplication.ownerId);
                   // delete the id card image of the applicaiton aswell
                 },
                 text: 'Accept',
@@ -117,7 +126,6 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     MaterialPageRoute(
                       builder: (context) => RejectionApplicationScreen(
                         idOfRejectedUser: individualApplication.ownerId,
-                        applicationID: individualApplication.applicationId,
                       ),
                     ),
                   );

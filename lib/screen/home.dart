@@ -22,7 +22,7 @@ final db = FirebaseFirestore.instance;
 final userCollection = db.collection('user');
 final postCollection = db.collection('post');
 final applicationCollection = db.collection('application');
-final rejectionMessageCollection = db.collection('rejection_messaege');
+final applicationResponseCollection = db.collection('applicationResponse');
 UserModel? currentUser;
 final commentCollection = db.collection('comment');
 final notificationCollection = db.collection('notification');

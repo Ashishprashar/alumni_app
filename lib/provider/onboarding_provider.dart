@@ -1,8 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:alumni_app/models/user.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -65,47 +69,47 @@ class OnboardingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void createAccount(BuildContext context) async {
-    try {
-      if (isChecked &&
-          defaultGender != null &&
-          defaultStatus != null &&
-          defaultBranchValue != null &&
-          idCardImage != null) {
-        if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
-            (defaultStatus != "Student")) {
-          changeIsLoading();
-          await databaseService
-              .createAccount(
-                nameController.text,
-                usnController.text,
-                defaultGender!,
-                defaultStatus!,
-                defaultBranchValue!,
-                defaultSemesterValue,
-              )
-              .then(
-                (value) => navigatorService.navigateToHome(context),
-              );
-          log("Create account:  " + defaultStatus!);
-          // navigatorService.navigateToHome(context);
-        }
-      } else {
-        const snackBar = SnackBar(
-          content: Text(
-            'One or more missing fields exist.',
-          ),
-          duration: Duration(milliseconds: 1000),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } catch (e) {
-      // isLoading = false;
-      changeIsLoading();
-    }
-    // isLoading = false;
-    changeIsLoading();
-  }
+  // void createAccount(BuildContext context) async {
+  //   try {
+  //     if (isChecked &&
+  //         defaultGender != null &&
+  //         defaultStatus != null &&
+  //         defaultBranchValue != null &&
+  //         idCardImage != null) {
+  //       if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
+  //           (defaultStatus != "Student")) {
+  //         changeIsLoading();
+  //         await databaseService
+  //             .createAccount(
+  //               nameController.text,
+  //               usnController.text,
+  //               defaultGender!,
+  //               defaultStatus!,
+  //               defaultBranchValue!,
+  //               defaultSemesterValue,
+  //             )
+  //             .then(
+  //               (value) => navigatorService.navigateToHome(context),
+  //             );
+  //         log("Create account:  " + defaultStatus!);
+  //         // navigatorService.navigateToHome(context);
+  //       }
+  //     } else {
+  //       const snackBar = SnackBar(
+  //         content: Text(
+  //           'One or more missing fields exist.',
+  //         ),
+  //         duration: Duration(milliseconds: 1000),
+  //       );
+  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //     }
+  //   } catch (e) {
+  //     // isLoading = false;
+  //     changeIsLoading();
+  //   }
+  //   // isLoading = false;
+  //   changeIsLoading();
+  // }
 
   // only when admin accept application request, the user is admited to the home page
   void sendApplicationRequest(BuildContext context) {
@@ -113,7 +117,7 @@ class OnboardingProvider with ChangeNotifier {
       content: Text(
         'One or more missing fields exist.',
       ),
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 1500),
     );
 
     try {
@@ -125,15 +129,20 @@ class OnboardingProvider with ChangeNotifier {
         if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
             (defaultStatus != "Student")) {
           changeIsLoading();
+          User? _user = auth.currentUser;
+          String profileDownloadUrl = _user!.photoURL.toString();
           log("Create account:  " + defaultStatus!);
           databaseService.pushApplicationToAdmins(
-            nameController.text,
-            usnController.text,
-            defaultSemesterValue!,
-            defaultBranchValue!,
-            defaultStatus!,
-            idCardImage!,
-            defaultGender!,
+            name: nameController.text,
+            usn: usnController.text,
+            semester: defaultSemesterValue!,
+            branch: defaultBranchValue!,
+            status: defaultStatus!,
+            image: idCardImage!,
+            gender: defaultGender!,
+            profileDownloadUrl: profileDownloadUrl,
+            email: firebaseCurrentUser!.email!,
+            ownerId: firebaseCurrentUser!.uid,
             // change to application pending somehow
           );
         } else {
@@ -148,6 +157,16 @@ class OnboardingProvider with ChangeNotifier {
     }
     // isLoading = false;
     // changeIsLoading();
+  }
+
+  signTheUserIn(BuildContext context) async {
+    User? _user = auth.currentUser;
+    // we might have to implement some way of set state here. remember for future errors.
+    await databaseService.getUserData(context, _user!.uid);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Home()),
+    );
   }
 
   @override

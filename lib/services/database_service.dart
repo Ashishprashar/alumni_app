@@ -10,7 +10,6 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:provider/provider.dart';
@@ -29,23 +28,13 @@ class DatabaseService {
     String status,
     String branch,
     String? semester,
+    String profileDownloadUrl,
+    String email,
+    String ownerId,
   ) async {
-    // String idDownloadUrl = "";
-    String profileDownloadUrl = "";
     Timestamp now = Timestamp.now();
-
-    // UploadTask uploadTask = storageRef
-    //     .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
-    //     .putFile(idCardImage);
-    // TaskSnapshot storageSnap = await uploadTask;
-    // idDownloadUrl = await storageSnap.ref.getDownloadURL();
-    // log(idDownloadUrl);
-
-    User? _user = auth.currentUser;
-    profileDownloadUrl = _user!.photoURL.toString();
-
     Map _linkToSocial = {
-      'email': firebaseCurrentUser!.email,
+      'email': email,
       'twitter': '',
       'linkedin': '',
       'facebook': '',
@@ -57,13 +46,12 @@ class DatabaseService {
       bio: "",
       connection: [],
       createdAt: now,
-      email: firebaseCurrentUser!.email ?? "",
-      id: firebaseCurrentUser!.uid,
+      email: email,
+      id: ownerId,
       linkToSocial: _linkToSocial,
       name: name,
       searchName: name.toUpperCase(),
       profilePic: profileDownloadUrl,
-      // idPic: idDownloadUrl,
       techStack: [],
       interests: [],
       favoriteMusic: [],
@@ -89,9 +77,11 @@ class DatabaseService {
 
     await userCollection.doc(firebaseCurrentUser!.uid).set(data);
 
-    navigatorKey.currentContext
-        ?.read<CurrentUserProvider>()
-        .updateCurrentUser(user);
+    // navigatorKey.currentContext
+    //     ?.read<CurrentUserProvider>()
+    //     .updateCurrentUser(user);
+
+    // We need to somehow update the current user!!!!! Remeber
   }
 
   Future updateAccount(
@@ -164,15 +154,18 @@ class DatabaseService {
   }
 
   //Runs when user tries to create account. The admin neeeds to approved it.
-  Future pushApplicationToAdmins(
-    String name,
-    String usn,
-    String semester,
-    String branch,
-    String status,
-    File image,
-    String gender,
-  ) async {
+  Future pushApplicationToAdmins({
+    required String name,
+    required String usn,
+    required String semester,
+    required String branch,
+    required String status,
+    required String email,
+    required String ownerId,
+    required File image,
+    required String gender,
+    required String profileDownloadUrl,
+  }) async {
     UploadTask _uploadTask = storageRef
         .child('idCardImages/${firebaseCurrentUser?.uid}.jpg')
         .putFile(image);
@@ -186,12 +179,14 @@ class DatabaseService {
       ownerId: firebaseCurrentUser?.uid ?? "",
       name: name,
       usn: usn,
-      downloadUrl: downloadUrl,
+      downloadUrl: downloadUrl, // id card image url
       createdTime: Timestamp.now(),
       semester: semester,
       branch: branch,
       status: status,
       gender: gender,
+      profileDownloadUrl: profileDownloadUrl,
+      email: email,
     );
 
     Map<String, dynamic> data = (application.toJson());
@@ -200,7 +195,8 @@ class DatabaseService {
   }
 
   // Function runs if admin rejects someeone's application.
-  Future pushRejectionMessage(
+  Future pushApplicationResponse(
+    String responseType,
     String rejectionTitle,
     String additionalMessage,
     String adminId,
@@ -208,7 +204,7 @@ class DatabaseService {
   ) async {
     var uuid = const Uuid();
     ApplicationResponseModel applicationResponse = ApplicationResponseModel(
-      responseType: 'Rejected',
+      responseType: responseType,
       rejectionTitle: rejectionTitle,
       idOfApplicant: idOfApplicant,
       additionalMessage: additionalMessage,
@@ -217,11 +213,16 @@ class DatabaseService {
       applicationResponseId: uuid.v1(),
     );
     Map<String, dynamic> data = (applicationResponse.toJson());
-    await rejectionMessageCollection.doc(firebaseCurrentUser!.uid).set(data);
+    await applicationResponseCollection.doc(idOfApplicant).set(data);
   }
 
   deleteApplication({required String applicationId}) async {
+    // delete from firestore
     await applicationCollection.doc(applicationId).delete();
+    // delete from id card image from storage
+    await FirebaseStorage.instance
+        .refFromURL('idCardImages/${applicationId}.jpg')
+        .delete();
   }
 
   addNotification({

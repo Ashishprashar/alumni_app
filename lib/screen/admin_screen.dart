@@ -40,7 +40,7 @@ class AdminScreen extends StatelessWidget {
                   );
                 },
                 query: applicationCollection.orderBy("created_time",
-                    descending: true),
+                    descending: false),
                 // listeners: [refreshChangeListener],
                 itemBuilderType: PaginateBuilderType.listView,
                 isLive: true,
