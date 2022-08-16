@@ -32,7 +32,7 @@ class DatabaseService {
     String profileDownloadUrl,
     String email,
     String ownerId,
-    bool? admin,
+    bool admin,
   ) async {
     Timestamp now = Timestamp.now();
     Map _linkToSocial = {
@@ -59,7 +59,7 @@ class DatabaseService {
       favoriteMusic: [],
       favoriteShowsMovies: [],
       updatedAt: now,
-      admin: false,
+      admin: admin,
       semester: semester ?? '',
       branch: branch,
       follower: [],
@@ -77,11 +77,12 @@ class DatabaseService {
 
     Map<String, dynamic> data = (user.toJson());
 
+    // currently taking firebaseCurrentUser.uid, but for admin side creation should have different.
     await userCollection.doc(firebaseCurrentUser!.uid).set(data);
 
-    // navigatorKey.currentContext
-    //     ?.read<CurrentUserProvider>()
-    //     .updateCurrentUser(user);
+    navigatorKey.currentContext
+        ?.read<CurrentUserProvider>()
+        .updateCurrentUser(user);
 
     // We need to somehow update the current user!!!!! Remeber
   }
@@ -104,6 +105,7 @@ class DatabaseService {
     String email,
     String? profilePrivacySetting,
     String? postPrivacySetting,
+    bool admin,
   ) async {
     Timestamp now = Timestamp.now();
 
@@ -132,7 +134,7 @@ class DatabaseService {
       favoriteMusic: favoriteMusic,
       favoriteShowsMovies: favoriteShowsMovies,
       updatedAt: now,
-      admin: currentUser!.admin,
+      admin: admin,
       semester: semester,
       branch: branch,
       follower: currentUser!.follower,

@@ -4,7 +4,6 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/admin_login.dart';
-import 'package:alumni_app/widget/custom_text_field.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/footer_widget.dart';
 import 'package:alumni_app/widget/onboarding_fields.dart';
@@ -40,12 +39,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 GestureDetector(
                   onLongPress: () {
                     // show alert dialog. if everything checks out then create account
+
                     showAdminLogin(context);
+
                     // onboardingProvider.createAdminAccount(context);
                   },
                   child: Icon(
                     Icons.admin_panel_settings,
-                    color: Colors.black.withOpacity(0),
+                    color: Colors.black.withOpacity(1),
                   ),
                 ),
               ],
@@ -151,8 +152,8 @@ class OnboardingWidget extends StatelessWidget {
                               ? onboardingProvider.createAdminAccount(context)
                               : onboardingProvider
                                   .sendApplicationRequest(context);
-                          onboardingProvider
-                              .changeOnboardingWidgetStatus(); // might not need this.
+                          // onboardingProvider
+                          //     .changeOnboardingWidgetStatus(); // might not need this.
                         },
                         text: "Create Account"),
                   ),

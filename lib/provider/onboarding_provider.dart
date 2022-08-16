@@ -17,6 +17,8 @@ class OnboardingProvider with ChangeNotifier {
     loadFromPrefs();
   }
 
+  //Make sure initialized shared preferences during app launch!!!!!!!
+
   // update show onboarding boolean
   void updateShowOnboardingWidgetToSharedPrefernces(bool showOnboardingWidget) {
     this.showOnboardingWidget = showOnboardingWidget;
@@ -39,7 +41,7 @@ class OnboardingProvider with ChangeNotifier {
   // load from prefs (load both onboarding boolean and response boolean)
   loadFromPrefs() async {
     await initPrefs();
-    showOnboardingWidget = _pref!.getBool(keyShowOnboardingWidget) ?? false;
+    showOnboardingWidget = _pref!.getBool(keyShowOnboardingWidget) ?? true;
     showResponseScreen = _pref!.getBool(keyShowResponseScreen) ?? false;
     notifyListeners();
   }
@@ -118,8 +120,9 @@ class OnboardingProvider with ChangeNotifier {
   // verify admin password
 
   void verifyAdminPassword(String password, BuildContext context) {
-    if (password == "Monkey") {
+    if (password == "monkey") {
       changeIsAdmin();
+      // if (currentUser != null) // then update current user
       Navigator.of(context).pop();
     } else {
       const snackBar = SnackBar(
@@ -154,23 +157,25 @@ class OnboardingProvider with ChangeNotifier {
           idCardImage != null) {
         if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
             (defaultStatus != "Student")) {
-          changeIsLoading();
-          await databaseService
-              .createAccount(
-                nameController.text,
-                usnController.text,
-                defaultGender!,
-                defaultStatus!,
-                defaultBranchValue!,
-                defaultSemesterValue,
-                firebaseCurrentUser!.photoURL!,
-                firebaseCurrentUser!.email!,
-                firebaseCurrentUser!.uid,
-                true,
-              )
-              .then(
-                (value) => navigatorService.navigateToHome(context),
-              );
+          // changeisLoading causes navigate to home to stop working. think of fix please.
+          // changeIsLoading();
+          await databaseService.createAccount(
+            nameController.text,
+            usnController.text,
+            defaultGender!,
+            defaultStatus!,
+            defaultBranchValue!,
+            defaultSemesterValue,
+            firebaseCurrentUser!.photoURL!,
+            firebaseCurrentUser!.email!,
+            firebaseCurrentUser!.uid,
+            true,
+          );
+          navigatorService.navigateToHome(context);
+          //     .then((value) {
+          //   print('can we navigate to the promised land');
+          //   navigatorService.navigateToHome(context);
+          // });
           log("Create account:  " + defaultStatus!);
           // navigatorService.navigateToHome(context);
         }
@@ -188,7 +193,7 @@ class OnboardingProvider with ChangeNotifier {
       changeIsLoading();
     }
     // isLoading = false;
-    changeIsLoading();
+    // changeIsLoading();
   }
 
   // only when admin accept application request, the user is admited to the home page
@@ -225,6 +230,8 @@ class OnboardingProvider with ChangeNotifier {
             ownerId: firebaseCurrentUser!.uid,
             // change to application pending somehow
           );
+          // this should make it go the response screen
+          changeOnboardingWidgetStatus();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }

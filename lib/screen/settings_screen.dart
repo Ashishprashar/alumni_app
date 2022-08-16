@@ -302,6 +302,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         currentUser!.email,
         profilePrivacy,
         postPrivacy,
+        currentUser!.admin,
       );
     } catch (e) {
       setState(() {

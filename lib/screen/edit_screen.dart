@@ -36,14 +36,17 @@ class _EditScreenState extends State<EditScreen> {
                 style: Theme.of(context).textTheme.headline6,
               ),
               actions: [
-                currentUser!.admin
-                    ? GestureDetector(
-                        onTap: () {
-                          showAdminLogin(context);
-                        },
-                        child: Icon(Icons.admin_panel_settings_outlined),
-                      )
-                    : Container(),
+                GestureDetector(
+                  onLongPress: () {
+                    showAdminLoginFromEditScreen(
+                        context); // make this invisible
+                    // you need to update the admin in firebase and current user aswell.
+                  },
+                  child: Icon(
+                    Icons.admin_panel_settings_outlined,
+                    color: Colors.black.withOpacity(0),
+                  ),
+                )
               ],
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
               elevation: 1,
@@ -194,7 +197,7 @@ class _EditScreenState extends State<EditScreen> {
                                               //     editProvider.bioController.text
                                               //         .trim();
                                               await editProvider
-                                                  .updateUserDetails()
+                                                  .updateUserDetails() // how do we update admin
                                                   .then((value) =>
                                                       Navigator.of(context)
                                                           .pop());

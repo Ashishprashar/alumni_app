@@ -13,10 +13,25 @@ class EditScreenProvider with ChangeNotifier {
   ImagePicker imagePicker = ImagePicker();
   File? profileImage;
   bool isLoading = false;
+  bool isAdmin =
+      currentUser!.admin; // throws null error because editprovider is called
+  // during admin sign up in the onboarding screen
 
   // UserModel? _currentUser =
   //         Provider.of<CurrentUserProvider>(context, listen: false)
   //             .getCurrentUser();
+
+  changeIsAdmin() {
+    isAdmin = !isAdmin;
+    notifyListeners();
+  }
+
+  void removeAdminStatus(BuildContext context) {
+    if (isAdmin) {
+      changeIsAdmin();
+    }
+    Navigator.of(context).pop();
+  }
 
   // Real version of the lists.
   List skillsList = currentUser == null
@@ -78,6 +93,7 @@ class EditScreenProvider with ChangeNotifier {
   TextEditingController interestsController = TextEditingController();
   TextEditingController favoriteMusicController = TextEditingController();
   TextEditingController favoriteShowsMoviesController = TextEditingController();
+  TextEditingController adminPasswordController = TextEditingController();
 
   String? defaultGender;
   String? defaultSemesterValue;
@@ -85,6 +101,22 @@ class EditScreenProvider with ChangeNotifier {
   var possibleGenders = ['Male', 'Female'];
   var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
   var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
+
+  void verifyAdminPassword(String password, BuildContext context) {
+    if (password == "monkey") {
+      changeIsAdmin();
+      // if (currentUser != null) // then update current user
+      Navigator.of(context).pop();
+    } else {
+      const snackBar = SnackBar(
+        content: Text(
+          'Incorrect Password',
+        ),
+        duration: Duration(milliseconds: 1000),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
 
   Future updateUserDetails() async {
     Map linkToSocial = {
@@ -154,6 +186,7 @@ class EditScreenProvider with ChangeNotifier {
       currentUser!.email,
       null,
       null,
+      isAdmin,
     );
   }
 
