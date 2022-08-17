@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/privacy_screen.dart';
+import 'package:alumni_app/widget/admin_login.dart';
 import 'package:alumni_app/widget/check_box_widget.dart';
 import 'package:alumni_app/widget/custom_text_field.dart';
 import 'package:alumni_app/widget/image_picker_widget.dart';
@@ -37,6 +38,16 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
               Text(
                 'Registration',
                 style: Theme.of(context).textTheme.displayMedium,
+              ),
+              SizedBox(width: 10),
+              GestureDetector(
+                onLongPress: () {
+                  showAdminLogin(context);
+                },
+                child: Icon(
+                  Icons.admin_panel_settings,
+                  color: Colors.black.withOpacity(0),
+                ),
               ),
             ],
           ),

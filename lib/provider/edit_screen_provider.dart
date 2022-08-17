@@ -208,10 +208,11 @@ class EditScreenProvider with ChangeNotifier {
     instagramController.text = currentUser.linkToSocial['instagram'];
     githubController.text = currentUser.linkToSocial['github'];
 
-    // reset gender, branch, semester
+    // reset gender, branch, semester, isAdmin
     defaultBranchValue = currentUser.branch;
     defaultSemesterValue = currentUser.semester;
     defaultGender = currentUser.gender;
+    isAdmin = currentUser.admin;
 
     // update the temporary lists with the real versions of those lists.
     tempSkillsList = List.from(skillsList);

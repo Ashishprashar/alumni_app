@@ -21,23 +21,23 @@ class ApplicationResponseModel {
 
   factory ApplicationResponseModel.fromJson(Map<String, dynamic> json) =>
       ApplicationResponseModel(
-        responseType: json['response_time'],
+        responseType: json['response_type'],
         idOfApplicant: json["id_of_applicant"],
         additionalMessage: json['additional_message'],
         adminId: json['admin_id'],
         applicationResponseTime: json['application_response_time'],
-        rejectionTitle: json['title'],
+        rejectionTitle: json['rejection_title'],
         applicationResponseId: json["application_response_id"],
       );
 
   factory ApplicationResponseModel.fromMap(Map<String, dynamic> json) =>
       ApplicationResponseModel(
-        responseType: json['response_time'],
+        responseType: json['response_type'],
         idOfApplicant: json["id_of_applicant"],
         additionalMessage: json['additional_message'],
         adminId: json['admin_id'],
         applicationResponseTime: json['application_response_time'],
-        rejectionTitle: json['title'],
+        rejectionTitle: json['rejection_title'],
         applicationResponseId: json["application_response_id"],
       );
 

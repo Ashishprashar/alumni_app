@@ -3,7 +3,6 @@ import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/media_query.dart';
-import 'package:alumni_app/widget/admin_login.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/footer_widget.dart';
 import 'package:alumni_app/widget/onboarding_fields.dart';
@@ -19,6 +18,8 @@ class OnBoardingScreen extends StatefulWidget {
   _OnBoardingScreenState createState() => _OnBoardingScreenState();
 }
 
+GlobalKey _scaffold = GlobalKey();
+
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   ScrollController theScroller = ScrollController();
   DatabaseService db = DatabaseService();
@@ -32,25 +33,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       child: Consumer<OnboardingProvider>(
         builder: (ctx, onboardingProvider, child) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Registeration'),
-              actions: [
-                // make this button invisible (opacity)
-                GestureDetector(
-                  onLongPress: () {
-                    // show alert dialog. if everything checks out then create account
-
-                    showAdminLogin(context);
-
-                    // onboardingProvider.createAdminAccount(context);
-                  },
-                  child: Icon(
-                    Icons.admin_panel_settings,
-                    color: Colors.black.withOpacity(1),
-                  ),
-                ),
-              ],
-            ),
+            key: _scaffold,
+            // appBar: AppBar(
+            //   title: Text('Registeration'),
+            //   actions: [
+            //     // make this button invisible (opacity)
+            //     GestureDetector(
+            //       onLongPress: () {
+            //         showAdminLogin(context);
+            //       },
+            //       child: Icon(
+            //         Icons.admin_panel_settings,
+            //         color: Colors.black.withOpacity(0),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             body: onboardingProvider.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : onboardingProvider.showOnboardingWidget
@@ -62,55 +60,80 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         child: Column(
                           children: [
                             Expanded(
-                              child: PaginateFirestore(
-                                itemsPerPage: 1,
-                                scrollController: theScroller,
-                                itemBuilder:
-                                    (context, documentSnapshots, index) {
-                                  // check if accepted
-                                  final applicationResponse =
-                                      ApplicationResponseModel.fromMap(
-                                          documentSnapshots[index].data()
-                                              as Map<String, dynamic>);
-                                  if (applicationResponse.responseType ==
-                                      'Accepted') {
-                                    // this creates current user and pushes to home screen.
-                                    onboardingProvider.signTheUserIn(context);
-                                    // not sure if returning conatiner is the best thing to do.
-                                    return Container();
-                                  } else {
-                                    return Column(
-                                      children: [
-                                        RejectionCard(
-                                          index: index,
-                                          snapshot: documentSnapshots,
+                              child: Center(
+                                child: PaginateFirestore(
+                                  shrinkWrap: true,
+                                  itemsPerPage: 1,
+                                  scrollController: theScroller,
+                                  itemBuilder:
+                                      (context, documentSnapshots, index) {
+                                    // check if accepted
+                                    print(
+                                        'before recieving application reponse');
+                                    final applicationResponse =
+                                        ApplicationResponseModel.fromMap(
+                                            documentSnapshots[index].data()
+                                                as Map<String, dynamic>);
+                                    print('recieved application reponse');
+                                    if (applicationResponse.responseType ==
+                                        'Accepted') {
+                                      // delete the application response
+                                      db.deleteApplicationResponse(
+                                          applicationId: applicationResponse
+                                              .idOfApplicant);
+                                      // this creates current user and pushes to home screen.
+                                      onboardingProvider.signTheUserIn(
+                                          _scaffold.currentContext!);
+                                      // not sure if returning conatiner is the best thing to do.
+                                      return Container();
+                                    } else {
+                                      print(
+                                          'rejection else statement reached.');
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            children: [
+                                              RejectionCard(
+                                                index: index,
+                                                snapshot: documentSnapshots,
+                                              ),
+                                              SizedBox(height: 20),
+                                              TextButton(
+                                                onPressed: () {
+                                                  // delete the application response
+                                                  onboardingProvider
+                                                      .changeOnboardingWidgetStatus();
+                                                  db.deleteApplicationResponse(
+                                                      applicationId:
+                                                          applicationResponse
+                                                              .idOfApplicant);
+                                                  // will need to check if the providers need to be cleared before use.
+                                                },
+                                                child: Text('Try again'),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        SizedBox(height: 20),
-                                        TextButton(
-                                          onPressed: () {
-                                            onboardingProvider
-                                                .changeOnboardingWidgetStatus();
-                                            // logic to push to the  onboarding screen again. Will need
-                                            // to check if the providers need to be cleared before use.
-                                          },
-                                          child: Text('Try again'),
-                                        ),
-                                      ],
-                                    );
-                                  }
-                                },
-                                query: applicationResponseCollection
-                                    .where("id_of_rejected_user",
-                                        isEqualTo: currentUser!.id)
-                                    .orderBy('rejection_time',
-                                        descending: true),
-                                // listeners: [refreshChangeListener],
-                                itemBuilderType: PaginateBuilderType.listView,
-                                isLive: true,
-                                onEmpty: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Center(
-                                    child: ApplicationRequestedWidget(),
+                                      );
+                                    }
+                                  },
+                                  query: applicationResponseCollection
+                                      .where("id_of_applicant",
+                                          isEqualTo: firebaseCurrentUser!.uid)
+                                      .orderBy('application_response_time',
+                                          descending: true),
+                                  // listeners: [refreshChangeListener],
+                                  itemBuilderType: PaginateBuilderType.listView,
+                                  isLive: true,
+                                  onEmpty: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Center(
+                                      child: ApplicationRequestedWidget(),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -148,12 +171,13 @@ class OnboardingWidget extends StatelessWidget {
                         height: 50,
                         width: 200,
                         onTap: () {
-                          onboardingProvider.isAdmin
-                              ? onboardingProvider.createAdminAccount(context)
-                              : onboardingProvider
-                                  .sendApplicationRequest(context);
-                          // onboardingProvider
-                          //     .changeOnboardingWidgetStatus(); // might not need this.
+                          if (onboardingProvider.isAdmin) {
+                            onboardingProvider
+                                .createAdminAccount(_scaffold.currentContext!);
+                          } else {
+                            onboardingProvider.sendApplicationRequest(
+                                _scaffold.currentContext!);
+                          }
                         },
                         text: "Create Account"),
                   ),

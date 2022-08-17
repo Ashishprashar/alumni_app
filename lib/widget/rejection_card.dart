@@ -15,6 +15,7 @@ class RejectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('rejection card, is the error causing widget');
     final individualRejection = ApplicationResponseModel.fromMap(
         snapshot![index].data() as Map<String, dynamic>);
 

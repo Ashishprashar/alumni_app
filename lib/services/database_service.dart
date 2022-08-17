@@ -78,11 +78,13 @@ class DatabaseService {
     Map<String, dynamic> data = (user.toJson());
 
     // currently taking firebaseCurrentUser.uid, but for admin side creation should have different.
-    await userCollection.doc(firebaseCurrentUser!.uid).set(data);
+    await userCollection.doc(ownerId).set(data);
 
-    navigatorKey.currentContext
-        ?.read<CurrentUserProvider>()
-        .updateCurrentUser(user);
+    // if your loging in as admin(direct). you need to set current user.
+    if (admin)
+      navigatorKey.currentContext
+          ?.read<CurrentUserProvider>()
+          .updateCurrentUser(user);
 
     // We need to somehow update the current user!!!!! Remeber
   }
@@ -161,7 +163,7 @@ class DatabaseService {
   Future pushApplicationToAdmins({
     required String name,
     required String usn,
-    required String semester,
+    required String? semester,
     required String branch,
     required String status,
     required String email,
@@ -185,7 +187,7 @@ class DatabaseService {
       usn: usn,
       downloadUrl: downloadUrl, // id card image url
       createdTime: Timestamp.now(),
-      semester: semester,
+      semester: semester ?? '',
       branch: branch,
       status: status,
       gender: gender,
@@ -220,13 +222,30 @@ class DatabaseService {
     await applicationResponseCollection.doc(idOfApplicant).set(data);
   }
 
+  // What are we doing with ID images. id card should not be deleted?
+
   deleteApplication({required String applicationId}) async {
     // delete from firestore
     await applicationCollection.doc(applicationId).delete();
     // delete from id card image from storage
-    await FirebaseStorage.instance
-        .refFromURL('idCardImages/${applicationId}.jpg')
-        .delete();
+    // await FirebaseStorage.instance
+    //     .refFromURL('idCardImages/${applicationId}.jpg')
+    //     .delete();
+
+    final file = FirebaseStorage.instance
+        .ref()
+        .child('idCardImages/${applicationId}.jpg');
+    await file.delete();
+  }
+
+  // need to use this function. currently not being used.
+  deleteApplicationResponse({required String applicationId}) async {
+    // delete from firestore
+    await applicationResponseCollection.doc(applicationId).delete();
+    // delete from id card image from storage
+    // await FirebaseStorage.instance
+    //     .refFromURL('idCardImages/${applicationId}.jpg')
+    //     .delete();
   }
 
   addNotification({

@@ -148,7 +148,7 @@ class OnboardingProvider with ChangeNotifier {
   final String keyShowResponseScreen = "show_response_screen";
   SharedPreferences? _pref;
 
-  void createAdminAccount(BuildContext context) async {
+  void createAdminAccount(BuildContext contextNew) async {
     try {
       if (isChecked &&
           defaultGender != null &&
@@ -158,7 +158,7 @@ class OnboardingProvider with ChangeNotifier {
         if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
             (defaultStatus != "Student")) {
           // changeisLoading causes navigate to home to stop working. think of fix please.
-          // changeIsLoading();
+          changeIsLoading();
           await databaseService.createAccount(
             nameController.text,
             usnController.text,
@@ -171,13 +171,15 @@ class OnboardingProvider with ChangeNotifier {
             firebaseCurrentUser!.uid,
             true,
           );
-          navigatorService.navigateToHome(context);
+          // notifyListeners();
+          // navigatorService.navigateToHome(context);
+          // notifyListeners();
           //     .then((value) {
           //   print('can we navigate to the promised land');
           //   navigatorService.navigateToHome(context);
           // });
           log("Create account:  " + defaultStatus!);
-          // navigatorService.navigateToHome(context);
+          navigatorService.navigateToHome(contextNew);
         }
       } else {
         const snackBar = SnackBar(
@@ -186,18 +188,19 @@ class OnboardingProvider with ChangeNotifier {
           ),
           duration: Duration(milliseconds: 1000),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(contextNew).showSnackBar(snackBar);
       }
     } catch (e) {
       // isLoading = false;
+      print(e.toString());
+      print('seems like there was an error');
       changeIsLoading();
     }
-    // isLoading = false;
     // changeIsLoading();
   }
 
   // only when admin accept application request, the user is admited to the home page
-  void sendApplicationRequest(BuildContext context) {
+  void sendApplicationRequest(BuildContext context) async {
     const snackBar = SnackBar(
       content: Text(
         'One or more missing fields exist.',
@@ -217,10 +220,10 @@ class OnboardingProvider with ChangeNotifier {
           User? _user = auth.currentUser;
           String profileDownloadUrl = _user!.photoURL.toString();
           log("Create account:  " + defaultStatus!);
-          databaseService.pushApplicationToAdmins(
+          await databaseService.pushApplicationToAdmins(
             name: nameController.text,
             usn: usnController.text,
-            semester: defaultSemesterValue!,
+            semester: defaultSemesterValue,
             branch: defaultBranchValue!,
             status: defaultStatus!,
             image: idCardImage!,
@@ -230,8 +233,13 @@ class OnboardingProvider with ChangeNotifier {
             ownerId: firebaseCurrentUser!.uid,
             // change to application pending somehow
           );
-          // this should make it go the response screen
           changeOnboardingWidgetStatus();
+          // turn off loading screen
+          changeIsLoading(); // this is not working for some reason
+          print('is Loading: ' + isLoading.toString());
+          // this should make it go the response screen
+
+          print('is OnboardingWidget: ' + showOnboardingWidget.toString());
         } else {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
@@ -239,6 +247,8 @@ class OnboardingProvider with ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
+      print(e.toString());
+      print('erorr!!!');
       // isLoading = false;
       changeIsLoading();
     }

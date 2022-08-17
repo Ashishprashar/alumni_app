@@ -35,180 +35,184 @@ class _RejectionApplicationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Reason For Rejection',
-          style: Theme.of(context).textTheme.headline6,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Reason For Rejection',
+            style: Theme.of(context).textTheme.headline6,
+          ),
         ),
-      ),
-      body: Scrollbar(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              ListTile(
-                title: const Text('This is not an ID card Image'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.notIDImage,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+        body: Scrollbar(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                ListTile(
+                  title: const Text('This is not an ID card Image'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.notIDImage,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text('The Image is not clear'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.NotClear,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text('The Image is not clear'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.NotClear,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text(
-                    'We request you to Position the camera so that it captures the name and usn of your ID Card Please.'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.NotRightPosition,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text(
+                      'We request you to Position the camera so that it captures the name and usn of your ID Card Please.'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.NotRightPosition,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text(
-                    'The name and usn you provided, did not match the ones in your ID Card'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.DoNotMatch,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text(
+                      'The name and usn you provided, did not match the ones in your ID Card'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.DoNotMatch,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text(
-                    'The name you provided did not match the name in your ID Card'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.DoNotMatchName,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text(
+                      'The name you provided did not match the name in your ID Card'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.DoNotMatchName,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text(
-                    'The usn you provided did not match the usn in your ID Card'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.DoNotMatchUsn,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text(
+                      'The usn you provided did not match the usn in your ID Card'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.DoNotMatchUsn,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text('No Reason Specified'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.NotMentioning,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text('No Reason Specified'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.NotMentioning,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ListTile(
-                title: const Text(
-                    '"All Applications are currently on hold. Sorry for the inconviniece, Were not sure how long this might be the case."'),
-                leading: Radio<RejectionReason>(
-                  value: RejectionReason.AllApplicationsOnHold,
-                  groupValue: _reason,
-                  onChanged: (RejectionReason? value) {
-                    setState(() {
-                      _reason = value;
-                    });
-                  },
+                ListTile(
+                  title: const Text(
+                      '"All Applications are currently on hold. Sorry for the inconviniece, Were not sure how long this might be the case."'),
+                  leading: Radio<RejectionReason>(
+                    value: RejectionReason.AllApplicationsOnHold,
+                    groupValue: _reason,
+                    onChanged: (RejectionReason? value) {
+                      setState(() {
+                        _reason = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 40),
-              // Additional Message
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Additional Message (optional)',
-                    ),
-                    Container(
-                      // height: height,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border:
-                              Border.all(color: Theme.of(context).focusColor)),
-                      child: Center(
-                        child: TextField(
-                          style: Theme.of(context).textTheme.bodyText1,
-                          controller: textController,
-                          keyboardType: TextInputType.multiline,
-                          minLines: 1,
-                          maxLines: 5,
-                          maxLength: 200,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText:
-                                'Let them know why you rejected the application',
-                            // suffixIcon: suffix,
+                SizedBox(height: 40),
+                // Additional Message
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Additional Message (optional)',
+                      ),
+                      Container(
+                        // height: height,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(
+                                color: Theme.of(context).focusColor)),
+                        child: Center(
+                          child: TextField(
+                            style: Theme.of(context).textTheme.bodyText1,
+                            controller: textController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 5,
+                            maxLength: 200,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText:
+                                  'Let them know why you rejected the application',
+                              // suffixIcon: suffix,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              DoneButton(
-                onTap: () {
-                  // Need to create rejection message.
-                  db.pushApplicationResponse(
-                    'Rejected',
-                    getRejectionTitle(_reason!),
-                    textController.text,
-                    currentUser!.id,
-                    widget.idOfRejectedUser,
-                  );
-                  // Need to delete the application.
-                  db.deleteApplication(applicationId: widget.idOfRejectedUser);
-                  // Need to let the user know that their applicaiton was rejected. Try again
+                SizedBox(height: 20),
+                DoneButton(
+                  onTap: () {
+                    // Need to create rejection message.
+                    db.pushApplicationResponse(
+                      'Rejected',
+                      getRejectionTitle(_reason!),
+                      textController.text,
+                      currentUser!.id,
+                      widget.idOfRejectedUser,
+                    );
+                    // Need to delete the application.
+                    db.deleteApplication(
+                        applicationId: widget.idOfRejectedUser);
+                    // Need to let the user know that their applicaiton was rejected. Try again
 
-                  // Need to notifiy the user that they have been approved.
-                  // Need to let the user go to the home screen directly
-                  Navigator.of(context).pop();
-                },
-                text: 'Submit',
-                height: 40,
-                width: 80,
-              ),
-            ],
+                    // Need to notifiy the user that they have been approved.
+                    // Need to let the user go to the home screen directly
+                    Navigator.of(context).pop();
+                  },
+                  text: 'Submit',
+                  height: 40,
+                  width: 80,
+                ),
+              ],
+            ),
           ),
         ),
       ),
