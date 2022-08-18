@@ -32,7 +32,6 @@ final messagesDb = FirebaseDatabase.instance.ref().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-// bool isDeleting = false;
 
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 final Reference storageRef = FirebaseStorage.instance.ref();

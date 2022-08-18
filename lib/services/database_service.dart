@@ -303,35 +303,44 @@ class DatabaseService {
     await postCollection.doc(postModel.id).set(postModel.toJson());
   }
 
+  // this is the problem. we cannot add to doc thats not yet created.
   addFcmToken(String id) async {
+    print('we are inside fcm token');
     String? fcmToken = await firebaseMessaging.getToken();
     if (fcmToken != null) {
+      print('looks like fcm token was not null');
       await userCollection.doc(id).update({"fcmToken": fcmToken});
     }
   }
 
   getUserData(context, String id) async {
-    await addFcmToken(id);
+    // this is async suspending. think about fix tomorrow
+    print('were inside getUserData');
     DocumentSnapshot doc = await userCollection.doc(id).get();
-    log("message");
     if (doc.exists) {
+      await addFcmToken(id);
       UserModel _userModel =
           await UserModel.fromMap(doc.data() as Map<String, dynamic>);
 
       await Provider.of<CurrentUserProvider>(context, listen: false)
           .updateCurrentUser(_userModel);
 
+      print('Oh no we are in the doc.exists bloack in get userData');
+
       navigatorService.navigateToHome(context);
     }
-    // check if we should show onboarding widget, check response widget
+    // check if we should show onboarding screen
     else {
       bool _showResponseScreen =
           Provider.of<OnboardingProvider>(context, listen: false)
               .showResponseScreen;
+      print('showReponse screen value: ' + _showResponseScreen.toString());
       if (_showResponseScreen) {
-        navigatorService.navigateToOnBoarding(context);
+        await navigatorService.navigateToOnBoarding(context);
+      } else {
+        await navigatorService.navigateToIntroductionPage(context);
+        print('we have now tried to navigate to Intro page');
       }
-      navigatorService.navigateToIntroductionPage(context);
     }
   }
 }

@@ -26,29 +26,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('we are in the onboarding screen');
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Consumer<OnboardingProvider>(
         builder: (ctx, onboardingProvider, child) {
+          print("showResponse screen value in onboarding sceen: " +
+              onboardingProvider.showResponseScreen.toString());
+          // should make this true
+          // onboardingProvider.changeShowResponseWidgetStatus;
           return Scaffold(
             key: _scaffold,
-            // appBar: AppBar(
-            //   title: Text('Registeration'),
-            //   actions: [
-            //     // make this button invisible (opacity)
-            //     GestureDetector(
-            //       onLongPress: () {
-            //         showAdminLogin(context);
-            //       },
-            //       child: Icon(
-            //         Icons.admin_panel_settings,
-            //         color: Colors.black.withOpacity(0),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             body: onboardingProvider.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : onboardingProvider.showOnboardingWidget
@@ -82,6 +72,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                           applicationId: applicationResponse
                                               .idOfApplicant);
                                       // this creates current user and pushes to home screen.
+                                      // should make this false.
+                                      onboardingProvider
+                                          .changeShowResponseWidgetStatusToFalse();
                                       onboardingProvider.signTheUserIn(
                                           _scaffold.currentContext!);
                                       // not sure if returning conatiner is the best thing to do.

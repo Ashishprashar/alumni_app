@@ -269,7 +269,11 @@ class IntroductionPage extends StatelessWidget {
         ],
         onDone: () async {
           Provider.of<OnboardingProvider>(context, listen: false)
-              .changeShowResponseWidgetStatus();
+              .changeShowResponseWidgetStatusToTrue();
+          print("Response screen value in intro page: " +
+              Provider.of<OnboardingProvider>(context, listen: false)
+                  .showResponseScreen
+                  .toString());
           navigatorService.navigateToOnBoarding(context);
         },
         // onSkip: () {

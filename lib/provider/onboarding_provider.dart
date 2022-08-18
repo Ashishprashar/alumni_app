@@ -17,6 +17,12 @@ class OnboardingProvider with ChangeNotifier {
     loadFromPrefs();
   }
 
+  SharedPreferences? _pref;
+  final String keyShowOnboardingWidget = "show_onboarding_widget";
+  final String keyShowResponseScreen = "show_response_screen";
+  late bool showOnboardingWidget;
+  late bool showResponseScreen;
+
   //Make sure initialized shared preferences during app launch!!!!!!!
 
   // update show onboarding boolean
@@ -29,6 +35,8 @@ class OnboardingProvider with ChangeNotifier {
   // update show response screen boolean
   void updateShowResponseScreenToSharedPrefernces(bool showResponseScreen) {
     this.showResponseScreen = showResponseScreen;
+    print('update show response screen value for show response screen: ' +
+        showResponseScreen.toString());
     _saveToPrefsResponseScreen();
     notifyListeners();
   }
@@ -41,8 +49,11 @@ class OnboardingProvider with ChangeNotifier {
   // load from prefs (load both onboarding boolean and response boolean)
   loadFromPrefs() async {
     await initPrefs();
-    showOnboardingWidget = _pref!.getBool(keyShowOnboardingWidget) ?? true;
-    showResponseScreen = _pref!.getBool(keyShowResponseScreen) ?? false;
+    showOnboardingWidget =
+        await _pref!.getBool(keyShowOnboardingWidget) ?? true;
+    showResponseScreen = await _pref!.getBool(keyShowResponseScreen) ?? false;
+    print('Load from Prefs value for show response screen: ' +
+        showResponseScreen.toString());
     notifyListeners();
   }
 
@@ -56,6 +67,8 @@ class OnboardingProvider with ChangeNotifier {
   _saveToPrefsResponseScreen() async {
     await initPrefs();
     _pref!.setBool(keyShowResponseScreen, showResponseScreen);
+    print('save to prefs value for show response screen: ' +
+        showResponseScreen.toString());
   }
 
   TextEditingController nameController = TextEditingController();
@@ -81,8 +94,6 @@ class OnboardingProvider with ChangeNotifier {
   bool isLoading = false;
   bool isChecked = false;
   bool isAdmin = false;
-  late bool showOnboardingWidget;
-  late bool showResponseScreen;
   // used to decide if regular onboarding screen should be used or a different one
 
   // default state of application status
@@ -105,11 +116,21 @@ class OnboardingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeShowResponseWidgetStatus() {
-    showResponseScreen = !showResponseScreen;
-    updateShowResponseScreenToSharedPrefernces(showResponseScreen);
-    notifyListeners();
+  void changeShowResponseWidgetStatusToTrue() {
+    bool _showResponseScreen = true;
+    updateShowResponseScreenToSharedPrefernces(_showResponseScreen);
+    print('changeshowResononse value for show response screen: ' +
+        showResponseScreen.toString());
+    // notifyListeners();
   }
+
+  void changeShowResponseWidgetStatusToFalse() {
+    bool _showResponseScreen = false;
+    updateShowResponseScreenToSharedPrefernces(_showResponseScreen);
+    // notifyListeners();
+  }
+
+  // make the above thing for false case aswell
 
   void resetOnboardingPreferences() {
     updateShowOnboardingWidgetToSharedPrefernces(true);
@@ -143,10 +164,6 @@ class OnboardingProvider with ChangeNotifier {
   }
 
   // logic for shared preferences
-
-  final String keyShowOnboardingWidget = "show_onboarding_widget";
-  final String keyShowResponseScreen = "show_response_screen";
-  SharedPreferences? _pref;
 
   void createAdminAccount(BuildContext contextNew) async {
     try {

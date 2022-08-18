@@ -21,10 +21,11 @@ class _WrapperState extends State<Wrapper> {
   late UserModel userModel;
   AuthServices authServices = AuthServices();
   DatabaseService databaseService = DatabaseService();
+  late Future<void> checkSignInFuture;
 
   @override
   void initState() {
-    checkSignIn();
+    checkSignInFuture = checkSignIn();
     super.initState();
   }
 
@@ -34,21 +35,42 @@ class _WrapperState extends State<Wrapper> {
     User? _user = auth.currentUser;
 
     if (_user == null) {
-      setState(() {
-        isAuth = "UNAUTH";
-      });
+      // setState(() {
+      isAuth = "UNAUTH";
+      // });
     } else {
-      setState(() {
-        isAuth = "AUTH";
-        databaseService.getUserData(context, _user.uid);
-      });
+      // setState(() {
+      isAuth = "AUTH";
+      print('reached is auth set state in check sign in');
+      await Provider.of<OnboardingProvider>(context, listen: false)
+          .loadFromPrefs();
+      await databaseService.getUserData(context, _user.uid);
+      // databaseService.getUserData(context, _user.uid);
+      // });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<OnboardingProvider>(context).loadFromPrefs;
+    // triggering the constructor of the onboarding provider.
+    // Provider.of<OnboardingProvider>(context).loadFromPrefs;
     SizeData().init(context);
-    return isAuth == "AUTH" ? const Home() : const SignInScreen();
+    // return isAuth == "AUTH" ? const Home() : const SignInScreen();
+    return FutureBuilder<void>(
+      future: checkSignInFuture, // a Future<String> or null
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start');
+          case ConnectionState.waiting:
+            return new Text('Awaiting result...');
+          default:
+            if (snapshot.hasError)
+              return new Text('Error: ${snapshot.error}');
+            else
+              return isAuth == "AUTH" ? const Home() : const SignInScreen();
+        }
+      },
+    );
   }
 }
