@@ -8,6 +8,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -313,7 +314,7 @@ class DatabaseService {
     }
   }
 
-  getUserData(context, String id) async {
+  Future<PageSelector> getUserData(context, String id) async {
     // this is async suspending. think about fix tomorrow
     print('were inside getUserData');
     DocumentSnapshot doc = await userCollection.doc(id).get();
@@ -326,21 +327,26 @@ class DatabaseService {
           .updateCurrentUser(_userModel);
 
       print('Oh no we are in the doc.exists bloack in get userData');
-
-      navigatorService.navigateToHome(context);
+      // await navigatorService.navigateToHome(context);
+      return PageSelector.HomeScreenRoute;
     }
     // check if we should show onboarding screen
     else {
       bool _showResponseScreen =
-          Provider.of<OnboardingProvider>(context, listen: false)
+          await Provider.of<OnboardingProvider>(context, listen: false)
               .showResponseScreen;
       print('showReponse screen value: ' + _showResponseScreen.toString());
       if (_showResponseScreen) {
-        await navigatorService.navigateToOnBoarding(context);
+        return PageSelector.OnboardingScreenRoute;
+        // navigatorService.navigateToOnBoarding(context);
+        // return true;
       } else {
-        await navigatorService.navigateToIntroductionPage(context);
-        print('we have now tried to navigate to Intro page');
+        navigatorService.navigateToIntroductionPage(context);
+        // await navigatorService.navigateToIntroductionPage(context);
+        // return true;
+        // print('we have now tried to navigate to Intro page');
       }
     }
+    return PageSelector.NoRoute;
   }
 }
