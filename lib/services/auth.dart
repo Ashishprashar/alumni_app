@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/onboarding_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/navigator_services.dart';
@@ -26,8 +27,8 @@ class AuthServices {
         idToken: googleAuth.idToken,
       );
       if (await isAuthorized(googleUser.email)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("You are not authorized")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Sorry your email has not been invited yet.")));
         return;
       }
       final User? _user = (await auth.signInWithCredential(credential)).user;
@@ -123,11 +124,35 @@ class AuthServices {
     }
   }
 
-  signOut(BuildContext context) async {
-    auth.signOut();
-    googleSignIn.signOut();
+  Future<void> signOut(BuildContext context) async {
+    // GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    // if (googleUser != null) {
+    //   GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    //   final AuthCredential credential = GoogleAuthProvider.credential(
+    //     accessToken: googleAuth.accessToken,
+    //     idToken: googleAuth.idToken,
+    //   );
+    //   // final User? _user = (await auth.signInWithCredential(credential)).user;
+    //   // await firebaseCurrentUser!.delete();
+    //   // await signOut(context);
+    //   await auth.signOut();
+    //   await googleSignIn.signOut();
 
+    //   Navigator.of(navigatorKey.currentContext!).pushReplacement(
+    //       MaterialPageRoute(builder: (ctx) => const SignInScreen()));
+    // }
+    await googleSignIn.signOut();
+    await auth.signOut();
+    // need to reset shared prefernces.
+    // Provider.of<OnboardingProvider>(context, listen: false)
+    //     .changeShowResponseWidgetStatusToFalse();
+    // Provider.of<OnboardingProvider>(context, listen: false).changeIsLoading();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => const SignInScreen()));
+      MaterialPageRoute(
+        builder: (ctx) => const SignInScreen(),
+      ),
+    );
+    // googleSignIn.disconnect();
+    // await firebaseCurrentUser!.delete();
   }
 }

@@ -32,7 +32,7 @@ final messagesDb = FirebaseDatabase.instance.ref().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
 late UserModel individualUser;
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
+// maybe change firebaseAuth.instance to auth which is already declared.
 User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 final Reference storageRef = FirebaseStorage.instance.ref();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

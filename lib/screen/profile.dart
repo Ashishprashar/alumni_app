@@ -243,7 +243,8 @@ class _UserProfileState extends State<UserProfile> {
                       //         },
                       //         child: Image.asset("assets/images/message.png")),
                       //   ),
-                      if (widget.user.id != firebaseCurrentUser?.uid)
+                      // if (widget.user.id != firebaseCurrentUser?.uid)
+                      if (widget.user.id != currentUser!.id)
                         InkWell(
                             onTap: () async {
                               if (currentUser!.followRequest

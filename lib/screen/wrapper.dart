@@ -45,7 +45,11 @@ class _WrapperState extends State<Wrapper> {
   bool get wantKeepAlive => true;
 
   Future<PageSelector> checkSignIn() async {
+    // auth is not being reset on changing google account.
+
+    // await auth.currentUser!.refreshToken;
     User? _user = await auth.currentUser;
+
     await Provider.of<OnboardingProvider>(context, listen: false)
         .loadFromPrefs();
     if (_user == null) {
@@ -59,6 +63,7 @@ class _WrapperState extends State<Wrapper> {
       // });
     } else {
       print('reached is auth set state in check sign in');
+      print("FireBaseAuth instance email:  " + _user.email.toString());
       isAuth = "AUTH";
       pageToShow = await databaseService.getUserData(context, _user.uid);
       setState(() {

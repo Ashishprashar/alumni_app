@@ -132,7 +132,7 @@ class OnboardingProvider with ChangeNotifier {
 
   // make the above thing for false case aswell
 
-  void resetOnboardingPreferences() {
+  void resetOnboardingPreferences() async {
     updateShowOnboardingWidgetToSharedPrefernces(true);
     updateShowResponseScreenToSharedPrefernces(false);
     notifyListeners();
@@ -235,6 +235,7 @@ class OnboardingProvider with ChangeNotifier {
             (defaultStatus != "Student")) {
           changeIsLoading();
           User? _user = auth.currentUser;
+          // User? _user = FirebaseAuth.instance.currentUser;
           String profileDownloadUrl = _user!.photoURL.toString();
           log("Create account:  " + defaultStatus!);
           await databaseService.pushApplicationToAdmins(
@@ -275,6 +276,7 @@ class OnboardingProvider with ChangeNotifier {
 
   signTheUserIn(BuildContext context) async {
     User? _user = auth.currentUser;
+    // User? _user = FirebaseAuth.instance.currentUser;
     // we might have to implement some way of set state here. remember for future errors.
     await databaseService.getUserData(context, _user!.uid);
     Navigator.push(

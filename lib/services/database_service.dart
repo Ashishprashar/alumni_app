@@ -12,6 +12,7 @@ import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:provider/provider.dart';
@@ -111,7 +112,7 @@ class DatabaseService {
     bool admin,
   ) async {
     Timestamp now = Timestamp.now();
-
+    // User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
     if (image != null) {
       UploadTask uploadTask = storageRef
           .child('profile/${firebaseCurrentUser?.uid}.jpg')
@@ -341,12 +342,13 @@ class DatabaseService {
         // navigatorService.navigateToOnBoarding(context);
         // return true;
       } else {
-        navigatorService.navigateToIntroductionPage(context);
+        return PageSelector.IntroScreenRoute;
+        // navigatorService.navigateToIntroductionPage(context);
         // await navigatorService.navigateToIntroductionPage(context);
         // return true;
         // print('we have now tried to navigate to Intro page');
       }
     }
-    return PageSelector.NoRoute;
+    // return PageSelector.NoRoute;
   }
 }
