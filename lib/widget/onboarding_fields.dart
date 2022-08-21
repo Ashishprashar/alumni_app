@@ -268,7 +268,7 @@ class _OnboardingFieldsState extends State<OnboardingFields> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              'Your ID Card will not be displayed anywhere in the app. It is only needed for the registration to prove your identity.',
+              'Also your ID Card will not be displayed anywhere in the app. It is only needed for the registration to prove your identity.',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),

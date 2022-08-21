@@ -20,10 +20,10 @@ class _EditFieldsState extends State<EditFields> {
       return Column(
         children: [
           const SizedBox(height: 20),
-          CustomTextField(
-            controller: editProvider.nameController,
-            title: "Name",
-          ),
+          // CustomTextField(
+          //   controller: editProvider.nameController,
+          //   title: "Name",
+          // ),
           const SizedBox(height: 20),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -58,11 +58,11 @@ class _EditFieldsState extends State<EditFields> {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          CustomTextField(
-            controller: editProvider.usnController,
-            title: "Usn",
-          ),
+          // const SizedBox(height: 20),
+          // CustomTextField(
+          //   controller: editProvider.usnController,
+          //   title: "Usn",
+          // ),
           const SizedBox(height: 20),
           CustomTextField(
             controller: editProvider.skillsController,

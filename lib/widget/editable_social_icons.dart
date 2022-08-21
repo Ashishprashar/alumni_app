@@ -88,6 +88,10 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                       children: [
                         Text(
                           "Add your $socialName profile link",
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        Text(
+                          "(make sure you add the \"https://\" part too.)",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         const SizedBox(
@@ -103,7 +107,7 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
                             controller: temporaryController,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText: "paste the link here",
+                              hintText: "Eg: https://website.com/myprofile",
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {

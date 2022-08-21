@@ -101,6 +101,16 @@ class _EditScreenState extends State<EditScreen> {
                                         ),
                                       ),
                                     ),
+                                    SizedBox(height: 20),
+                                    Text(currentUser!.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2),
+                                    SizedBox(height: 3),
+                                    Text(currentUser!.usn,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1),
 
                                     // all the fields like name,bio etc
                                     EditFields(),

@@ -19,6 +19,10 @@ class SocialIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late IconData theicon;
+    final String socialurl = user.linkToSocial[socialName] ?? '';
+    final String emailurl = 'mailto:${user.email}?subject=&body=';
+    final Uri _emailUrl = Uri.parse(emailurl);
+    final Uri _url = Uri.parse(socialurl);
 
     switch (socialName) {
       case 'email':
@@ -52,7 +56,7 @@ class SocialIconButton extends StatelessWidget {
                 ? Colors.grey
                 : Theme.of(context).appBarTheme.iconTheme!.color,
             onPressed: () async {
-              launch('mailto:${user.email}?subject=&body=');
+              launchUrl(_emailUrl);
             },
           )
 
@@ -63,8 +67,8 @@ class SocialIconButton extends StatelessWidget {
                 ? Colors.grey
                 : Colors.black,
             onPressed: () async {
-              String socialurl = user.linkToSocial[socialName] ?? '';
-              if (await canLaunch(socialurl)) launch(socialurl);
+              print(_url);
+              if (await canLaunchUrl(_url)) await launchUrl(_url);
             },
           );
   }

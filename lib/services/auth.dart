@@ -125,23 +125,9 @@ class AuthServices {
   }
 
   Future<void> signOut(BuildContext context) async {
-    // GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    // if (googleUser != null) {
-    //   GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    //   final AuthCredential credential = GoogleAuthProvider.credential(
-    //     accessToken: googleAuth.accessToken,
-    //     idToken: googleAuth.idToken,
-    //   );
-    //   // final User? _user = (await auth.signInWithCredential(credential)).user;
-    //   // await firebaseCurrentUser!.delete();
-    //   // await signOut(context);
-    //   await auth.signOut();
-    //   await googleSignIn.signOut();
-
-    //   Navigator.of(navigatorKey.currentContext!).pushReplacement(
-    //       MaterialPageRoute(builder: (ctx) => const SignInScreen()));
-    // }
-    await googleSignIn.signOut();
+    // commenting out google sign out becuase i dont want to give the user the ability to switch google accounts.
+    // switching google accounts causes a lot of problems.
+    // await googleSignIn.signOut();
     await auth.signOut();
     // need to reset shared prefernces.
     // Provider.of<OnboardingProvider>(context, listen: false)

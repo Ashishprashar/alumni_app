@@ -32,11 +32,16 @@ class FaqScreen extends StatelessWidget {
                     'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. You can change the level from public (everyone at college) and private (only people who follow you).'),
             CustomExpansionTile(
                 question: 'Do people find out if I view their profile?',
-                answer: 'Nope their is absolutely no tracking anywhere in the app.'),
+                answer:
+                    'Nope their is absolutely no tracking anywhere in the app.'),
+            CustomExpansionTile(
+                question: 'Why can\'t I change my name and usn?',
+                answer:
+                    'To make it easier for users to identiy each other on the app we make the name and usn fields unchangeable.'),
             CustomExpansionTile(
                 question: 'What is the social net?',
                 answer:
-                    'Your social network is the group of all the people whose privacy settings allow you to view their information. To make things interesting, We limit search results to users who show their profile pictures.'),
+                    'Your social network is the group of all the people whose privacy settings allow you to view their information. '),
             CustomExpansionTile(
                 question: 'How can I search for something besides names?',
                 answer:

@@ -80,15 +80,15 @@ class EditScreenProvider with ChangeNotifier {
       : TextEditingController(text: currentUser!.linkToSocial['github']);
 
   // Other Controllers
-  TextEditingController nameController = currentUser == null
-      ? TextEditingController()
-      : TextEditingController(text: currentUser!.name);
+  // TextEditingController nameController = currentUser == null
+  //     ? TextEditingController()
+  //     : TextEditingController(text: currentUser!.name);
   TextEditingController bioController = currentUser == null
       ? TextEditingController()
       : TextEditingController(text: currentUser!.bio);
-  TextEditingController usnController = currentUser == null
-      ? TextEditingController()
-      : TextEditingController(text: currentUser!.usn);
+  // TextEditingController usnController = currentUser == null
+  //     ? TextEditingController()
+  //     : TextEditingController(text: currentUser!.usn);
   TextEditingController skillsController = TextEditingController(text: '');
   TextEditingController interestsController = TextEditingController();
   TextEditingController favoriteMusicController = TextEditingController();
@@ -133,9 +133,9 @@ class EditScreenProvider with ChangeNotifier {
     defaultGender ??= currentUser!.gender;
 
     // trim all the text controllers
-    nameController.text = nameController.text.trim();
+    // nameController.text = nameController.text.trim();
     bioController.text = bioController.text.trim();
-    usnController.text = usnController.text.trim();
+    // usnController.text = usnController.text.trim();
     skillsController.text = skillsController.text.trim();
     interestsController.text = interestsController.text.trim();
     favoriteMusicController.text = favoriteMusicController.text.trim();
@@ -169,9 +169,11 @@ class EditScreenProvider with ChangeNotifier {
     favoriteShowsMoviesList = List.from(tempFavoriteShowsMoviesList);
 
     await databaseService.updateAccount(
-      nameController.text,
+      // nameController.text,
+      currentUser!.name,
       bioController.text,
-      usnController.text,
+      // usnController.text,
+      currentUser!.usn,
       defaultGender!,
       profileImage,
       currentUser!.profilePic,
@@ -193,9 +195,9 @@ class EditScreenProvider with ChangeNotifier {
   // This runs when the user leaves the screen without saving
   Future<bool> clearUnsavedData(UserModel currentUser) {
     profileImage = null;
-    nameController.text = currentUser.name;
+    // nameController.text = currentUser.name;
     bioController.text = currentUser.bio;
-    usnController.text = currentUser.usn;
+    // usnController.text = currentUser.usn;
     interestsController.text = '';
     skillsController.text = '';
     favoriteMusicController.text = '';

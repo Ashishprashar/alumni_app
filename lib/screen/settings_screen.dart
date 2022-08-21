@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             children: [
                               Flexible(
                                   child: Text(
-                                'User Name: ',
+                                'Account Name: ',
                                 style: Theme.of(context).textTheme.bodyText1,
                               )),
                               Flexible(

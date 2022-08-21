@@ -47,32 +47,44 @@ class _SearchPageState extends State<SearchPage> {
                     autofocus: true,
                     // style: TextStyle(backgroundColor: Colors.grey),
                     controller: searchProvider.searchController,
-                    onChanged: (v) {
-                      searchProvider.searchPeople();
-                    },
+                    // onChanged: (v) {
+                    //   searchProvider.searchPeople();
+                    // },
+                    onSubmitted: (value) => searchProvider.searchPeople(),
                     decoration: InputDecoration(
-                        fillColor: Theme.of(context).selectedRowColor,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none,
+                      fillColor: Theme.of(context).selectedRowColor,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      isDense: true, // Added this
+                      contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                      // prefixIcon: const Icon(Icons.search),
+                      // suffixIcon: searchProvider.searchController.text.isNotEmpty
+                      //     ? InkWell(
+                      //         onTap: () {
+                      //           searchProvider.clearSearchController();
+                      //         },
+                      //         child: const Icon(
+                      //           Icons.close,
+                      //           size: 25,
+                      //           color: Colors.grey,
+                      //         ),
+                      //       )
+                      //     : null,
+                      hintText: 'Search by name',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          searchProvider.searchPeople();
+                        },
+                        icon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).toggleableActiveColor,
+                          size: 25,
                         ),
-                        isDense: true, // Added this
-                        contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                        // prefixIcon: const Icon(Icons.search),
-                        // suffixIcon: searchProvider.searchController.text.isNotEmpty
-                        //     ? InkWell(
-                        //         onTap: () {
-                        //           searchProvider.clearSearchController();
-                        //         },
-                        //         child: const Icon(
-                        //           Icons.close,
-                        //           size: 25,
-                        //           color: Colors.grey,
-                        //         ),
-                        //       )
-                        //     : null,
-                        hintText: 'Search by name'),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -170,9 +182,19 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ],
                     ),
-                    for (int i = 0; i < searchProvider.peopleList.length; i++)
-                      // userCard(i, searchProvider.peopleList)
-                      UserCard(index: i, snapshot: searchProvider.peopleList)
+                    if (searchProvider.peopleList.length > 0)
+                      for (int i = 0; i < searchProvider.peopleList.length; i++)
+                        UserCard(index: i, snapshot: searchProvider.peopleList)
+                    else
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Center(
+                          child: Text(
+                            'No matches.',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      ),
                     // ListView.builder(
                     //   itemCount: searchProvider.peopleList.length,
                     //   controller: searchProvider.scrollController,

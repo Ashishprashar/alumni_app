@@ -43,7 +43,7 @@ class InviteScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'The invited user will then need to validate that they belong to the college with their name and id on registration screen',
+                          'The invited user will then need to validate that they belong to the college with their ID card on registration.',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
@@ -53,7 +53,7 @@ class InviteScreen extends StatelessWidget {
                     height: 20,
                   ),
                   CustomTextField(
-                    title: "Enter Email Id",
+                    title: "Enter Google Account Email Id",
                     controller: inviteUser.emailId,
                     hint: 'Enter their google account email id',
                   ),
