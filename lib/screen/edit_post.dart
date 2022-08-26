@@ -32,68 +32,74 @@ class _EditPostScreenState extends State<EditPostScreen> {
               .putTextInController("");
           return true;
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Edit Post',
-              style: Theme.of(context).textTheme.headline6,
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Edit Post',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              elevation: 1,
+              toolbarHeight: 50,
             ),
-            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            elevation: 1,
-            toolbarHeight: 50,
-          ),
-          body: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8),
-                padding: const EdgeInsets.all(8),
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(10),
-                //     border:
-                //         Border.all(color: Theme.of(context).highlightColor)),
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  controller: _scrollController,
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    scrollController: _scrollController,
-                    minLines: 2,
-                    maxLines: 10,
-                    style: Theme.of(context).textTheme.bodyText2,
-                    controller: feedProvider.postTextContent,
-                    maxLength: 280,
-                    decoration: InputDecoration(
-                        hintText: "What's Going on?",
-                        hintStyle: Theme.of(context).textTheme.bodyText1,
-                        border: InputBorder.none),
+            body: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
+                  // decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     border:
+                  //         Border.all(color: Theme.of(context).highlightColor)),
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    controller: _scrollController,
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      scrollController: _scrollController,
+                      minLines: 2,
+                      maxLines: 10,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      controller: feedProvider.postTextContent,
+                      maxLength: 280,
+                      decoration: InputDecoration(
+                          hintText: "What's Going on?",
+                          hintStyle: Theme.of(context).textTheme.bodyText1,
+                          border: InputBorder.none),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(8),
-                alignment: Alignment.centerRight,
-                child: DoneButton(
-                    onTap: () async {
-                      feedProvider.updatePost(widget.postModel);
-                      feedProvider.refreshChangeListener.refreshed = true;
-                      //  Provider.of<FeedProvider>(context, listen: false)
-                      //     .updatePost(widget.postModel);
-                      final _snackBar = SnackBar(
-                        content: Text(
-                          'Post has been Edited!',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        duration: Duration(milliseconds: 500),
-                      );
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                      // Navigator.of(context).pop();
-                      // Navigator.of(context).pop();
-                    },
-                    width: 80,
-                    text: "Save"),
-              ),
-            ],
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  alignment: Alignment.centerRight,
+                  child: DoneButton(
+                      onTap: () async {
+                        feedProvider.updatePost(widget.postModel);
+                        feedProvider.refreshChangeListener.refreshed = true;
+                        //  Provider.of<FeedProvider>(context, listen: false)
+                        //     .updatePost(widget.postModel);
+                        final _snackBar = SnackBar(
+                          content: Text(
+                            'Post has been Edited!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white),
+                          ),
+                          duration: Duration(milliseconds: 500),
+                        );
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                        // Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
+                      },
+                      width: 80,
+                      text: "Save"),
+                ),
+              ],
+            ),
           ),
         ),
       );

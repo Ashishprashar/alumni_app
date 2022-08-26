@@ -122,7 +122,8 @@ class FeedProvider with ChangeNotifier {
     incrementPostCount();
 
     await databaseService.addNotification(
-        type: kNotificationKeyPost, postID: post.id);
+      type: kNotificationKeyPost,
+    );
     _filesToUpload = null;
     postTextContent.text = "";
     isUploading = false;
@@ -177,7 +178,7 @@ class FeedProvider with ChangeNotifier {
       return;
     }
     await databaseService.addNotification(
-        postID: postModel.id,
+        // postID: postModel.id,
         type: kNotificationKeyComment,
         sentTo: postModel.ownerId);
     notifyListeners();
@@ -193,7 +194,7 @@ class FeedProvider with ChangeNotifier {
       return;
     }
     await databaseService.addNotification(
-        postID: postId, type: kNotificationKeyLike, sentTo: ownerId);
+        type: kNotificationKeyLike, sentTo: ownerId);
   }
 
   removeLike({required String postId}) async {

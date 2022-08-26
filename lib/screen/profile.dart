@@ -10,7 +10,9 @@ import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/invite_screen.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
+import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/bottom_sheet_menu.dart';
+import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/profile_fields.dart';
 import 'package:alumni_app/widget/profile_widget.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
@@ -231,72 +233,6 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                       ),
-                      // if (widget.user.id != firebaseCurrentUser?.uid)
-                      //   Container(
-                      //     margin: const EdgeInsets.symmetric(horizontal: 15),
-                      //     child: InkWell(
-                      //         onTap: () {
-                      //           Navigator.of(context).push(MaterialPageRoute(
-                      //               builder: (ctx) => ChatScreen(
-                      //                     chatWithUser: widget.user,
-                      //                   )));
-                      //         },
-                      //         child: Image.asset("assets/images/message.png")),
-                      //   ),
-                      // if (widget.user.id != firebaseCurrentUser?.uid)
-                      if (widget.user.id != currentUser!.id)
-                        InkWell(
-                            onTap: () async {
-                              if (currentUser!.followRequest
-                                  .contains(widget.user.id)) {
-                                log("remove");
-                                profileProvider.removeFollowing(
-                                    id: widget.user.id, context: context);
-                                return;
-                              }
-
-                              if (currentUser!.following
-                                  .contains(widget.user.id)) {
-                                profileProvider.removeFollowing(
-                                    id: widget.user.id, context: context);
-                                setState(() async {
-                                  widget.user =
-                                      await profileProvider.removeFollower(
-                                          userModel: widget.user,
-                                          id: widget.user.id,
-                                          context: context);
-                                });
-                              } else {
-                                log("following");
-                                setState(() {
-                                  profileProvider.addFollowing(
-                                      id: widget.user.id, context: context);
-                                });
-                                // setState(() async {
-                                //   widget.user =
-                                //       await profileProvider.addFollower(
-                                //           userModel: widget.user,
-                                //           id: widget.user.id,
-                                //           context: context);
-                                // });
-                              }
-                              log("message" +
-                                  currentUser!.following.toString());
-                            },
-                            child: SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: currentUser!.followRequest
-                                      .contains(widget.user.id)
-                                  ? const Icon(
-                                      Icons.donut_large_sharp,
-                                      size: 20,
-                                    )
-                                  : Image.asset(currentUser!.following
-                                          .contains(widget.user.id)
-                                      ? "assets/images/unfollow.png"
-                                      : "assets/images/follower.png"),
-                            )),
                     ],
                   )),
               const SizedBox(height: 20),
@@ -364,40 +300,85 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
 
-              // only be able to poke people that you follow
-              // if (widget.user.id != firebaseCurrentUser?.uid &&
-              //     currentUser!.following.contains(widget.user.id))
-              //   Center(
-              //     child: Container(
-              //       padding: const EdgeInsets.symmetric(horizontal: 15),
-              //       color: Colors.orange,
-              //       child: InkWell(
-              //         onTap: () {
-              //           if (profileProvider.alreadyPoked) {
-              //             const _snackBar = SnackBar(
-              //               duration: Duration(milliseconds: 500),
-              //               content: Text('You cannot poke them until they poke you back!'),
-              //             );
-              //             ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-              //           } else {
-              //             profileProvider.pokeThem(
-              //                 context: context,
-              //                 senderId: currentUser!.id,
-              //                 receiverId: widget.user.id);
-              //             const _snackBar = SnackBar(
-              //               duration: Duration(milliseconds: 500),
-              //               content: Text('Poke sent!'),
-              //             );
-              //             ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-              //           }
-              //         },
-              //         child: Text(
-              //           'Poke them',
-              //           style: Theme.of(context).textTheme.bodyText1!,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
+              SizedBox(height: 20),
+
+              // actuall follow Ui goes here
+              if (widget.user.id != currentUser!.id)
+                Center(
+                  child: InkWell(
+                    onTap: () async {
+                      // we are going into negatives numbers. this needs to fixed.
+                      // update the current user first
+                      setState(() {
+                        profileProvider.UpdateTolatestCopyOfCurrentUser(
+                            context, currentUser!.id);
+                      });
+
+                      if (currentUser!.followRequest.contains(widget.user.id)) {
+                        log("remove");
+                        // removes follow request
+                        // still not removing that notification though
+                        profileProvider.removeFollowing(
+                            id: widget.user.id, context: context);
+                        return;
+                      }
+
+                      if (currentUser!.following.contains(widget.user.id)) {
+                        profileProvider.removeFollowing(
+                            id: widget.user.id, context: context);
+                        setState(() async {
+                          widget.user = await profileProvider.removeFollower(
+                              userModel: widget.user,
+                              id: widget.user.id,
+                              context: context);
+                        });
+                      } else {
+                        log("following");
+                        setState(() {
+                          profileProvider.addFollowing(
+                              id: widget.user.id, context: context);
+                        });
+                        // setState(() async {
+                        //   widget.user =
+                        //       await profileProvider.addFollower(
+                        //           userModel: widget.user,
+                        //           id: widget.user.id,
+                        //           context: context);
+                        // });
+                      }
+                      log("message" + currentUser!.following.toString());
+                    },
+                    child: Container(
+                      height: 30,
+                      width: SizeData.screenWidth * 0.8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            currentUser!.followRequest.contains(widget.user.id)
+                                ? 'request sent'
+                                : currentUser!.following
+                                        .contains(widget.user.id)
+                                    ? 'unfollow'
+                                    : currentUser!.follower
+                                            .contains(widget.user.id)
+                                        ? 'follow back'
+                                        : 'follow',
+                            style: Theme.of(context)
+                                .textTheme
+                                .button!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
               const SizedBox(height: 20),
               widget.showProfile
                   ? ProfileFields(user: widget.user)

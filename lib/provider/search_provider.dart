@@ -17,7 +17,7 @@ class SearchProvider with ChangeNotifier {
   int documentLimit = 10;
   DocumentSnapshot? lastDocument;
   final ScrollController _scrollController = ScrollController();
-  ScrollController get scrollController => _scrollController; 
+  ScrollController get scrollController => _scrollController;
   TextEditingController get searchController => _searchController;
 
   final StreamController<List<DocumentSnapshot>> _controller =

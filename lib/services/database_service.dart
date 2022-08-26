@@ -252,7 +252,6 @@ class DatabaseService {
 
   addNotification({
     required String type,
-    String? postID,
     String? sentTo,
   }) async {
     String content = "";

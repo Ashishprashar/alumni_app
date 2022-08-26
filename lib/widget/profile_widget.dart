@@ -27,9 +27,8 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-
   ScrollController _scrollController = ScrollController();
-  
+
   @override
   Widget build(BuildContext context) {
     String profilePrivacySetting =

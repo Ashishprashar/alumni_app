@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_app/models/notifications_model.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';
+
+// basically follow mech provider
 
 class ProfileProvider with ChangeNotifier {
   DatabaseService databaseService = DatabaseService();
@@ -42,6 +45,7 @@ class ProfileProvider with ChangeNotifier {
   }
 
   addFollowing({required String id, required BuildContext context}) async {
+    // we are not adding to the followers of the other guy i think
     if (currentUser!.follower.contains(id)) {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
@@ -90,18 +94,58 @@ class ProfileProvider with ChangeNotifier {
     });
   }
 
+  // currently not being used
+  deleteNotificationFromOther(String targetId) async {
+    // currently not handling the case where the document may be absent
+    // this can happen if the user has rejected the request on their end already
+    try {
+      var dataRef = await notificationCollection
+          .where("sentTo", arrayContains: targetId)
+          .where("sentBy", isEqualTo: currentUser!.id)
+          .where("type", isEqualTo: kNotificationKeyFollowRequest)
+          .get()
+          .onError((error, stackTrace) => throw "error");
+
+      print(dataRef.docs[0].toString());
+      String notifcationId = NotificationModel.fromDoc(dataRef.docs[0]).id;
+      await notificationCollection.doc(notifcationId).delete();
+    } catch (error) {
+      print('the notification does not exist. maybe the user deleted it.');
+    }
+  }
+
+  // id rquired to be passed here is the current user id
+  UpdateTolatestCopyOfCurrentUser(BuildContext context, String id) async {
+    DocumentSnapshot doc = await userCollection.doc(id).get();
+    UserModel _userModel =
+        await UserModel.fromMap(doc.data() as Map<String, dynamic>);
+
+    await Provider.of<CurrentUserProvider>(context, listen: false)
+        .updateCurrentUser(_userModel);
+  }
+
+  // this is also called from the notification screen. when you reject their follow request
   removeFollowRequest(
-      {required String id, required BuildContext context}) async {
+      {required String idOfTheOneWhoSentRequest,
+      required BuildContext context}) async {
     log("message");
-    await userCollection.doc(id).update({
+    await userCollection.doc(idOfTheOneWhoSentRequest).update({
       "follow_request": FieldValue.arrayRemove([currentUser!.id]),
+    }).onError((error, stackTrace) {
+      currentUser!.addFollower(currentUser!.id);
+      Provider.of<CurrentUserProvider>(context, listen: false)
+          .updateCurrentUser(currentUser!);
     });
+    // remove notificatin from other user
+    // deleteNotificationFromOther();
   }
 
   Future<UserModel> removeFollower(
       {required String id,
       required UserModel userModel,
       required BuildContext context}) async {
+    // not sure if follower is being removed from the other  user
+    // not sure if current usser is to be used or the user model to remove the follow request.
     if (currentUser!.followRequest.contains(id)) {
       userModel.removeFollowRequest(currentUser!.id);
 
@@ -132,6 +176,8 @@ class ProfileProvider with ChangeNotifier {
   }
 
   removeFollowing({required String id, required BuildContext context}) async {
+    // removes follow request
+    // we also need to remove the notification for the other user
     if (currentUser!.followRequest.contains(id)) {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
@@ -148,7 +194,10 @@ class ProfileProvider with ChangeNotifier {
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_currentUser);
       });
-    } else {
+      await deleteNotificationFromOther(id);
+    }
+    // removes following
+    else {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
               .getCurrentUser();

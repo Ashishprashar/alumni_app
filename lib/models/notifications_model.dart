@@ -20,7 +20,7 @@ class NotificationModel {
     required this.sentTo,
     required this.content,
     required this.updatedAt,
-    this.postIdt,
+    // this.postId,
   });
 
   String type;
@@ -29,7 +29,7 @@ class NotificationModel {
   List<String> sentTo;
   DateTime updatedAt;
   String content;
-  String? postIdt;
+  // String? postId;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       NotificationModel(
@@ -39,7 +39,16 @@ class NotificationModel {
         sentTo: List<String>.from(json["sentTo"].map((x) => x)),
         updatedAt: (json["updated_at"] as Timestamp).toDate(),
         content: json["content"],
-        postIdt: json["postIdt"],
+        // postId: json["postId"],
+      );
+  factory NotificationModel.fromDoc(DocumentSnapshot json) => NotificationModel(
+        type: json["type"],
+        sentBy: json["sentBy"],
+        id: json["id"],
+        sentTo: List<String>.from(json["sentTo"].map((x) => x)),
+        updatedAt: (json["updated_at"] as Timestamp).toDate(),
+        content: json["content"],
+        // postId: json["postId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +58,6 @@ class NotificationModel {
         "sentTo": List<dynamic>.from(sentTo.map((x) => x)),
         "content": content,
         "id": id,
-        "postIdt": postIdt,
+        // "postId": postId,
       };
 }

@@ -189,7 +189,8 @@ class _NotificationTileState extends State<NotificationTile> {
                             profileProvider.addFollowinfToOther(
                                 id: notification.sentBy, context: context);
                             profileProvider.removeFollowRequest(
-                                id: notification.sentBy, context: context);
+                                idOfTheOneWhoSentRequest: notification.sentBy,
+                                context: context);
                             notificationProvider
                                 .deleteNotification(notification.id);
                           },
@@ -200,11 +201,12 @@ class _NotificationTileState extends State<NotificationTile> {
                         DoneButton(
                           onTap: () {
                             profileProvider.removeFollowRequest(
-                                id: notification.sentBy, context: context);
+                                idOfTheOneWhoSentRequest: notification.sentBy,
+                                context: context);
                             notificationProvider
                                 .deleteNotification(notification.id);
                           },
-                          text: "Deline",
+                          text: "Decline",
                           height: 30,
                           width: 80,
                         ),

@@ -193,6 +193,8 @@ class UserModel {
         "post_privacy_setting": postPrivacySetting,
         "status": status,
       };
+
+  // follow mech
   addFollower(String id) {
     follower.add(id);
     followerCount = followerCount + 1;
