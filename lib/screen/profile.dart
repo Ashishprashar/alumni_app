@@ -309,10 +309,26 @@ class _UserProfileState extends State<UserProfile> {
                       // we are going into negatives numbers. this needs to fixed.
                       // update the current user first
                       // we do this to avoid any concurrency issues.
+
+                      // so maybe need to return a future here, like a future bool
+                      await profileProvider.UpdateTolatestCopyOfCurrentUser(
+                          context, currentUser!.id);
+                      print("follow request list: " +
+                          currentUser!.followRequest.toString());
+                      print("following list of current user first print: " +
+                          currentUser!.following.toString());
+
                       setState(() {
-                        profileProvider.UpdateTolatestCopyOfCurrentUser(
-                            context, currentUser!.id);
+                        currentUser = Provider.of<CurrentUserProvider>(context,
+                                listen: false)
+                            .getCurrentUser();
                       });
+
+                      print("follow request list second print: " +
+                          currentUser!.followRequest.toString());
+
+                      print("following list of current user: " +
+                          currentUser!.following.toString());
 
                       if (currentUser!.followRequest.contains(widget.user.id)) {
                         log("remove follow request block reached");
@@ -322,17 +338,19 @@ class _UserProfileState extends State<UserProfile> {
                             id: widget.user.id, context: context);
                         return;
                       }
+                      // for some reason are current user does not update with following
                       // unfollow
                       if (currentUser!.following.contains(widget.user.id)) {
                         log("remove following and follower relationship");
                         profileProvider.removeFollowing(
                             id: widget.user.id, context: context);
-                        setState(() async {
-                          widget.user = await profileProvider.removeFollower(
-                              userModel: widget.user,
-                              idOfOtherUser: widget.user.id,
-                              context: context);
-                        });
+                        // could do something like this for the other clauses too
+
+                        widget.user = await profileProvider.removeFollower(
+                            userModel: widget.user,
+                            idOfOtherUser: widget.user.id,
+                            context: context);
+                        setState(() {});
                       } else {
                         // checks for follow or follow black clause
                         log("added following block reached.");
@@ -360,23 +378,56 @@ class _UserProfileState extends State<UserProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
-                          child: Text(
-                            // on accepting we need to delete followRequest. because we jsut get the
-                            // request sent button. it should be follow back instead.
-                            currentUser!.followRequest.contains(widget.user.id)
-                                ? 'request sent'
-                                : currentUser!.following
-                                        .contains(widget.user.id)
-                                    ? 'unfollow'
-                                    : currentUser!.follower
-                                            .contains(widget.user.id)
-                                        ? 'follow back'
-                                        : 'follow',
-                            style: Theme.of(context)
-                                .textTheme
-                                .button!
-                                .copyWith(color: Colors.white),
-                          ),
+                          // child: Text(
+                          //   // on accepting we need to delete followRequest. because we jsut get the
+                          //   // request sent button. it should be follow back instead.
+                          //   currentUser!.followRequest.contains(widget.user.id)
+                          //       ? 'request sent'
+                          //       : currentUser!.following
+                          //               .contains(widget.user.id)
+                          //           ? 'unfollow'
+                          //           : currentUser!.follower
+                          //                   .contains(widget.user.id)
+                          //               ? 'follow back'
+                          //               : 'follow',
+                          //   style: Theme.of(context)
+                          //       .textTheme
+                          //       .button!
+                          //       .copyWith(color: Colors.white),
+                          // ),
+                          child: currentUser!.followRequest
+                                  .contains(widget.user.id)
+                              ? Text(
+                                  'Request sent',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button!
+                                      .copyWith(color: Colors.white),
+                                )
+                              : currentUser!.following.contains(widget.user.id)
+                                  ? Text(
+                                      'unfollow',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button!
+                                          .copyWith(color: Colors.white),
+                                    )
+                                  : currentUser!.follower
+                                          .contains(widget.user.id)
+                                      ? Text(
+                                          'follow back',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button!
+                                              .copyWith(color: Colors.white),
+                                        )
+                                      : Text(
+                                          'follow',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button!
+                                              .copyWith(color: Colors.white),
+                                        ),
                         ),
                       ),
                     ),
