@@ -41,7 +41,7 @@ class ProfileProvider with ChangeNotifier {
       "follower": FieldValue.arrayUnion([id]),
       "follower_count": FieldValue.increment(1)
     });
-    // return userModel;
+    // return userModel;s
   }
 
   addFollowing({required String id, required BuildContext context}) async {
@@ -62,6 +62,8 @@ class ProfileProvider with ChangeNotifier {
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_currentUser);
       });
+      // update the other users follower list and count
+      addFollowerToOther(targetId: id, context: context);
     } else {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
@@ -85,12 +87,20 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  addFollowinfToOther(
+  addFollowingToOther(
       {required String id, required BuildContext context}) async {
     //  currentUser!.addFollower(id);
     await userCollection.doc(id).update({
       "following": FieldValue.arrayUnion([currentUser!.id]),
       "following_count": FieldValue.increment(1)
+    });
+  }
+
+  addFollowerToOther(
+      {required String targetId, required BuildContext context}) async {
+    await userCollection.doc(targetId).update({
+      "follower": FieldValue.arrayUnion([currentUser!.id]),
+      "follower_count": FieldValue.increment(1)
     });
   }
 
@@ -128,10 +138,10 @@ class ProfileProvider with ChangeNotifier {
   removeFollowRequest(
       {required String idOfTheOneWhoSentRequest,
       required BuildContext context}) async {
-    log("message");
     await userCollection.doc(idOfTheOneWhoSentRequest).update({
       "follow_request": FieldValue.arrayRemove([currentUser!.id]),
     }).onError((error, stackTrace) {
+      print(error.toString());
       currentUser!.addFollower(currentUser!.id);
       Provider.of<CurrentUserProvider>(context, listen: false)
           .updateCurrentUser(currentUser!);
@@ -141,15 +151,15 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future<UserModel> removeFollower(
-      {required String id,
+      {required String idOfOtherUser,
       required UserModel userModel,
       required BuildContext context}) async {
     // not sure if follower is being removed from the other  user
     // not sure if current usser is to be used or the user model to remove the follow request.
-    if (currentUser!.followRequest.contains(id)) {
+    if (currentUser!.followRequest.contains(idOfOtherUser)) {
       userModel.removeFollowRequest(currentUser!.id);
 
-      await userCollection.doc(id).update({
+      await userCollection.doc(idOfOtherUser).update({
         "follow_request": FieldValue.arrayRemove([currentUser!.id]),
         // "follower_count": FieldValue.increment(-1)
       }).onError((error, stackTrace) {
@@ -160,9 +170,10 @@ class ProfileProvider with ChangeNotifier {
 
       return userModel;
     } else {
+      // should not use current user here, maybe?
       userModel.removeFollower(currentUser!.id);
 
-      await userCollection.doc(id).update({
+      await userCollection.doc(idOfOtherUser).update({
         "follower": FieldValue.arrayRemove([currentUser!.id]),
         "follower_count": FieldValue.increment(-1)
       }).onError((error, stackTrace) {

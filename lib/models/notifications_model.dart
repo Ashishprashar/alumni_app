@@ -33,12 +33,12 @@ class NotificationModel {
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       NotificationModel(
-        type: json["type"],
-        sentBy: json["sentBy"],
-        id: json["id"],
-        sentTo: List<String>.from(json["sentTo"].map((x) => x)),
-        updatedAt: (json["updated_at"] as Timestamp).toDate(),
-        content: json["content"],
+        type: json["type"] ?? '',
+        sentBy: json["sentBy"] ?? '',
+        id: json["id"] ?? '',
+        sentTo: List<String>.from((json["sentTo"] ?? []).map((x) => x)),
+        updatedAt: (json["updated_at"] ?? '' as Timestamp).toDate(),
+        content: json["content"] ?? '',
         // postId: json["postId"],
       );
   factory NotificationModel.fromDoc(DocumentSnapshot json) => NotificationModel(

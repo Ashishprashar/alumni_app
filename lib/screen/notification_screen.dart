@@ -186,7 +186,7 @@ class _NotificationTileState extends State<NotificationTile> {
                           onTap: () {
                             profileProvider.addFollower(
                                 id: notification.sentBy, context: context);
-                            profileProvider.addFollowinfToOther(
+                            profileProvider.addFollowingToOther(
                                 id: notification.sentBy, context: context);
                             profileProvider.removeFollowRequest(
                                 idOfTheOneWhoSentRequest: notification.sentBy,

@@ -62,6 +62,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             padding: const EdgeInsets.only(bottom: 100.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 profileWidgetGetter(
                     profilePrivacySetting, widget.user!, widget.index, false),

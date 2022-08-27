@@ -12,7 +12,6 @@ import 'package:alumni_app/screen/people.dart';
 import 'package:alumni_app/services/auth.dart';
 import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/bottom_sheet_menu.dart';
-import 'package:alumni_app/widget/done_button.dart';
 import 'package:alumni_app/widget/profile_fields.dart';
 import 'package:alumni_app/widget/profile_widget.dart';
 import 'package:alumni_app/widget/social_icon_button.dart';
@@ -107,8 +106,8 @@ class _UserProfileState extends State<UserProfile> {
         builder: (context, profileProvider, child) {
       return Column(
         mainAxisAlignment: widget.showProfile
-            ? MainAxisAlignment.spaceEvenly
-            : MainAxisAlignment.start,
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -309,31 +308,34 @@ class _UserProfileState extends State<UserProfile> {
                     onTap: () async {
                       // we are going into negatives numbers. this needs to fixed.
                       // update the current user first
+                      // we do this to avoid any concurrency issues.
                       setState(() {
                         profileProvider.UpdateTolatestCopyOfCurrentUser(
                             context, currentUser!.id);
                       });
 
                       if (currentUser!.followRequest.contains(widget.user.id)) {
-                        log("remove");
+                        log("remove follow request block reached");
                         // removes follow request
                         // still not removing that notification though
                         profileProvider.removeFollowing(
                             id: widget.user.id, context: context);
                         return;
                       }
-
+                      // unfollow
                       if (currentUser!.following.contains(widget.user.id)) {
+                        log("remove following and follower relationship");
                         profileProvider.removeFollowing(
                             id: widget.user.id, context: context);
                         setState(() async {
                           widget.user = await profileProvider.removeFollower(
                               userModel: widget.user,
-                              id: widget.user.id,
+                              idOfOtherUser: widget.user.id,
                               context: context);
                         });
                       } else {
-                        log("following");
+                        // checks for follow or follow black clause
+                        log("added following block reached.");
                         setState(() {
                           profileProvider.addFollowing(
                               id: widget.user.id, context: context);
@@ -359,6 +361,8 @@ class _UserProfileState extends State<UserProfile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
+                            // on accepting we need to delete followRequest. because we jsut get the
+                            // request sent button. it should be follow back instead.
                             currentUser!.followRequest.contains(widget.user.id)
                                 ? 'request sent'
                                 : currentUser!.following
