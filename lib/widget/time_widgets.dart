@@ -59,7 +59,7 @@ class TimeWidgetForRejectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.bottomCenter,
       child: Text(
         (DateTime.now()
                         .difference(individualRejection.applicationResponseTime

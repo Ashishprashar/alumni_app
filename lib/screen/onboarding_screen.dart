@@ -95,18 +95,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                                 snapshot: documentSnapshots,
                                               ),
                                               SizedBox(height: 20),
-                                              TextButton(
-                                                onPressed: () {
-                                                  // delete the application response
-                                                  onboardingProvider
-                                                      .changeOnboardingWidgetStatus();
-                                                  db.deleteApplicationResponse(
-                                                      applicationId:
-                                                          applicationResponse
-                                                              .idOfApplicant);
-                                                  // will need to check if the providers need to be cleared before use.
-                                                },
-                                                child: Text('Try again'),
+                                              SizedBox(
+                                                width: 100,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    // delete the application response
+                                                    onboardingProvider
+                                                        .changeOnboardingWidgetStatus();
+                                                    db.deleteApplicationResponse(
+                                                        applicationId:
+                                                            applicationResponse
+                                                                .idOfApplicant);
+                                                    // will need to check if the providers need to be cleared before use.
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .primaryColor),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    child: Text('Try again'),
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -199,7 +211,7 @@ class ApplicationRequestedWidget extends StatelessWidget {
         child: Wrap(
           children: [
             Text(
-              'Your application has been requested. please wait for a few hours',
+              'Your application is under review. We will manually validate your ID with the details you provided before letting you in. This might take a few hours.',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],

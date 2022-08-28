@@ -20,22 +20,33 @@ class RejectionCard extends StatelessWidget {
         snapshot![index].data() as Map<String, dynamic>);
 
     return Card(
+      elevation: 10,
+      shadowColor: Colors.black,
       color: Theme.of(context).backgroundColor,
+      // color: Colors.pink,
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Text(
-            individualRejection.rejectionTitle,
-            style: Theme.of(context).textTheme.bodyText2,
+      child: SizedBox(
+        width: 300,
+        // height: 300,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Text(
+                individualRejection.rejectionTitle,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 30),
+              Text(
+                individualRejection.additionalMessage,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 50),
+              TimeWidgetForRejectionCard(
+                  individualRejection: individualRejection)
+            ],
           ),
-          SizedBox(height: 20),
-          Text(
-            individualRejection.additionalMessage,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          SizedBox(height: 20),
-          TimeWidgetForRejectionCard(individualRejection: individualRejection)
-        ],
+        ),
       ),
     );
   }

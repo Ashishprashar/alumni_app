@@ -23,6 +23,8 @@ final userCollection = db.collection('user');
 final postCollection = db.collection('post');
 final applicationCollection = db.collection('application');
 final applicationResponseCollection = db.collection('applicationResponse');
+final applicationCountCollection = db.collection('applicationCount');
+final userCountCollection = db.collection('userCount');
 UserModel? currentUser;
 final commentCollection = db.collection('comment');
 final notificationCollection = db.collection('notification');

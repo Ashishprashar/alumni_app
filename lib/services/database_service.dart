@@ -161,6 +161,30 @@ class DatabaseService {
         .updateCurrentUser(updatedUser);
   }
 
+  // increase application count
+  increaseApplicationCount() async {
+    log('increase application count function reached');
+    await applicationCountCollection.doc('count').update(
+        {"count": FieldValue.increment(1)}).onError((error, stackTrace) {
+      log("increase application count failed with error:  $error");
+    });
+  }
+
+  increaseUserCount() async {
+    await userCountCollection.doc('count').update(
+        {"count": FieldValue.increment(1)}).onError((error, stackTrace) {
+      log("increase user count failed with error:  $error");
+    });
+  }
+
+  // decrease application count
+  decreaseApplicationCount() async {
+    await applicationCountCollection.doc('count').update(
+        {"count": FieldValue.increment(-1)}).onError((error, stackTrace) {
+      log("increase application count failed with error:  $error");
+    });
+  }
+
   //Runs when user tries to create account. The admin neeeds to approved it.
   Future pushApplicationToAdmins({
     required String name,
@@ -200,6 +224,7 @@ class DatabaseService {
     Map<String, dynamic> data = (application.toJson());
 
     await applicationCollection.doc(firebaseCurrentUser!.uid).set(data);
+    await increaseApplicationCount();
   }
 
   // Function runs if admin rejects someeone's application.
@@ -238,6 +263,7 @@ class DatabaseService {
         .ref()
         .child('idCardImages/${applicationId}.jpg');
     await file.delete();
+    await decreaseApplicationCount();
   }
 
   // need to use this function. currently not being used.

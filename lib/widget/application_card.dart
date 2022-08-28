@@ -112,6 +112,8 @@ class _ApplicationCardState extends State<ApplicationCard> {
                   // delete the users application
                   await db.deleteApplication(
                       applicationId: individualApplication.ownerId);
+
+                  await db.increaseUserCount();
                 },
                 text: 'Accept',
                 height: 40,
