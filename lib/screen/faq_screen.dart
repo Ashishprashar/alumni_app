@@ -33,7 +33,7 @@ class FaqScreen extends StatelessWidget {
             CustomExpansionTile(
                 question: 'How can I protect my privacy?',
                 answer:
-                    'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. You can change the level from public (everyone at college) and private (only people who follow you).'),
+                    'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. '),
             CustomExpansionTile(
                 question:
                     'Why do I not get notified for things such as posts and likes from friends?',
@@ -72,7 +72,7 @@ class FaqScreen extends StatelessWidget {
                     'We load most of the stuff without cache to make things simpler. Only images are cached to reduce bandwidth.'),
             CustomExpansionTile(
                 question:
-                    'I just followed someone, but it doesn\'t show that im following them.',
+                    'I just followed someone, but it doesn\'t show that I\'m following them.',
                 answer:
                     'The follow feature may have some concurrency issues rarely. You can restart the app to get accurate results.'),
             CustomExpansionTile(
