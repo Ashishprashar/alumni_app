@@ -65,9 +65,9 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(Duration.zero).then((value) async =>
-    //     await Provider.of<ChatProvider>(context, listen: false)
-    //         .fetchChatList());
+    Future.delayed(Duration.zero).then((value) async =>
+        await Provider.of<CurrentUserProvider>(context, listen: false)
+            .setProfileListener());
   }
 
   @override

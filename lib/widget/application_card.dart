@@ -9,6 +9,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../utilites/strings.dart';
+
 class ApplicationCard extends StatefulWidget {
   const ApplicationCard({
     Key? key,
@@ -108,6 +110,9 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     currentUser!.id,
                     individualApplication.ownerId,
                   );
+                  await db.addNotification(
+                      type: kNotificationKeyApplicationRejected,
+                      sentTo: individualApplication.ownerId);
 
                   // delete the users application
                   await db.deleteApplication(
