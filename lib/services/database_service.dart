@@ -247,6 +247,8 @@ class DatabaseService {
     );
     Map<String, dynamic> data = (applicationResponse.toJson());
     await applicationResponseCollection.doc(idOfApplicant).set(data);
+    await addNotification(
+        type: kNotificationKeyApplicationRejected, sentTo: idOfApplicant);
   }
 
   // What are we doing with ID images. id card should not be deleted?
@@ -302,6 +304,12 @@ class DatabaseService {
         break;
       case kNotificationKeyFollowAccepted:
         content = "${currentUser!.name} has accepted your follow request.";
+        break;
+      case kNotificationKeyApplicationAccepted:
+        content = "Hey,Your application is Accepted";
+        break;
+      case kNotificationKeyApplicationRejected:
+        content = "Hey,Your application is Rejected";
         break;
       default:
         content = "You got a new notification";

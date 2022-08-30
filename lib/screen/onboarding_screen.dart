@@ -108,11 +108,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                                                 .idOfApplicant);
                                                     // will need to check if the providers need to be cleared before use.
                                                   },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor: Theme
-                                                                  .of(context)
-                                                              .primaryColor),
+                                                  style: ElevatedButton.styleFrom(
+                                                      // backgroundColor: Theme
+                                                      //         .of(context)
+                                                      //     .primaryColor
+                                                      ),
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(4),
