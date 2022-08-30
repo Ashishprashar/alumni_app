@@ -12,7 +12,6 @@ import 'package:alumni_app/screen/wrapper.dart';
 import 'package:alumni_app/services/navigator_services.dart';
 import 'package:alumni_app/utilites/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:provider/provider.dart';
@@ -288,7 +287,7 @@ class DatabaseService {
         content = "${currentUser!.name} just poked you.";
         break;
       case kNotificationKeyPost:
-        content = "Checkout! ${currentUser!.name} has added a new post.";
+        content = "${currentUser!.name} has added a new post.";
         break;
       case kNotificationKeyChat:
         content = "You got a new message from ${currentUser!.name}.";

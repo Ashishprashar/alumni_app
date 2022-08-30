@@ -188,14 +188,9 @@ class OnboardingProvider with ChangeNotifier {
             firebaseCurrentUser!.uid,
             true,
           );
-          // notifyListeners();
-          // navigatorService.navigateToHome(context);
-          // notifyListeners();
-          //     .then((value) {
-          //   print('can we navigate to the promised land');
-          //   navigatorService.navigateToHome(context);
-          // });
           log("Create account:  " + defaultStatus!);
+          // increase user count
+          await databaseService.increaseUserCount();
           navigatorService.navigateToHome(contextNew);
         }
       } else {

@@ -42,9 +42,13 @@ class PeopleProvider with ChangeNotifier {
     // notifyListeners();
     QuerySnapshot querySnapshot;
     if (lastDocument == null) {
-      querySnapshot = await userCollection.limit(documentLimit).get();
+      querySnapshot = await userCollection
+          .orderBy('updated_at', descending: true)
+          .limit(documentLimit)
+          .get();
     } else {
       querySnapshot = await userCollection
+          .orderBy('updated_at', descending: true)
           .startAfterDocument(lastDocument!)
           .limit(documentLimit)
           .get();

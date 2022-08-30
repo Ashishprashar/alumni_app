@@ -12,7 +12,18 @@ class SearchProvider with ChangeNotifier {
   bool hasMore = true;
   String? defaultSemesterValue;
   String? defaultBranchValue;
-  var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8', "All"];
+  var possibleSemesters = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    "Alum",
+    "All"
+  ];
   var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH', "All"];
   int documentLimit = 10;
   DocumentSnapshot? lastDocument;
@@ -46,9 +57,12 @@ class SearchProvider with ChangeNotifier {
                 isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
             .where('search_name',
                 isLessThan: _searchController.text.toUpperCase() + 'z')
-            .where("branch", isEqualTo: defaultBranchValue)
+            .where("branch",
+                isEqualTo:
+                    defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             // .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -58,8 +72,11 @@ class SearchProvider with ChangeNotifier {
             .where('search_name',
                 isLessThan: _searchController.text.toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
-            .where("sem", isEqualTo: defaultSemesterValue)
+            .where("sem",
+                isEqualTo:
+                    defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             // .limit(documentLimit)
             .get();
       } else {
@@ -71,6 +88,7 @@ class SearchProvider with ChangeNotifier {
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             // .limit(documentLimit)
             .get();
       }
@@ -82,8 +100,11 @@ class SearchProvider with ChangeNotifier {
             .where('search_name',
                 isLessThan: _searchController.text.toUpperCase() + 'z')
             .where("branch", isEqualTo: defaultBranchValue)
-            .where("semester", isEqualTo: defaultSemesterValue)
+            .where("semester",
+                isEqualTo:
+                    defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -93,8 +114,11 @@ class SearchProvider with ChangeNotifier {
             .where('search_name',
                 isLessThan: _searchController.text.toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
-            .where("semester", isEqualTo: defaultSemesterValue)
+            .where("semester",
+                isEqualTo:
+                    defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       } else {
@@ -106,6 +130,7 @@ class SearchProvider with ChangeNotifier {
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             .orderBy('search_name', descending: true)
+            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       }
@@ -145,13 +170,16 @@ class SearchProvider with ChangeNotifier {
     peopleList = [];
     if (_searchController.text.isEmpty) {
       var query = await userCollection
-          .where("semester", isEqualTo: defaultSemesterValue)
+          .where("semester",
+              isEqualTo:
+                  defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
           .where("branch", isEqualTo: defaultBranchValue)
           // .where('search_name',
           //     isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
           // .where('search_name',
           //     isLessThan: _searchController.text.toUpperCase() + 'z')
           .orderBy('search_name', descending: true)
+          .orderBy('updated_at', descending: true)
           .limit(documentLimit)
           .get();
       peopleList = query.docs;
@@ -162,9 +190,12 @@ class SearchProvider with ChangeNotifier {
               isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
           .where('search_name',
               isLessThan: _searchController.text.toUpperCase() + 'z')
-          .where("semester", isEqualTo: defaultSemesterValue)
+          .where("semester",
+              isEqualTo:
+                  defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
           .where("branch", isEqualTo: defaultBranchValue)
           .orderBy('search_name', descending: true)
+          .orderBy('updated_at', descending: true)
           .limit(documentLimit)
           .get();
       peopleList = query.docs;

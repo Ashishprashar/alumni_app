@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -230,69 +231,47 @@ class _PostWidgetState extends State<PostWidget> {
                           Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 2),
+                                padding: const EdgeInsets.only(top: 6),
                                 child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isLike = !isLike;
-                                        Provider.of<FeedProvider>(context,
-                                                listen: false)
-                                            .refreshChangeListener
-                                            .refreshed = true;
-                                      });
-                                      if (isLike) {
-                                        feedProvider.addLike(
-                                            postId: widget.postModel.id,
-                                            ownerId: widget.postModel.ownerId);
-                                      } else {
-                                        feedProvider.removeLike(
-                                            postId: widget.postModel.id);
-                                      }
-                                    },
-                                    child: Image.asset("assets/images/like.png",
-                                        width: 22,
-                                        height: 22,
-                                        fit: BoxFit.cover,
-                                        color: isLike
-                                            ? null
-                                            : Theme.of(context).hintColor)),
+                                  onTap: () {
+                                    setState(() {
+                                      isLike = !isLike;
+                                      Provider.of<FeedProvider>(context,
+                                              listen: false)
+                                          .refreshChangeListener
+                                          .refreshed = true;
+                                    });
+                                    if (isLike) {
+                                      feedProvider.addLike(
+                                          postId: widget.postModel.id,
+                                          ownerId: widget.postModel.ownerId);
+                                    } else {
+                                      feedProvider.removeLike(
+                                          postId: widget.postModel.id);
+                                    }
+                                  },
+                                  child: SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: isLike
+                                        ? FaIcon(
+                                            FontAwesomeIcons.heart,
+                                            color: Colors.red,
+                                          )
+                                        : FaIcon(
+                                            FontAwesomeIcons.heart,
+                                          ),
+                                  ),
+                                ),
                               ),
                               Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  child: Text(
+                                margin: const EdgeInsets.only(left: 8),
+                                child: Text(
                                     (widget.postModel.likeCount ?? 0)
                                         .toString(),
                                     style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  )),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     Navigator.of(context).push(MaterialPageRoute(
-                              //         builder: ((context) => CommentScreen(
-                              //             postModel: widget.postModel))));
-                              //   },
-                              //   child: Row(
-                              //     children: [
-                              //       Container(
-                              //           padding: const EdgeInsets.only(
-                              //               left: 10, right: 5, top: 2),
-                              //           child: Image.asset(
-                              //             "assets/images/comment.png",
-                              //             width: 22,
-                              //             color: Theme.of(context).hintColor,
-                              //             height: 22,
-                              //             fit: BoxFit.cover,
-                              //           )),
-                              //       Text(
-                              //         (widget.postModel.comments.length)
-                              //             .toString(),
-                              //         style: Theme.of(context)
-                              //             .textTheme
-                              //             .labelMedium,
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+                                        Theme.of(context).textTheme.bodyText1!),
+                              ),
                             ],
                           ),
                           Text(

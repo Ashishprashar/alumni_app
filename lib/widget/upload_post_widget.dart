@@ -12,185 +12,198 @@ class UploadPostWidget extends StatelessWidget {
     // ImagePicker imagePicker = ImagePicker();
     ScrollController _scrollController = ScrollController();
 
-    return Consumer<FeedProvider>(builder: (context, feedProvider, child) {
-      return Container(
-        margin: const EdgeInsets.all(8),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).backgroundColor,
-                blurRadius: 20,
-                spreadRadius: 5,
-                blurStyle: BlurStyle.inner)
-          ],
-          // border: Border.all(color: Theme.of(context).backgroundColor),
-        ),
-        child: feedProvider.isUploading
-            ? Center(
-                child: Column(
-                  children: [
-                    const CircularProgressIndicator(),
-                    Text("Uploading Post",
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ],
-                ),
-              )
-            : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    controller: _scrollController,
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      scrollController: _scrollController,
-                      autocorrect: true,
-                      style: Theme.of(context).textTheme.bodyText2,
-                      minLines: 2,
-                      maxLines: 10,
-                      controller: feedProvider.postTextContent,
-                      maxLength: 280,
-                      decoration: InputDecoration(
-                          hintText: "What's Going on?",
-                          hintStyle: Theme.of(context).textTheme.bodyText1,
-                          border: InputBorder.none),
-                    ),
+    return Consumer<FeedProvider>(
+      builder: (context, feedProvider, child) {
+        return Container(
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).backgroundColor,
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                  blurStyle: BlurStyle.inner)
+            ],
+            // border: Border.all(color: Theme.of(context).backgroundColor),
+          ),
+          child: feedProvider.isUploading
+              ? Center(
+                  child: Column(
+                    children: [
+                      const CircularProgressIndicator(),
+                      Text("Uploading Post",
+                          style: Theme.of(context).textTheme.bodyText1),
+                    ],
                   ),
-                ),
-                // if (feedProvider.getUploadFiles != null)
-                //   SizedBox(
-                //     height: 300,
-                //     width: double.infinity,
-                //     child: ListView.builder(
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: feedProvider.getUploadFiles!.length,
-                //         itemBuilder: (context, i) {
-                //           List<XFile>? file = feedProvider.getUploadFiles;
-                //           log(file![i].path);
-                //           return Container(
-                //             margin: const EdgeInsets.all(10),
-                //             height: 280,
-                //             // width: double.infinity,
-                //             child: Stack(
-                //               children: [
-                //                 if (file[i].path.endsWith(".mp4"))
-                //                   VideoPlayerBox(path: file[i].path)
-                //                 else
-                //                   Image(image: FileImage(File(file[i].path))),
-                //                 Positioned(
-                //                   right: 10,
-                //                   top: 10,
-                //                   child: InkWell(
-                //                     onTap: () {
-                //                       feedProvider.removeImageAtPosition(i);
-                //                     },
-                //                     child: Icon(
-                //                       Icons.close,
-                //                       color: Theme.of(context).errorColor,
-                //                     ),
-                //                   ),
-                //                 )
-                //               ],
-                //             ),
-                //           );
-                //         }),
-                //   ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(
-                    //   width: SizeData.screenWidth / 3,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       InkWell(
-                    //         onTap: () async {
-                    //           XFile? image = await imagePicker.pickImage(
-                    //               source: ImageSource.camera);
-                    //           if (image != null) {
-                    //             log((await image.length()).toString());
-                    //             final compressedImage =
-                    //                 await compressImage(filePath: image.path);
-                    //             // log((await image.length()).toString());
-
-                    //             image = compressedImage;
-                    //             log((await image.length()).toString());
-
-                    //             // feedProvider.addSingleFile(file: image);
-                    //             feedProvider.addSingleFile(file: image);
-                    //           }
-                    //         },
-                    //         child: Icon(
-                    //           Icons.camera_alt_outlined,
-                    //           color: Theme.of(context).errorColor,
-                    //         ),
-                    //       ),
-                    //       InkWell(
-                    //         onTap: () async {
-                    //           List<XFile>? images =
-                    //               await imagePicker.pickMultiImage();
-                    //           if (images != null) {
-                    //             List<XFile>? compressedImage = [];
-                    //             log((await images[0].length()).toString());
-                    //             for (var i = 0; i < images.length; i++) {
-                    //               compressedImage.add(await compressImage(
-                    //                   filePath: images[i].path));
-                    //             }
-                    //             log((await compressedImage[0].length())
-                    //                 .toString());
-                    //             images = compressedImage;
-                    //           }
-                    //           feedProvider.addMultiFileToUploadList(
-                    //               files: images);
-                    //         },
-                    //         child: Icon(
-                    //           Icons.photo,
-                    //           color: Theme.of(context).errorColor,
-                    //         ),
-                    //       ),
-                    //       InkWell(
-                    //         onTap: () async {
-                    //           XFile? image = await imagePicker.pickVideo(
-                    //               source: ImageSource.gallery);
-                    //           if (image != null) {
-                    //             feedProvider.addSingleFile(file: image);
-                    //           }
-                    //         },
-                    //         child: Icon(
-                    //           Icons.video_camera_back_rounded,
-                    //           color: Theme.of(context).errorColor,
-                    //         ),
-                    //       ),
-                    //     ],
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        controller: _scrollController,
+                        child: TextField(
+                          keyboardType: TextInputType.multiline,
+                          scrollController: _scrollController,
+                          autocorrect: true,
+                          style: Theme.of(context).textTheme.bodyText2,
+                          minLines: 2,
+                          maxLines: 10,
+                          controller: feedProvider.postTextContent,
+                          maxLength: 280,
+                          decoration: InputDecoration(
+                              hintText: "What's Going on?",
+                              hintStyle: Theme.of(context).textTheme.bodyText1,
+                              border: InputBorder.none),
+                        ),
+                      ),
+                    ),
+                    // if (feedProvider.getUploadFiles != null)
+                    //   SizedBox(
+                    //     height: 300,
+                    //     width: double.infinity,
+                    //     child: ListView.builder(
+                    //         scrollDirection: Axis.horizontal,
+                    //         itemCount: feedProvider.getUploadFiles!.length,
+                    //         itemBuilder: (context, i) {
+                    //           List<XFile>? file = feedProvider.getUploadFiles;
+                    //           log(file![i].path);
+                    //           return Container(
+                    //             margin: const EdgeInsets.all(10),
+                    //             height: 280,
+                    //             // width: double.infinity,
+                    //             child: Stack(
+                    //               children: [
+                    //                 if (file[i].path.endsWith(".mp4"))
+                    //                   VideoPlayerBox(path: file[i].path)
+                    //                 else
+                    //                   Image(image: FileImage(File(file[i].path))),
+                    //                 Positioned(
+                    //                   right: 10,
+                    //                   top: 10,
+                    //                   child: InkWell(
+                    //                     onTap: () {
+                    //                       feedProvider.removeImageAtPosition(i);
+                    //                     },
+                    //                     child: Icon(
+                    //                       Icons.close,
+                    //                       color: Theme.of(context).errorColor,
+                    //                     ),
+                    //                   ),
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           );
+                    //         }),
                     //   ),
-                    // ),
 
-                    // DoneButton(
-                    //     onTap: () async {
-                    //       feedProvider.postTextContent.selection
-                    //           .("**");
-                    //     },
-                    //     width: SizeData.screenWidth * .2,
-                    //     text: "format"),
-                    DoneButton(
-                        onTap: () async {
-                          feedProvider.refreshChangeListener.refreshed = true;
-                          await feedProvider.handlePostButton();
-                           final _snackBar = SnackBar(
-                            content: Text('Post has been published!', style: Theme.of(context).textTheme.bodyText1,),
-                            duration:  Duration(milliseconds: 500),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                        },
-                        width: 80,
-                        text: "Post"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // SizedBox(
+                        //   width: SizeData.screenWidth / 3,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //     children: [
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           XFile? image = await imagePicker.pickImage(
+                        //               source: ImageSource.camera);
+                        //           if (image != null) {
+                        //             log((await image.length()).toString());
+                        //             final compressedImage =
+                        //                 await compressImage(filePath: image.path);
+                        //             // log((await image.length()).toString());
+
+                        //             image = compressedImage;
+                        //             log((await image.length()).toString());
+
+                        //             // feedProvider.addSingleFile(file: image);
+                        //             feedProvider.addSingleFile(file: image);
+                        //           }
+                        //         },
+                        //         child: Icon(
+                        //           Icons.camera_alt_outlined,
+                        //           color: Theme.of(context).errorColor,
+                        //         ),
+                        //       ),
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           List<XFile>? images =
+                        //               await imagePicker.pickMultiImage();
+                        //           if (images != null) {
+                        //             List<XFile>? compressedImage = [];
+                        //             log((await images[0].length()).toString());
+                        //             for (var i = 0; i < images.length; i++) {
+                        //               compressedImage.add(await compressImage(
+                        //                   filePath: images[i].path));
+                        //             }
+                        //             log((await compressedImage[0].length())
+                        //                 .toString());
+                        //             images = compressedImage;
+                        //           }
+                        //           feedProvider.addMultiFileToUploadList(
+                        //               files: images);
+                        //         },
+                        //         child: Icon(
+                        //           Icons.photo,
+                        //           color: Theme.of(context).errorColor,
+                        //         ),
+                        //       ),
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           XFile? image = await imagePicker.pickVideo(
+                        //               source: ImageSource.gallery);
+                        //           if (image != null) {
+                        //             feedProvider.addSingleFile(file: image);
+                        //           }
+                        //         },
+                        //         child: Icon(
+                        //           Icons.video_camera_back_rounded,
+                        //           color: Theme.of(context).errorColor,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+
+                        // DoneButton(
+                        //     onTap: () async {
+                        //       feedProvider.postTextContent.selection
+                        //           .("**");
+                        //     },
+                        //     width: SizeData.screenWidth * .2,
+                        //     text: "format"),
+                        DoneButton(
+                            onTap: () async {
+                              feedProvider.refreshChangeListener.refreshed =
+                                  true;
+                              await feedProvider.handlePostButton();
+                              final _snackBar = SnackBar(
+                                content: Text(
+                                  'Post has been published!',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                duration: Duration(milliseconds: 500),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(_snackBar);
+                            },
+                            width: 80,
+                            text: "Post"),
+                      ],
+                    ),
                   ],
                 ),
-              ]),
-      );
-    });
+        );
+      },
+    );
   }
 }

@@ -35,14 +35,9 @@ class FaqScreen extends StatelessWidget {
                 answer:
                     'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. '),
             CustomExpansionTile(
-                question:
-                    'Why do I not get notified for things such as posts and likes from friends?',
+                question: 'I can\'t seem to check who has liked my post.',
                 answer:
-                    'Notifications are restricted to follow requests only. Likes and posts take a back seat for now to reduce load on the servers.'),
-            CustomExpansionTile(
-                question: 'Will people know if I liked their post?',
-                answer:
-                    'No, likes are anonymous. Only the like count for the post will go up.'),
+                    'Yes, you cannot see who has liked your post in the app. You just get the like count. But when someone likes your post you do get a notification with their name on it.'),
             CustomExpansionTile(
                 question: 'Why can\'t I change my name and usn?',
                 answer:
