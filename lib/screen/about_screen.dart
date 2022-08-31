@@ -79,7 +79,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Diplomacy and business affairs. Part time Warchief.',
+                    'Diplomacy and business stuff. Indian affairs.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],

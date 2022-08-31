@@ -301,14 +301,16 @@ class DatabaseService {
       case kNotificationKeyComment:
         content = "${currentUser!.name} commented on your post.";
         break;
+      // not using this case
       case kNotificationKeyFollowAccepted:
         content = "${currentUser!.name} has accepted your follow request.";
         break;
       case kNotificationKeyApplicationAccepted:
-        content = "Hey,Your application is Accepted";
+        content = "Account accepted. Welcome to the HiveNet!";
         break;
       case kNotificationKeyApplicationRejected:
-        content = "Hey,Your application is Rejected";
+        content =
+            "Something was wrong with your application, Please try again.";
         break;
       default:
         content = "You got a new notification";

@@ -46,7 +46,10 @@ class FaqScreen extends StatelessWidget {
                 question: 'Do people find out if I view their profile?',
                 answer:
                     'Nope their is absolutely no tracking anywhere in the app.'),
-
+            CustomExpansionTile(
+                question:
+                    'Do people get a notification if I ignore their follow request, remove them from being my followers or unfollow them?',
+                answer: 'No notification is sent to them.'),
             CustomExpansionTile(
                 question: 'How can I search for something besides names?',
                 answer:
@@ -65,11 +68,6 @@ class FaqScreen extends StatelessWidget {
                 question: 'Why is the app slow at loading stuff?',
                 answer:
                     'We load most of the stuff without cache to make things simpler. Only images are cached to reduce bandwidth.'),
-            CustomExpansionTile(
-                question:
-                    'I just followed someone, but it doesn\'t show that I\'m following them.',
-                answer:
-                    'The follow feature may have some concurrency issues rarely. You can restart the app to get accurate results.'),
             CustomExpansionTile(
                 question:
                     'I have a question thats not covered in the FAQ, how can I ask?',

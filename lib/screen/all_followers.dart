@@ -64,7 +64,15 @@ class AllFollowers extends StatelessWidget {
                 itemsPerPage: 12,
                 scrollController: followerScroller,
                 itemBuilder: (context, documentSnapshots, index) {
-                  return UserCard(index: index, snapshot: documentSnapshots);
+                  final individualUser = UserModel.fromMap(
+                      documentSnapshots[index].data() as Map<String, dynamic>);
+                  return UserCard(
+                    index: index,
+                    snapshot: documentSnapshots,
+                    removeButton: user.id == currentUser!.id,
+                    isFollowing:
+                        currentUser!.following.contains(individualUser.id),
+                  );
                 },
                 query: userCollection
                     .where('id',

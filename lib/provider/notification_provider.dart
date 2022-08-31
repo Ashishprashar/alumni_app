@@ -21,23 +21,24 @@ class NotificationProvider with ChangeNotifier {
   deleteNotification(String id) async {
     log(id);
     await notificationCollection.doc(id).delete();
-    fetchNotification();
+    // we seem to not be using fetch notification, so i commented it out.
+    // fetchNotification();
   }
 
   // need to paginate this to 10
-  fetchNotification() async {
-    List<NotificationModel> notificationList = [];
-    final notifiData = await notificationCollection
-        .where("sentTo", arrayContains: currentUser!.id)
-        .orderBy("updated_at", descending: true)
-        .get();
-    final notifiDataList = notifiData.docs;
-    for (var noti in notifiDataList) {
-      NotificationModel notificationModel =
-          NotificationModel.fromJson(noti.data());
-      notificationList.add(notificationModel);
-    }
-    _notificationList = notificationList;
-    notifyListeners();
-  }
+  // fetchNotification() async {
+  //   List<NotificationModel> notificationList = [];
+  //   final notifiData = await notificationCollection
+  //       .where("sentTo", arrayContains: currentUser!.id)
+  //       .orderBy("updated_at", descending: true)
+  //       .get();
+  //   final notifiDataList = notifiData.docs;
+  //   for (var noti in notifiDataList) {
+  //     NotificationModel notificationModel =
+  //         NotificationModel.fromJson(noti.data());
+  //     notificationList.add(notificationModel);
+  //   }
+  //   _notificationList = notificationList;
+  //   notifyListeners();
+  // }
 }

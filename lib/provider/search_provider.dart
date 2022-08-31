@@ -61,8 +61,9 @@ class SearchProvider with ChangeNotifier {
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
+
             // .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -75,8 +76,9 @@ class SearchProvider with ChangeNotifier {
             .where("sem",
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
+
             // .limit(documentLimit)
             .get();
       } else {
@@ -87,8 +89,9 @@ class SearchProvider with ChangeNotifier {
                 isLessThan: _searchController.text.toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
+
             // .limit(documentLimit)
             .get();
       }
@@ -103,8 +106,8 @@ class SearchProvider with ChangeNotifier {
             .where("semester",
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -117,8 +120,8 @@ class SearchProvider with ChangeNotifier {
             .where("semester",
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       } else {
@@ -129,8 +132,8 @@ class SearchProvider with ChangeNotifier {
                 isLessThan: _searchController.text.toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
+            // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-            .orderBy('updated_at', descending: true)
             .limit(documentLimit)
             .get();
       }
@@ -179,7 +182,6 @@ class SearchProvider with ChangeNotifier {
           // .where('search_name',
           //     isLessThan: _searchController.text.toUpperCase() + 'z')
           .orderBy('search_name', descending: true)
-          .orderBy('updated_at', descending: true)
           .limit(documentLimit)
           .get();
       peopleList = query.docs;
@@ -194,8 +196,8 @@ class SearchProvider with ChangeNotifier {
               isEqualTo:
                   defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
           .where("branch", isEqualTo: defaultBranchValue)
+          // .orderBy('updated_at', descending: true)
           .orderBy('search_name', descending: true)
-          .orderBy('updated_at', descending: true)
           .limit(documentLimit)
           .get();
       peopleList = query.docs;

@@ -214,6 +214,11 @@ class ApplicationRequestedWidget extends StatelessWidget {
               'Your application is under review. We will manually validate your ID with the details you provided before letting you in. This might take a few hours.',
               style: Theme.of(context).textTheme.bodyText1,
             ),
+            const SizedBox(height: 10),
+            Text(
+              'You will get a notification when its done.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           ],
         ),
       ),

@@ -38,7 +38,7 @@ class InviteScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'Remember to enter their google account email id. As they will need that to signup',
+                          'Remember to enter their google account email id. As they will need that to signup.',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         SizedBox(height: 20),
