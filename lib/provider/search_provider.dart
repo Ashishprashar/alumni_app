@@ -204,4 +204,8 @@ class SearchProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  clearSearchController() {
+    searchController.clear();
+  }
 }

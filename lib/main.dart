@@ -2,6 +2,7 @@ import 'package:alumni_app/provider/app_theme.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/provider/edit_screen_provider.dart';
 import 'package:alumni_app/provider/feed_provider.dart';
+import 'package:alumni_app/provider/follower_provider.dart';
 import 'package:alumni_app/provider/invite_screen_provider.dart';
 import 'package:alumni_app/provider/notification_provider.dart';
 import 'package:alumni_app/provider/onboarding_provider.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PrivacySettingsProvider()),
         ChangeNotifierProvider(create: (context) => OnboardingProvider()),
         ChangeNotifierProvider(create: (context) => EditScreenProvider()),
+        ChangeNotifierProvider(create: (context) => FollowerProvider()),
       ],
       child: Consumer<AppThemeNotifier>(
         builder: (context, appTheme, child) {

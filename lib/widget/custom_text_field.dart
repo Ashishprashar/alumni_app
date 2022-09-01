@@ -39,8 +39,12 @@ class CustomTextField extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyText1,
                       children: <TextSpan>[
-                        TextSpan(text: title , style: Theme.of(context).textTheme.bodyText2),
-                        TextSpan(text: title2.toString(),style: Theme.of(context).textTheme.bodyText1),
+                        TextSpan(
+                            text: title,
+                            style: Theme.of(context).textTheme.bodyText2),
+                        TextSpan(
+                            text: title2.toString(),
+                            style: Theme.of(context).textTheme.bodyText1),
                       ],
                     ),
                   ),
@@ -57,7 +61,7 @@ class CustomTextField extends StatelessWidget {
                 controller: controller,
                 style: Theme.of(context).textTheme.bodyText1,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(30),
+                  LengthLimitingTextInputFormatter(40),
                 ],
                 decoration: InputDecoration(
                   // fillColor: Theme.of(context).focusColor,

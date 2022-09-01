@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:alumni_app/models/user.dart';
-import 'package:alumni_app/screen/home.dart';
+import 'package:alumni_app/provider/follower_provider.dart';
+import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({
@@ -23,12 +25,9 @@ class UserCard extends StatelessWidget {
   final bool isFollowing;
   @override
   Widget build(BuildContext context) {
-    final individualUser =
+    UserModel individualUser =
         UserModel.fromMap(snapshot![index].data() as Map<String, dynamic>);
     return ListTile(
-      // dense: true,
-      // dense: true,
-      visualDensity: VisualDensity(vertical: 4),
       onTap: () {
         FocusScope.of(context).unfocus();
         // individualUser = UserModel.fromJson(snapshot[index]);
@@ -99,8 +98,36 @@ class UserCard extends StatelessWidget {
                         )),
                   ),
                 ),
-                onPressed: () {
-                  //todo
+                onPressed: () async {
+                  // //remove follower from my side
+                  // await Provider.of<ProfileProvider>(context, listen: false)
+                  //     .removeFollowerOnMySide(
+                  //         idOfOtherUser: individualUser.id,
+                  //         userModel: individualUser,
+                  //         context: context);
+                  // // remove following from their side
+                  // await Provider.of<ProfileProvider>(context, listen: false)
+                  //     .removeFollowingFromTheirSide(
+                  //         idOfTheOtherUser: individualUser.id,
+                  //         userModel: individualUser,
+                  //         context: context);
+                  // // update the followers list (so make refresh change listner true)
+                  // await Provider.of<FollowerProvider>(context, listen: false)
+                  //     .refreshFollowers();
+                  showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    builder: (BuildContext context) {
+                      return ConfirmationForRemoval(
+                          individualUser: individualUser);
+                    },
+                  );
                 },
                 child: Text(
                   'Remove',
@@ -143,6 +170,74 @@ class UserCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1),
                   ],
                 ),
+    );
+  }
+}
+
+class ConfirmationForRemoval extends StatelessWidget {
+  const ConfirmationForRemoval({
+    required this.individualUser,
+    Key? key,
+  }) : super(key: key);
+
+  final UserModel individualUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '${individualUser.name} wont be notified that they were removed from your followers.',
+                style: Theme.of(context).textTheme.bodyText1,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(0.0),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).selectedRowColor,
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(
+                          color: Theme.of(context).selectedRowColor,
+                        )),
+                  ),
+                ),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  //remove follower from my side
+                  await Provider.of<ProfileProvider>(context, listen: false)
+                      .removeFollowerOnMySide(
+                          idOfOtherUser: individualUser.id,
+                          userModel: individualUser,
+                          context: context);
+                  // update the followers list (so make refresh change listner true)
+                  await Provider.of<FollowerProvider>(context, listen: false)
+                      .refreshFollowers();
+                  // remove following from their side
+                  await Provider.of<ProfileProvider>(context, listen: false)
+                      .removeFollowingFromTheirSide(
+                          idOfTheOtherUser: individualUser.id,
+                          userModel: individualUser,
+                          context: context);
+                },
+                child: Text(
+                  'Remove',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

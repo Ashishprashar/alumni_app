@@ -82,7 +82,7 @@ class _NotificationTileState extends State<NotificationTile> {
                       if (notification.type ==
                           kNotificationKeyFollowRequest) ...[
                         DoneButton(
-                          onTap: () {
+                          onTap: () async {
                             profileProvider.addFollower(
                                 id: notification.sentBy, context: context);
                             profileProvider.addFollowingToOther(
@@ -92,6 +92,7 @@ class _NotificationTileState extends State<NotificationTile> {
                                 context: context);
                             notificationProvider
                                 .deleteNotification(notification.id);
+                            // send a notification saying you accept their request
                           },
                           text: "Accept",
                           height: 30,

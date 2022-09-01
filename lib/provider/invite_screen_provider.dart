@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:email_validator/email_validator.dart';
 
 import '../screen/home.dart';
 
@@ -12,9 +13,13 @@ class InviteProvider with ChangeNotifier {
   TextEditingController emailId = TextEditingController();
   inviteUser(BuildContext context) async {
     String emailID = emailId.text;
-    if (emailID.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please enter email")));
+
+    if (!EmailValidator.validate(emailID)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Please enter a valid Email.",
+        style: Theme.of(context).textTheme.bodyText1,
+      )));
       return;
     }
     emailId.text = "";
@@ -26,8 +31,11 @@ class InviteProvider with ChangeNotifier {
     log(data.docs.toString());
 
     if (data.docs.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Email is already invited.")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "That email is already on the invite list.",
+        style: Theme.of(context).textTheme.bodyText1,
+      )));
       return;
     }
 
@@ -38,16 +46,22 @@ class InviteProvider with ChangeNotifier {
       "invitedTo": emailID,
       "timeStamp": DateTime.now().toString()
     });
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Invite Sent! Tell your friend to install the app")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+      "Email has been added to the Invite List! Ask your friend to install the app and sign in.",
+      style: Theme.of(context).textTheme.bodyText1,
+    )));
   }
 
   authorizeUser(BuildContext context, String name, String usn, File idCardImage,
       String? email) async {
     // check if all fields are entered
     if (name == "" || usn == "" || email == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please enter all the fields")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Please enter all the fields",
+        style: Theme.of(context).textTheme.bodyText1,
+      )));
       return;
     }
     // var data =

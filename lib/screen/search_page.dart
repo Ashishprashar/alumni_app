@@ -31,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
       return WillPopScope(
         onWillPop: () async {
           searchProvider.dispose();
+          searchProvider.clearSearchController();
           return true;
         },
         child: GestureDetector(
@@ -43,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: TextField(
+                    // maxLength: 30,
                     style: Theme.of(context).textTheme.bodyText2,
                     autofocus: true,
                     // style: TextStyle(backgroundColor: Colors.grey),

@@ -354,10 +354,11 @@ class _UserProfileState extends State<UserProfile> {
                       } else {
                         // checks for follow or follow black clause
                         log("added following block reached.");
-                        setState(() {
-                          profileProvider.addFollowing(
-                              id: widget.user.id, context: context);
-                        });
+
+                        profileProvider.addFollowing(
+                            id: widget.user.id, context: context);
+
+                        setState(() {});
                         // setState(() async {
                         //   widget.user =
                         //       await profileProvider.addFollower(

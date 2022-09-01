@@ -41,6 +41,8 @@ class ProfileProvider with ChangeNotifier {
       "follower": FieldValue.arrayUnion([id]),
       "follower_count": FieldValue.increment(1)
     });
+    await databaseService.addNotification(
+        type: kNotificationKeyFollowAccepted, sentTo: id);
     // return userModel;s
   }
 
@@ -62,6 +64,8 @@ class ProfileProvider with ChangeNotifier {
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_currentUser);
       });
+      await databaseService.addNotification(
+          type: kNotificationKeyFollowBack, sentTo: id);
       // update the other users follower list and count
       addFollowerToOther(targetId: id, context: context);
     } else {
@@ -150,6 +154,7 @@ class ProfileProvider with ChangeNotifier {
     // deleteNotificationFromOther();
   }
 
+  // this removes you from your friends follower list
   Future<UserModel> removeFollower(
       {required String idOfOtherUser,
       required UserModel userModel,
@@ -186,6 +191,23 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
+  // this removes my friend from my follower list
+  Future<UserModel> removeFollowerOnMySide(
+      {required String idOfOtherUser,
+      required UserModel userModel,
+      required BuildContext context}) async {
+    //userModel.removeFollower(currentUser!.id);
+    currentUser!.removeFollower(userModel.id);
+
+    await userCollection.doc(currentUser!.id).update({
+      "follower": FieldValue.arrayRemove([idOfOtherUser]),
+      "follower_count": FieldValue.increment(-1),
+    }).onError((error, stackTrace) {});
+    // dont forget about the return
+    return userModel;
+  }
+
+  // this removes your friend from your following list
   removeFollowing({required String id, required BuildContext context}) async {
     // removes follow request
     // we also need to remove the notification for the other user
@@ -227,5 +249,20 @@ class ProfileProvider with ChangeNotifier {
     }
     // removeFollower(id: id, context: context);
     notifyListeners();
+  }
+
+  // this removes me from my friends following list
+  removeFollowingFromTheirSide(
+      {required String idOfTheOtherUser,
+      required UserModel userModel,
+      required BuildContext context}) async {
+    userModel.removeFollowing(currentUser!.id);
+
+    await userCollection.doc(idOfTheOtherUser).update({
+      "following": FieldValue.arrayRemove([currentUser!.id]),
+      "following_count": FieldValue.increment(-1)
+    }).onError((error, stackTrace) {
+      userModel.addFollowing(currentUser!.id);
+    });
   }
 }

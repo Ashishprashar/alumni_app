@@ -7,6 +7,7 @@ const String kNotificationKeyApplicationAccepted = "application-accepted";
 const String kNotificationKeyApplicationRejected = "application-rejected";
 const String kNotificationKeyComment = "comment";
 const String kNotificationKeyPoke = "poke";
+const String kNotificationKeyFollowBack = 'follow-back';
 const String kDefaultPrivacySetting = "Everyone In College";
 
 enum ApplicationStatus {

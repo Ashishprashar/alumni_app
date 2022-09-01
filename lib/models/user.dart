@@ -194,7 +194,7 @@ class UserModel {
         "status": status,
       };
 
-  // follow mech
+  // follow mech 
   addFollower(String id) {
     follower.add(id);
     followerCount = followerCount + 1;
