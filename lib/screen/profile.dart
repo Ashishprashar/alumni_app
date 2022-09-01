@@ -355,17 +355,12 @@ class _UserProfileState extends State<UserProfile> {
                         // checks for follow or follow black clause
                         log("added following block reached.");
 
-                        profileProvider.addFollowing(
-                            id: widget.user.id, context: context);
+                        widget.user = await profileProvider.addFollowing(
+                            id: widget.user.id,
+                            userModel: widget.user,
+                            context: context);
 
                         setState(() {});
-                        // setState(() async {
-                        //   widget.user =
-                        //       await profileProvider.addFollower(
-                        //           userModel: widget.user,
-                        //           id: widget.user.id,
-                        //           context: context);
-                        // });
                       }
                       log("message" + currentUser!.following.toString());
                     },
@@ -379,23 +374,6 @@ class _UserProfileState extends State<UserProfile> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
-                          // child: Text(
-                          //   // on accepting we need to delete followRequest. because we jsut get the
-                          //   // request sent button. it should be follow back instead.
-                          //   currentUser!.followRequest.contains(widget.user.id)
-                          //       ? 'request sent'
-                          //       : currentUser!.following
-                          //               .contains(widget.user.id)
-                          //           ? 'unfollow'
-                          //           : currentUser!.follower
-                          //                   .contains(widget.user.id)
-                          //               ? 'follow back'
-                          //               : 'follow',
-                          //   style: Theme.of(context)
-                          //       .textTheme
-                          //       .button!
-                          //       .copyWith(color: Colors.white),
-                          // ),
                           child: currentUser!.followRequest
                                   .contains(widget.user.id)
                               ? Text(

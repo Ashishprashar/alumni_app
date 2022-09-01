@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:alumni_app/models/notifications_model.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
 import 'package:alumni_app/screen/home.dart';
@@ -46,7 +44,10 @@ class ProfileProvider with ChangeNotifier {
     // return userModel;s
   }
 
-  addFollowing({required String id, required BuildContext context}) async {
+  addFollowing(
+      {required String id,
+      required UserModel userModel,
+      required BuildContext context}) async {
     // we are not adding to the followers of the other guy i think
     if (currentUser!.follower.contains(id)) {
       UserModel? _currentUser =
@@ -67,7 +68,9 @@ class ProfileProvider with ChangeNotifier {
       await databaseService.addNotification(
           type: kNotificationKeyFollowBack, sentTo: id);
       // update the other users follower list and count
+      userModel.addFollower(currentUser!.id);
       addFollowerToOther(targetId: id, context: context);
+      return userModel;
     } else {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)

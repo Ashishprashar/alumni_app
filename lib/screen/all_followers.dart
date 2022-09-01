@@ -22,7 +22,7 @@ class AllFollowers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScrollController followerScroller = ScrollController();
-    // add consumer
+
     return Consumer<FollowerProvider>(
         builder: (context, followerProvider, child) {
       return Scaffold(
@@ -89,11 +89,11 @@ class AllFollowers extends StatelessWidget {
                                   ? ['dummy list']
                                   : user.follower)
                       .orderBy("updated_at", descending: true),
-                  // listeners: [
-                  //   followerProvider.refreshChangeListener,
-                  // ],
+                  listeners: [
+                    followerProvider.refreshChangeListener,
+                  ],
                   itemBuilderType: PaginateBuilderType.listView,
-                  isLive: true,
+                  isLive: false,
                   onEmpty: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Center(

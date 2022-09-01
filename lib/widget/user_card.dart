@@ -99,21 +99,6 @@ class UserCard extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  // //remove follower from my side
-                  // await Provider.of<ProfileProvider>(context, listen: false)
-                  //     .removeFollowerOnMySide(
-                  //         idOfOtherUser: individualUser.id,
-                  //         userModel: individualUser,
-                  //         context: context);
-                  // // remove following from their side
-                  // await Provider.of<ProfileProvider>(context, listen: false)
-                  //     .removeFollowingFromTheirSide(
-                  //         idOfTheOtherUser: individualUser.id,
-                  //         userModel: individualUser,
-                  //         context: context);
-                  // // update the followers list (so make refresh change listner true)
-                  // await Provider.of<FollowerProvider>(context, listen: false)
-                  //     .refreshFollowers();
                   showModalBottomSheet<void>(
                     context: context,
                     isScrollControlled: true,
@@ -212,22 +197,39 @@ class ConfirmationForRemoval extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  Navigator.of(context).pop();
                   //remove follower from my side
                   await Provider.of<ProfileProvider>(context, listen: false)
                       .removeFollowerOnMySide(
                           idOfOtherUser: individualUser.id,
                           userModel: individualUser,
                           context: context);
-                  // update the followers list (so make refresh change listner true)
-                  await Provider.of<FollowerProvider>(context, listen: false)
-                      .refreshFollowers();
                   // remove following from their side
                   await Provider.of<ProfileProvider>(context, listen: false)
                       .removeFollowingFromTheirSide(
                           idOfTheOtherUser: individualUser.id,
                           userModel: individualUser,
                           context: context);
+                  // update the followers list (so make refresh change listner true)
+                  Provider.of<FollowerProvider>(context, listen: false)
+                      .refreshChangeListener
+                      .refreshed = true;
+                  // Navigator.of(context).pop();
+                  // popping twice here
+                  int count = 0;
+                  final _snackBar = SnackBar(
+                    content: Text(
+                      'Removed.',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.white),
+                    ),
+                    duration: Duration(milliseconds: 2000),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                  Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                  });
                 },
                 child: Text(
                   'Remove',
