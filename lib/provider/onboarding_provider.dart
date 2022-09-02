@@ -175,7 +175,9 @@ class OnboardingProvider with ChangeNotifier {
         if ((defaultStatus == "Student" && defaultSemesterValue != null) ||
             (defaultStatus != "Student")) {
           // changeisLoading causes navigate to home to stop working. think of fix please.
+
           changeIsLoading();
+          final fcmToken = await firebaseMessaging.getToken();
           await databaseService.createAccount(
             nameController.text,
             usnController.text,
@@ -183,6 +185,7 @@ class OnboardingProvider with ChangeNotifier {
             defaultStatus!,
             defaultBranchValue!,
             defaultSemesterValue,
+            fcmToken,
             firebaseCurrentUser!.photoURL!,
             firebaseCurrentUser!.email!,
             firebaseCurrentUser!.uid,
