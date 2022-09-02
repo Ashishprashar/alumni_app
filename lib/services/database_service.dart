@@ -343,12 +343,14 @@ class DatabaseService {
   }
 
   // this is the problem. we cannot add to doc thats not yet created.
-  addFcmToken(String id) async {
+  addFcmToken(String id, bool accountNotCreated) async {
     print('we are inside fcm token');
     String? fcmToken = await firebaseMessaging.getToken();
     if (fcmToken != null) {
       print('looks like fcm token was not null');
-      await userCollection.doc(id).update({"fcmToken": fcmToken});
+      accountNotCreated
+          ? log('fcm was not sent to server')
+          : await userCollection.doc(id).update({"fcmToken": fcmToken});
     }
   }
 
@@ -357,7 +359,7 @@ class DatabaseService {
     print('were inside getUserData');
     DocumentSnapshot doc = await userCollection.doc(id).get();
     if (doc.exists) {
-      await addFcmToken(id);
+      await addFcmToken(id, false);
       UserModel _userModel =
           await UserModel.fromMap(doc.data() as Map<String, dynamic>);
 

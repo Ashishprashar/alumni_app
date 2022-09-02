@@ -59,7 +59,7 @@ class IntroductionPage extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.bold),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'KSSEM.',
+                        text: 'KSSEM & KSSA.',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ],

@@ -39,7 +39,7 @@ class AuthServices {
 
       if (doc.exists) {
         // UserModel _userModel = UserModel.fromMap(doc as Map<String, dynamic>);
-        dbService.addFcmToken(doc.id);
+        dbService.addFcmToken(doc.id, false);
         UserModel _userModel =
             UserModel.fromDoc(await userCollection.doc(doc.id).get());
 

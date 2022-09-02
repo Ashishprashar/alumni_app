@@ -98,14 +98,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                               SizedBox(
                                                 width: 100,
                                                 child: ElevatedButton(
-                                                  onPressed: () {
-                                                    // delete the application response
-                                                    onboardingProvider
-                                                        .changeOnboardingWidgetStatus();
-                                                    db.deleteApplicationResponse(
+                                                  onPressed: () async {
+                                                    // delete the application response,
+                                                    await db.deleteApplicationResponse(
                                                         applicationId:
                                                             applicationResponse
                                                                 .idOfApplicant);
+                                                    onboardingProvider
+                                                        .changeOnboardingWidgetStatus();
+
                                                     // will need to check if the providers need to be cleared before use.
                                                   },
                                                   style: ElevatedButton.styleFrom(
@@ -160,6 +161,8 @@ class OnboardingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DatabaseService db = DatabaseService();
+
     return Consumer<OnboardingProvider>(
       builder: (ctx, onboardingProvider, child) {
         return Container(
@@ -208,15 +211,21 @@ class ApplicationRequestedWidget extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Wrap(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Your application is under review. We will manually validate your ID with the details you provided before letting you in. This might take a few hours.',
+              'Your application is under review. We will manually validate your ID with the details you provided before letting you in.',
               style: Theme.of(context).textTheme.bodyText1,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             Text(
-              'You will get a notification when its done.',
+              'This might take a few hours.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            const SizedBox(height: 30),
+            Text(
+              'PS: You will be notified when its done.',
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
