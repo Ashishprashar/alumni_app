@@ -12,6 +12,7 @@ class ApplicationModel {
     required this.name,
     required this.usn,
     required this.downloadUrl,
+    required this.fcmToken,
     required this.createdTime,
     required this.semester,
     required this.branch,
@@ -24,6 +25,7 @@ class ApplicationModel {
   String applicationId;
   String ownerId;
   String email;
+  String? fcmToken;
   String name;
   String usn;
   String downloadUrl;
@@ -45,6 +47,7 @@ class ApplicationModel {
         semester: json['semester'],
         branch: json['branch'],
         status: json['status'],
+        fcmToken: json['fcmToken'],
         gender: json['gender'],
         profileDownloadUrl: json['profile_download_url'],
         email: json['email'],
@@ -54,6 +57,7 @@ class ApplicationModel {
       ApplicationModel(
         ownerId: json["owner_id"],
         createdTime: json["created_time"],
+        fcmToken: json["fcmToken"],
         applicationId: json["application_id"],
         name: json['name'],
         usn: json['usn'],
@@ -74,6 +78,7 @@ class ApplicationModel {
         "usn": usn,
         "download_url": downloadUrl,
         "semester": semester,
+        "fcmToken": fcmToken,
         "branch": branch,
         "status": status,
         "gender": gender,

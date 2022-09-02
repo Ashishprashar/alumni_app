@@ -193,6 +193,7 @@ class DatabaseService {
     required String status,
     required String email,
     required String ownerId,
+    required String? fcmToken,
     required File image,
     required String gender,
     required String profileDownloadUrl,
@@ -208,6 +209,7 @@ class DatabaseService {
     ApplicationModel application = ApplicationModel(
       applicationId: uuid.v1(),
       ownerId: firebaseCurrentUser?.uid ?? "",
+      fcmToken: fcmToken,
       name: name,
       usn: usn,
       downloadUrl: downloadUrl, // id card image url
