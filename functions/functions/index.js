@@ -11,17 +11,17 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
   var userList = [];
 
 
-  if (notifiacation["type"] == "application-rejected" || notifiacation["type"] == "application-accepted") {
-    userList.push(
-      await admin.firestore().collection("applicationResponse").doc(notifiacation["sentTo"][0]).get()
-    );
-  } else {
-    for (var i = 0; i < notifiacation["sentTo"].length; i++) {
-      userList.push(
-        await admin.firestore().collection("user").doc(notifiacation["sentTo"][i]).get()
-      );
-    }
-  }
+  // if (notifiacation["type"] == "application-rejected" || notifiacation["type"] == "application-accepted") {
+  userList.push(
+    await admin.firestore().collection("applicationResponse").doc(notifiacation["sentTo"][0]).get()
+  );
+  // } else {
+  //   for (var i = 0; i < notifiacation["sentTo"].length; i++) {
+  //     userList.push(
+  //       await admin.firestore().collection("user").doc(notifiacation["sentTo"][i]).get()
+  //     );
+  //   }
+  // }
 
 
   const payload = {
