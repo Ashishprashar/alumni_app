@@ -233,10 +233,13 @@ class OnboardingProvider with ChangeNotifier {
           // User? _user = FirebaseAuth.instance.currentUser;
           String profileDownloadUrl = _user!.photoURL.toString();
           log("Create account:  " + defaultStatus!);
+          String? fcmToken = await firebaseMessaging.getToken();
+
           await databaseService.pushApplicationToAdmins(
             name: nameController.text,
             usn: usnController.text,
             semester: defaultSemesterValue,
+            fcmToken: fcmToken,
             branch: defaultBranchValue!,
             status: defaultStatus!,
             image: idCardImage!,
