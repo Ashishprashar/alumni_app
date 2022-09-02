@@ -97,6 +97,8 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     individualApplication.status,
                     individualApplication.branch,
                     individualApplication.semester,
+                    individualApplication.fcmToken,
+
                     individualApplication.profileDownloadUrl,
                     individualApplication.email,
                     individualApplication.ownerId,

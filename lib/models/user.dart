@@ -26,6 +26,7 @@ class UserModel {
     // required this.idPic,
     required this.techStack,
     required this.updatedAt,
+    this.fcmToken,
     required this.admin,
     required this.semester,
     required this.follower,
@@ -57,6 +58,7 @@ class UserModel {
   String id;
   Map linkToSocial;
   String name;
+  String? fcmToken;
   String searchName;
   String profilePic;
   // String idPic;
@@ -82,6 +84,7 @@ class UserModel {
         followRequest:
             List<String>.from((json["follow_request"] ?? []).map((x) => x)),
         followerCount: json["follower_count"] ?? 0,
+        fcmToken: json["fcmToken"],
         followingCount: json["following_count"] ?? 0,
         postCount: json["post_count"] ?? 0,
         createdAt: json["created_at"],
@@ -128,6 +131,7 @@ class UserModel {
         followingCount: json["following_count"] ?? 0,
         postCount: json["post_count"] ?? 0,
         createdAt: json["created_at"],
+        fcmToken: json["fcmToken"],
         email: json["email"],
         id: json["id"],
         linkToSocial: json["link_to_social"] ?? {},
@@ -170,6 +174,7 @@ class UserModel {
         "link_to_social": linkToSocial,
         "name": name,
         "search_name": searchName,
+        "fcmToken": fcmToken,
         "profile_pic": profilePic,
         // "id_pic": idPic,
         "tech_stack": List<dynamic>.from((techStack).map((x) => x)),
@@ -194,7 +199,7 @@ class UserModel {
         "status": status,
       };
 
-  // follow mech 
+  // follow mech
   addFollower(String id) {
     follower.add(id);
     followerCount = followerCount + 1;
