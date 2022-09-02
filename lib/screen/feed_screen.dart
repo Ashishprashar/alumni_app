@@ -60,9 +60,33 @@ class _FeedScreenState extends State<FeedScreen> {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 20),
-                    child: Icon(
-                      Icons.notifications_none,
-                      color: Theme.of(context).appBarTheme.iconTheme!.color,
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(right: 4, top: 4),
+                          child: Icon(
+                            Icons.notifications_none,
+                            color:
+                                Theme.of(context).appBarTheme.iconTheme!.color,
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: CircleAvatar(
+                            child: Text(
+                              (currentUser?.unreadNotifications ?? 0)
+                                  .toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            radius: 8,
+                            backgroundColor: Colors.red,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 )
@@ -86,10 +110,10 @@ class _FeedScreenState extends State<FeedScreen> {
                     },
                     query: postCollection
                         .where("owner_id",
-                            whereIn: 
-                            // (currentUser == null)
-                            //     ? ['hello']
-                            //     : 
+                            whereIn:
+                                // (currentUser == null)
+                                //     ? ['hello']
+                                //     :
                                 currentUser!.following.isEmpty
                                     ? [currentUser!.id]
                                     : currentUser!.following +

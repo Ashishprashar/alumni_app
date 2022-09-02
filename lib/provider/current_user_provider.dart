@@ -19,6 +19,7 @@ class CurrentUserProvider extends ChangeNotifier {
   setProfileListener() {
     userCollection.doc(currentUser!.id).snapshots().listen((event) {
       currentUser = UserModel.fromDoc(event);
+      print("here we go");
       notifyListeners();
     });
     notifyListeners();
