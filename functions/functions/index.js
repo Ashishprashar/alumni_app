@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const { user } = require("firebase-functions/v1/auth");
 
 admin.initializeApp();
 var db = admin.firestore();
@@ -12,11 +13,18 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
 
 
   // if (notifiacation["type"] == "application-rejected" || notifiacation["type"] == "application-accepted") {
-  userList.push(
-    await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).get()
-  );
-  // } else {
-  //   for (var i = 0; i < notifiacation["sentTo"].length; i++) {
+  for (var i = 0; i < notifiacation["sentTo"].length; i++) {
+    const userData = await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).get()
+    var count = 0;
+    if (userData.data()["unread_notifications"]) {
+      count = userData.data()["unread_notifications"];
+    }
+    userList.push(
+    );
+    await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).update({ "unread_notifications": count + 1 });
+
+  }
+  // else {
   //     userList.push(
   //       await admin.firestore().collection("user").doc(notifiacation["sentTo"][i]).get()
   //     );

@@ -18,6 +18,12 @@ class NotificationProvider with ChangeNotifier {
     return UserModel.fromDoc(dataRef.docs[0]).profilePic;
   }
 
+  removeUnReadNotifications() async {
+    await userCollection
+        .doc(currentUser!.id)
+        .update({"unread_notifications": 0});
+  }
+
   deleteNotification(String id) async {
     log(id);
     await notificationCollection.doc(id).delete();

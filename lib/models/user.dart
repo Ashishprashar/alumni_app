@@ -31,6 +31,7 @@ class UserModel {
     required this.semester,
     required this.follower,
     required this.following,
+    this.unreadNotifications,
     required this.followerCount,
     required this.followingCount,
     required this.postCount,
@@ -60,6 +61,7 @@ class UserModel {
   String name;
   String? fcmToken;
   String searchName;
+  int? unreadNotifications;
   String profilePic;
   // String idPic;
   List techStack;
@@ -90,6 +92,7 @@ class UserModel {
         createdAt: json["created_at"],
         email: json["email"],
         id: json["id"],
+        unreadNotifications: json["unread_notifications"],
         linkToSocial: json["link_to_social"] ?? {},
         name: json["name"],
         searchName: json["search_name"],
@@ -131,6 +134,7 @@ class UserModel {
         followingCount: json["following_count"] ?? 0,
         postCount: json["post_count"] ?? 0,
         createdAt: json["created_at"],
+        unreadNotifications: json["unread_notifications"],
         fcmToken: json["fcmToken"],
         email: json["email"],
         id: json["id"],
@@ -183,6 +187,7 @@ class UserModel {
         "favorite_shows_movies":
             List<dynamic>.from((favoriteShowsMovies).map((x) => x)),
         "follower": follower,
+        "unread_notifications": unreadNotifications,
         "following": following,
         "follow_request": followRequest,
         "following_count": followingCount,
