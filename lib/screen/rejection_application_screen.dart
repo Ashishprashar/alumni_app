@@ -3,6 +3,8 @@ import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/widget/done_button.dart';
 import 'package:flutter/material.dart';
 
+import '../utilites/strings.dart';
+
 class RejectionApplicationScreen extends StatefulWidget {
   const RejectionApplicationScreen({
     Key? key,
@@ -189,7 +191,7 @@ class _RejectionApplicationScreenState
                 ),
                 SizedBox(height: 20),
                 DoneButton(
-                  onTap: () {
+                  onTap: () async {
                     // Need to create rejection message.
                     db.pushApplicationResponse(
                       'Rejected',
@@ -198,6 +200,9 @@ class _RejectionApplicationScreenState
                       currentUser!.id,
                       widget.idOfRejectedUser,
                     );
+                    await db.addNotification(
+                        type: kNotificationKeyApplicationAccepted,
+                        sentTo: widget.idOfRejectedUser);
                     // Need to delete the application.
                     db.deleteApplication(
                         applicationId: widget.idOfRejectedUser);

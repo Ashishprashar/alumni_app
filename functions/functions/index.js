@@ -13,7 +13,7 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
 
   // if (notifiacation["type"] == "application-rejected" || notifiacation["type"] == "application-accepted") {
   userList.push(
-    await admin.firestore().collection("applicationResponse").doc(notifiacation["sentTo"][0]).get()
+    await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).get()
   );
   // } else {
   //   for (var i = 0; i < notifiacation["sentTo"].length; i++) {
@@ -22,6 +22,7 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
   //     );
   //   }
   // }
+  console.log(userList[0].data())
 
 
   const payload = {

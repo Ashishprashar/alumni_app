@@ -113,7 +113,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                     individualApplication.ownerId,
                   );
                   await db.addNotification(
-                      type: kNotificationKeyApplicationRejected,
+                      type: kNotificationKeyApplicationAccepted,
                       sentTo: individualApplication.ownerId);
 
                   // delete the users application

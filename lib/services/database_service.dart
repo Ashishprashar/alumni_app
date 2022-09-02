@@ -250,8 +250,8 @@ class DatabaseService {
     );
     Map<String, dynamic> data = (applicationResponse.toJson());
     await applicationResponseCollection.doc(idOfApplicant).set(data);
-    await addNotification(
-        type: kNotificationKeyApplicationRejected, sentTo: idOfApplicant);
+    // await addNotification(
+    //     type: kNotificationKeyApplicationRejected, sentTo: idOfApplicant);
   }
 
   // What are we doing with ID images. id card should not be deleted?
