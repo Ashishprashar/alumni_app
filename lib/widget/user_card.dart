@@ -159,13 +159,20 @@ class UserCard extends StatelessWidget {
   }
 }
 
-class ConfirmationForRemoval extends StatelessWidget {
+class ConfirmationForRemoval extends StatefulWidget {
   const ConfirmationForRemoval({
     required this.individualUser,
     Key? key,
   }) : super(key: key);
 
   final UserModel individualUser;
+
+  @override
+  State<ConfirmationForRemoval> createState() => _ConfirmationForRemovalState();
+}
+
+class _ConfirmationForRemovalState extends State<ConfirmationForRemoval> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -177,65 +184,73 @@ class ConfirmationForRemoval extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '${individualUser.name} wont be notified that they were removed from your followers.',
+                '${widget.individualUser.name} wont be notified that they were removed from your followers.',
                 style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10),
-              ElevatedButton(
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(0.0),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).selectedRowColor,
-                  ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(
-                          color: Theme.of(context).selectedRowColor,
-                        )),
-                  ),
-                ),
-                onPressed: () async {
-                  //remove follower from my side
-                  await Provider.of<ProfileProvider>(context, listen: false)
-                      .removeFollowerOnMySide(
-                          idOfOtherUser: individualUser.id,
-                          userModel: individualUser,
-                          context: context);
-                  // remove following from their side
-                  await Provider.of<ProfileProvider>(context, listen: false)
-                      .removeFollowingFromTheirSide(
-                          idOfTheOtherUser: individualUser.id,
-                          userModel: individualUser,
-                          context: context);
-                  // update the followers list (so make refresh change listner true)
-                  Provider.of<FollowerProvider>(context, listen: false)
-                      .refreshChangeListener
-                      .refreshed = true;
-                  // Navigator.of(context).pop();
-                  // popping twice here
-                  int count = 0;
-                  final _snackBar = SnackBar(
-                    content: Text(
-                      'Removed.',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.white),
+              isLoading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0.0),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).selectedRowColor,
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(
+                                color: Theme.of(context).selectedRowColor,
+                              )),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        //remove follower from my side
+                        await Provider.of<ProfileProvider>(context,
+                                listen: false)
+                            .removeFollowerOnMySide(
+                                idOfOtherUser: widget.individualUser.id,
+                                userModel: widget.individualUser,
+                                context: context);
+                        // remove following from their side
+                        await Provider.of<ProfileProvider>(context,
+                                listen: false)
+                            .removeFollowingFromTheirSide(
+                                idOfTheOtherUser: widget.individualUser.id,
+                                userModel: widget.individualUser,
+                                context: context);
+                        // update the followers list (so make refresh change listner true)
+                        Provider.of<FollowerProvider>(context, listen: false)
+                            .refreshChangeListener
+                            .refreshed = true;
+                        // Navigator.of(context).pop();
+                        // popping twice here
+                        int count = 0;
+                        final _snackBar = SnackBar(
+                          content: Text(
+                            'Removed.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white),
+                          ),
+                          duration: Duration(milliseconds: 2000),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                        Navigator.popUntil(context, (route) {
+                          return count++ == 2;
+                        });
+                      },
+                      child: Text(
+                        'Remove',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ),
-                    duration: Duration(milliseconds: 2000),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                  Navigator.popUntil(context, (route) {
-                    return count++ == 2;
-                  });
-                },
-                child: Text(
-                  'Remove',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
             ],
           ),
         ),

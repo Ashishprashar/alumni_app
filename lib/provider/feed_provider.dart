@@ -159,31 +159,31 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  addComment({required PostModel postModel}) async {
-    String id = const Uuid().v4();
-    Timestamp timeNow = Timestamp.now();
+  // addComment({required PostModel postModel}) async {
+  //   String id = const Uuid().v4();
+  //   Timestamp timeNow = Timestamp.now();
 
-    await commentCollection.doc(id).set(CommentModel(
-            commentedBy: firebaseCurrentUser!.uid,
-            commentText: commentTextContent.text,
-            id: id,
-            updateTime: timeNow)
-        .toJson());
-    await postCollection.doc(postModel.id).update({
-      "comments": FieldValue.arrayUnion([id]),
-    });
+  //   await commentCollection.doc(id).set(CommentModel(
+  //           commentedBy: firebaseCurrentUser!.uid,
+  //           commentText: commentTextContent.text,
+  //           id: id,
+  //           updateTime: timeNow)
+  //       .toJson());
+  //   await postCollection.doc(postModel.id).update({
+  //     "comments": FieldValue.arrayUnion([id]),
+  //   });
 
-    commentTextContent.text = "";
-    if (postModel.ownerId == currentUser!.id) {
-      return;
-    }
-    await databaseService.addNotification(
-        // postID: postModel.id,
-        type: kNotificationKeyComment,
-        sentTo: postModel.ownerId);
-    notifyListeners();
-    await fetchComment(postModel: postModel);
-  }
+  //   commentTextContent.text = "";
+  //   if (postModel.ownerId == currentUser!.id) {
+  //     return;
+  //   }
+  //   await databaseService.addNotification(
+  //       // postID: postModel.id,
+  //       type: kNotificationKeyComment,
+  //       sentTo: postModel.ownerId);
+  //   notifyListeners();
+  //   await fetchComment(postModel: postModel);
+  // }
 
   addLike({required String postId, required String ownerId}) async {
     await postCollection.doc(postId).update({

@@ -16,7 +16,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   ScrollController notificationScroller = ScrollController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<NotificationProvider>(context, listen: false)
         .removeUnReadNotifications();
@@ -43,7 +42,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.mailBulk),
-                text: "Likes/Posts",
+                text: "Others",
                 // child: Text('Notifications',
                 //     style: Theme.of(context).textTheme.bodyText1),
               )

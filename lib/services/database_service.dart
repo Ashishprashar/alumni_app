@@ -178,7 +178,6 @@ class DatabaseService {
     });
   }
 
-  // decrease application count
   decreaseApplicationCount() async {
     await applicationCountCollection.doc('count').update(
         {"count": FieldValue.increment(-1)}).onError((error, stackTrace) {
@@ -210,7 +209,7 @@ class DatabaseService {
 
     ApplicationModel application = ApplicationModel(
       applicationId: uuid.v1(),
-      ownerId: firebaseCurrentUser?.uid ?? "",
+      ownerId: ownerId,
       fcmToken: fcmToken,
       name: name,
       usn: usn,
@@ -226,7 +225,7 @@ class DatabaseService {
 
     Map<String, dynamic> data = (application.toJson());
 
-    await applicationCollection.doc(firebaseCurrentUser!.uid).set(data);
+    await applicationCollection.doc(ownerId).set(data);
     await increaseApplicationCount();
   }
 
@@ -271,14 +270,9 @@ class DatabaseService {
     await decreaseApplicationCount();
   }
 
-  // need to use this function. currently not being used.
   deleteApplicationResponse({required String applicationId}) async {
     // delete from firestore
     await applicationResponseCollection.doc(applicationId).delete();
-    // delete from id card image from storage
-    // await FirebaseStorage.instance
-    //     .refFromURL('idCardImages/${applicationId}.jpg')
-    //     .delete();
   }
 
   addNotification({
@@ -287,24 +281,24 @@ class DatabaseService {
   }) async {
     String content = "";
     switch (type) {
-      case kNotificationKeyPoke:
-        content = "${currentUser!.name} just poked you.";
-        break;
+      // case kNotificationKeyPoke:
+      //   content = "${currentUser!.name} just poked you.";
+      //   break;
       case kNotificationKeyPost:
         content = "${currentUser!.name} has added a new post.";
         break;
-      case kNotificationKeyChat:
-        content = "You got a new message from ${currentUser!.name}.";
-        break;
+      // case kNotificationKeyChat:
+      //   content = "You got a new message from ${currentUser!.name}.";
+      //   break;
       case kNotificationKeyFollowRequest:
         content = "${currentUser!.name} has sent you a follow request.";
         break;
       case kNotificationKeyLike:
         content = "${currentUser!.name} liked your post.";
         break;
-      case kNotificationKeyComment:
-        content = "${currentUser!.name} commented on your post.";
-        break;
+      // case kNotificationKeyComment:
+      //   content = "${currentUser!.name} commented on your post.";
+      //   break;
 
       case kNotificationKeyFollowAccepted:
         content = "${currentUser!.name} has accepted your follow request.";

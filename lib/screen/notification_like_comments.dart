@@ -59,12 +59,19 @@ class _NotificationLikeCommentState extends State<NotificationLikeComment> {
                         snapshot: documentSnapshots,
                         index: index);
                   },
+                  // ok try replacing with "in" instead of not equal to
                   query: notificationCollection
                       .where("sentTo", arrayContains: currentUser!.id)
-                      .where("type",
-                          isNotEqualTo: kNotificationKeyFollowRequest)
-                      .orderBy("type", descending: true)
-                      .orderBy("updated_at", descending: true),
+                      // .where("type",
+                      //     isNotEqualTo: kNotificationKeyFollowRequest)
+                      .where("type", whereIn: [
+                    kNotificationKeyPost,
+                    kNotificationKeyLike,
+                    kNotificationKeyApplicationAccepted,
+                    kNotificationKeyApplicationRejected,
+                    kNotificationKeyFollowAccepted,
+                    kNotificationKeyFollowBack,
+                  ]).orderBy("updated_at", descending: true),
                   itemBuilderType: PaginateBuilderType.listView,
                   isLive: true,
                   onEmpty: Padding(

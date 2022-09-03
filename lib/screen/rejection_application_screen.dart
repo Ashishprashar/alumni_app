@@ -35,6 +35,8 @@ class _RejectionApplicationScreenState
   TextEditingController textController = TextEditingController();
   DatabaseService db = DatabaseService();
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -190,32 +192,37 @@ class _RejectionApplicationScreenState
                   ),
                 ),
                 SizedBox(height: 20),
-                DoneButton(
-                  onTap: () async {
-                    // Need to create rejection message.
-                    db.pushApplicationResponse(
-                      'Rejected',
-                      getRejectionTitle(_reason!),
-                      textController.text,
-                      currentUser!.id,
-                      widget.idOfRejectedUser,
-                    );
-                    await db.addNotification(
-                        type: kNotificationKeyApplicationAccepted,
-                        sentTo: widget.idOfRejectedUser);
-                    // Need to delete the application.
-                    db.deleteApplication(
-                        applicationId: widget.idOfRejectedUser);
-                    // Need to let the user know that their applicaiton was rejected. Try again
+                isLoading
+                    ? CircularProgressIndicator()
+                    : DoneButton(
+                        onTap: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          // Need to create rejection message.
+                          db.pushApplicationResponse(
+                            'Rejected',
+                            getRejectionTitle(_reason!),
+                            textController.text,
+                            currentUser!.id,
+                            widget.idOfRejectedUser,
+                          );
+                          await db.addNotification(
+                              type: kNotificationKeyApplicationRejected,
+                              sentTo: widget.idOfRejectedUser);
+                          // Need to delete the application.
+                          db.deleteApplication(
+                              applicationId: widget.idOfRejectedUser);
+                          // Need to let the user know that their applicaiton was rejected. Try again
 
-                    // Need to notifiy the user that they have been approved.
-                    // Need to let the user go to the home screen directly
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Submit',
-                  height: 40,
-                  width: 80,
-                ),
+                          // Need to notifiy the user that they have been approved.
+                          // Need to let the user go to the home screen directly
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Submit',
+                        height: 40,
+                        width: 80,
+                      ),
               ],
             ),
           ),

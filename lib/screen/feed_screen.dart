@@ -63,29 +63,31 @@ class _FeedScreenState extends State<FeedScreen> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(right: 4, top: 4),
+                          padding: const EdgeInsets.only(right: 4, top: 12),
                           child: Icon(
                             Icons.notifications_none,
                             color:
                                 Theme.of(context).appBarTheme.iconTheme!.color,
                           ),
                         ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: CircleAvatar(
-                            child: Text(
-                              (currentUser?.unreadNotifications ?? 0)
-                                  .toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            radius: 8,
-                            backgroundColor: Colors.red,
-                          ),
-                        )
+                        currentUser!.unreadNotifications != 0
+                            ? Positioned(
+                                right: 3,
+                                top: 8,
+                                child: CircleAvatar(
+                                  child: Text(
+                                    (currentUser?.unreadNotifications ?? 0)
+                                        .toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  radius: 8,
+                                  backgroundColor: Colors.red,
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),

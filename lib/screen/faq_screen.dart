@@ -35,6 +35,10 @@ class FaqScreen extends StatelessWidget {
                 answer:
                     'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. '),
             CustomExpansionTile(
+                question: 'Who can see my posts?',
+                answer:
+                    'You can adjust post privacy in the settings screen, but this only affects what people see when they come to your profile. On the other hand, regardless of your post privacy, only people that follow you get your posts on their feed.'),
+            CustomExpansionTile(
                 question: 'I can\'t seem to check who has liked my post.',
                 answer:
                     'Yes, you cannot see who has liked your post in the app. You just get the like count. But when someone likes your post you do get a notification with their name on it.'),

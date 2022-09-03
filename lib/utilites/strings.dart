@@ -1,13 +1,13 @@
-const String kNotificationKeyPost = "post";
-const String kNotificationKeyChat = "chat";
+const String kNotificationKeyPost = "post"; //
+// const String kNotificationKeyChat = "chat";
 const String kNotificationKeyFollowRequest = "follow-request";
 const String kNotificationKeyFollowAccepted = "follow-accepted";
-const String kNotificationKeyLike = "like";
-const String kNotificationKeyApplicationAccepted = "application-accepted";
-const String kNotificationKeyApplicationRejected = "application-rejected";
-const String kNotificationKeyComment = "comment";
-const String kNotificationKeyPoke = "poke";
-const String kNotificationKeyFollowBack = 'follow-back';
+const String kNotificationKeyLike = "like"; //
+const String kNotificationKeyApplicationAccepted = "application-accepted"; //
+const String kNotificationKeyApplicationRejected = "application-rejected"; //
+// const String kNotificationKeyComment = "comment";
+// const String kNotificationKeyPoke = "poke";
+const String kNotificationKeyFollowBack = 'follow-back'; // is this working?
 const String kDefaultPrivacySetting = "Everyone In College";
 
 enum ApplicationStatus {

@@ -26,6 +26,8 @@ class ApplicationCard extends StatefulWidget {
 }
 
 class _ApplicationCardState extends State<ApplicationCard> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final individualApplication = ApplicationModel.fromMap(
@@ -84,66 +86,71 @@ class _ApplicationCardState extends State<ApplicationCard> {
             height: 300,
           ),
           SizedBox(height: 20),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: [
-              DoneButton(
-                onTap: () async {
-                  // create the user account and then make the user update his current user property
-                  await db.createAccount(
-                    individualApplication.name,
-                    individualApplication.usn,
-                    individualApplication.gender,
-                    individualApplication.status,
-                    individualApplication.branch,
-                    individualApplication.semester,
-                    individualApplication.fcmToken,
+          isLoading
+              ? CircularProgressIndicator()
+              : ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: [
+                    DoneButton(
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        // create the user account and then make the user update his current user property
+                        await db.createAccount(
+                          individualApplication.name,
+                          individualApplication.usn,
+                          individualApplication.gender,
+                          individualApplication.status,
+                          individualApplication.branch,
+                          individualApplication.semester,
+                          individualApplication.fcmToken,
 
-                    individualApplication.profileDownloadUrl,
-                    individualApplication.email,
-                    individualApplication.ownerId,
-                    false, // admin = false
-                  );
-                  // respond to the user's applicaiton
-                  await db.pushApplicationResponse(
-                    'Accepted',
-                    '',
-                    '',
-                    currentUser!.id,
-                    individualApplication.ownerId,
-                  );
-                  await db.addNotification(
-                      type: kNotificationKeyApplicationAccepted,
-                      sentTo: individualApplication.ownerId);
+                          individualApplication.profileDownloadUrl,
+                          individualApplication.email,
+                          individualApplication.ownerId,
+                          false, // admin = false
+                        );
+                        // respond to the user's applicaiton
+                        await db.pushApplicationResponse(
+                          'Accepted',
+                          '',
+                          '',
+                          currentUser!.id,
+                          individualApplication.ownerId,
+                        );
+                        await db.addNotification(
+                            type: kNotificationKeyApplicationAccepted,
+                            sentTo: individualApplication.ownerId);
 
-                  // delete the users application
-                  await db.deleteApplication(
-                      applicationId: individualApplication.ownerId);
+                        // delete the users application
+                        await db.deleteApplication(
+                            applicationId: individualApplication.ownerId);
 
-                  await db.increaseUserCount();
-                },
-                text: 'Accept',
-                height: 40,
-                width: 70,
-              ),
-              SizedBox(width: 20),
-              DoneButton(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RejectionApplicationScreen(
-                        idOfRejectedUser: individualApplication.ownerId,
-                      ),
+                        await db.increaseUserCount();
+                      },
+                      text: 'Accept',
+                      height: 40,
+                      width: 70,
                     ),
-                  );
-                },
-                text: 'Reject',
-                height: 40,
-                width: 70,
-              ),
-            ],
-          ),
+                    SizedBox(width: 20),
+                    DoneButton(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RejectionApplicationScreen(
+                              idOfRejectedUser: individualApplication.ownerId,
+                            ),
+                          ),
+                        );
+                      },
+                      text: 'Reject',
+                      height: 40,
+                      width: 70,
+                    ),
+                  ],
+                ),
           SizedBox(height: 20),
         ],
       ),

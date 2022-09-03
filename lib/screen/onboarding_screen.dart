@@ -27,6 +27,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     print('we are in the onboarding screen');
+
+    // function to delete application response
+    // we need this because we cant await inside the build method without a function
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
