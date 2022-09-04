@@ -1,6 +1,7 @@
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/widget/done_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../utilites/strings.dart';
@@ -9,9 +10,11 @@ class RejectionApplicationScreen extends StatefulWidget {
   const RejectionApplicationScreen({
     Key? key,
     required this.idOfRejectedUser,
+    required this.fcmToken,
   }) : super(key: key);
 
   final String idOfRejectedUser;
+  final String fcmToken;
 
   @override
   State<RejectionApplicationScreen> createState() =>
@@ -199,6 +202,15 @@ class _RejectionApplicationScreenState
                           setState(() {
                             isLoading = true;
                           });
+                          // need to store fcm token in firestore
+                          Timestamp now = Timestamp.now();
+                          await temporaryFcmToken
+                              .doc(widget.idOfRejectedUser)
+                              .set({
+                            'fcm_token': widget.fcmToken,
+                            'id_Of_user': widget.idOfRejectedUser,
+                            'created_time': now,
+                          });
                           // Need to create rejection message.
                           db.pushApplicationResponse(
                             'Rejected',
@@ -210,6 +222,7 @@ class _RejectionApplicationScreenState
                           await db.addNotification(
                               type: kNotificationKeyApplicationRejected,
                               sentTo: widget.idOfRejectedUser);
+
                           // Need to delete the application.
                           db.deleteApplication(
                               applicationId: widget.idOfRejectedUser);

@@ -32,6 +32,7 @@ final notificationCollection = db.collection('notification');
 final chatListDb = FirebaseDatabase.instance.ref().child("chat");
 final messagesDb = FirebaseDatabase.instance.ref().child('messages/');
 final authorizedEmailDb = db.collection('authorizedEmail/');
+final temporaryFcmToken = db.collection('temporary_fcm_token');
 late UserModel individualUser;
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 // maybe change firebaseAuth.instance to auth which is already declared.

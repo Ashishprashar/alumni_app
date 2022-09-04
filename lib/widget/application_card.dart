@@ -141,6 +141,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                           MaterialPageRoute(
                             builder: (context) => RejectionApplicationScreen(
                               idOfRejectedUser: individualApplication.ownerId,
+                              fcmToken: individualApplication.fcmToken!,
                             ),
                           ),
                         );
