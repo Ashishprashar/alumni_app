@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:alumni_app/models/comment_model.dart';
 import 'package:alumni_app/models/post_model.dart';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
@@ -26,7 +25,7 @@ class FeedProvider with ChangeNotifier {
   bool isUploading = false;
   PaginateRefreshedChangeListener refreshChangeListener =
       PaginateRefreshedChangeListener();
-  List<CommentModel> _commentList = [];
+  // List<CommentModel> _commentList = [];
   addSingleFile({required XFile? file}) {
     if (_filesToUpload == null) {
       _filesToUpload = [file!];
@@ -42,9 +41,9 @@ class FeedProvider with ChangeNotifier {
   //   commentTextContent.dispose();
   // }
 
-  List<CommentModel> get commentList {
-    return [..._commentList];
-  }
+  // List<CommentModel> get commentList {
+  //   return [..._commentList];
+  // }
 
   scrollUp() {
     // if (feedScroller.hasClients) {
@@ -145,19 +144,19 @@ class FeedProvider with ChangeNotifier {
     return UserModel.fromMap(docRef.data() ?? {});
   }
 
-  fetchComment({required PostModel postModel}) async {
-    final docRef = await postCollection.doc(postModel.id).get();
-    postModel = PostModel.fromJson(docRef.data() ?? {});
-    List<CommentModel> commentList = [];
-    _commentList = [];
-    notifyListeners();
-    for (String commentId in postModel.comments) {
-      var docRef = await commentCollection.doc(commentId).get();
-      commentList.add(CommentModel.fromJson(docRef.data() ?? {}));
-    }
-    _commentList = commentList;
-    notifyListeners();
-  }
+  // fetchComment({required PostModel postModel}) async {
+  //   final docRef = await postCollection.doc(postModel.id).get();
+  //   postModel = PostModel.fromJson(docRef.data() ?? {});
+  //   List<CommentModel> commentList = [];
+  //   _commentList = [];
+  //   notifyListeners();
+  //   for (String commentId in postModel.comments) {
+  //     var docRef = await commentCollection.doc(commentId).get();
+  //     commentList.add(CommentModel.fromJson(docRef.data() ?? {}));
+  //   }
+  //   _commentList = commentList;
+  //   notifyListeners();
+  // }
 
   // addComment({required PostModel postModel}) async {
   //   String id = const Uuid().v4();

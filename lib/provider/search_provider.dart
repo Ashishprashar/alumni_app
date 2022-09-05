@@ -24,7 +24,18 @@ class SearchProvider with ChangeNotifier {
     "Alum",
     "All"
   ];
-  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH', "All"];
+  var possibleBranches = [
+    'CSE',
+    'AI & DS',
+    'CS & BS',
+    'ECE',
+    'EEE',
+    'MECH',
+    'CIVIL',
+    'ARCH',
+    "All"
+  ];
+
   int documentLimit = 10;
   DocumentSnapshot? lastDocument;
   final ScrollController _scrollController = ScrollController();

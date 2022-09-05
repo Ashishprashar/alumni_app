@@ -80,7 +80,16 @@ class OnboardingProvider with ChangeNotifier {
   String? defaultSemesterValue;
   String? defaultBranchValue;
   var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
+  var possibleBranches = [
+    'CSE',
+    'AI & DS',
+    'CS & BS',
+    'ECE',
+    'EEE',
+    'MECH',
+    'CIVIL',
+    'ARCH'
+  ];
 
   String? defaultGender;
   var possibleGenders = ['Male', 'Female'];

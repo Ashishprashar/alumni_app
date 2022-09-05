@@ -100,7 +100,16 @@ class EditScreenProvider with ChangeNotifier {
   String? defaultBranchValue;
   var possibleGenders = ['Male', 'Female'];
   var possibleSemesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  var possibleBranches = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'ARCH'];
+  var possibleBranches = [
+    'CSE',
+    'AI & DS',
+    'CS & BS',
+    'ECE',
+    'EEE',
+    'MECH',
+    'CIVIL',
+    'ARCH'
+  ];
 
   void verifyAdminPassword(String password, BuildContext context) {
     if (password == "monkey") {
