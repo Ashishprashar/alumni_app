@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "alumni-app-1470c"
-  }
+    "default": "alumni-app-1470c",
+    "the-hive-net": "the-hive-net"
+  },
+  "targets": {},
+  "etags": {}
 }
