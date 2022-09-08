@@ -29,7 +29,7 @@ class PrivacyScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'The Privacy and terms are not legally binding, they are simply stated to make the app\'s privacy more transparent to its users and enforce obligations to use the app in a healthy way for all its members. Any abuse of the app to make its members feel unsafe or violated will result in an account ban. We hope you enforce your rights and abide by your obligations.',
+                  'The Privacy & Terms are not legally binding, they are simply stated to make the app\'s privacy more transparent to its users and enforce obligations to use the app in a healthy way for all its members. We hope you enforce your rights and abide by your obligations.',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 20),
