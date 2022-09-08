@@ -12,25 +12,43 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
   var userList = [];
 
 
-  // if (notifiacation["type"] == "application-rejected" || notifiacation["type"] == "application-accepted") {
-  for (var i = 0; i < notifiacation["sentTo"].length; i++) {
-    const userData = await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).get()
-    var count = 0;
-    if (userData.data()["unread_notifications"]) {
-      count = userData.data()["unread_notifications"];
-    }
-    userList.push(
-    );
-    await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).update({ "unread_notifications": count + 1 });
+  if (notifiacation["type"] == "application-rejected") {
 
+    for (var i = 0; i < notifiacation["sentTo"].length; i++) {
+      const userData = await admin.firestore().collection("temporary_fcm_token").doc(notifiacation["sentTo"][i]).get()
+
+      userList.push(
+        userData.data()["fcm_token"]
+      );
+
+    }
   }
+  else {
+    for (var i = 0; i < notifiacation["sentTo"].length; i++) {
+      const userData = await admin.firestore().collection("user").doc(notifiacation["sentTo"][i]).get()
+
+      userList.push(
+        userData.data()["fcmToken"]
+      );
+      try {
+        var count = 0;
+        if (userData.data()["unread_notifications"]) {
+          count = userData.data()["unread_notifications"];
+        }
+        await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).update({ "unread_notifications": count + 1 });
+      } catch (error) {
+        await admin.firestore().collection("user").doc(notifiacation["sentTo"][0]).update({ "unread_notifications": 1 });
+      }
+
+    }
+  }
+  console.log(userList)
   // else {
   //     userList.push(
   //       await admin.firestore().collection("user").doc(notifiacation["sentTo"][i]).get()
   //     );
   //   }
   // }
-  console.log(userList[0].data())
 
 
   const payload = {
@@ -61,7 +79,7 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
 
   for (var i = 0; i < userList.length; i++) {
 
-    admin.messaging().sendToDevice([userList[i].data()["fcmToken"]], payload, options).then(function (response) {
+    admin.messaging().sendToDevice([userList[i]], payload, options).then(function (response) {
       console.log("=> Push sent :", response);
     })
       .catch(function (error) {
