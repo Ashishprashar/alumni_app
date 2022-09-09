@@ -24,7 +24,7 @@
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
-.nodejs-script/
+nodejs-script/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
