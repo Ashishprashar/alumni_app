@@ -17,8 +17,8 @@ class ProfileFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 10),
-        Field(title: "Member Since", attribute: theDate(user.createdAt)),
-        Field(title: "Last Updated", attribute: theDate(user.updatedAt)),
+        // Field(title: "Member Since", attribute: theDate(user.createdAt)),
+        // Field(title: "Last Updated", attribute: theDate(user.updatedAt)),
         Field(title: "Gender", attribute: user.gender),
         Field(title: "Status", attribute: user.status),
         Field(title: "usn", attribute: user.usn),

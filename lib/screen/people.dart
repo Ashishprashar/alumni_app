@@ -17,75 +17,135 @@ class People extends StatefulWidget {
 
 class _PeopleState extends State<People> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<PeopleProvider>(context, listen: false)
+        .addListenerToScrollController();
+    Future.delayed(Duration.zero).then((value) =>
+        Provider.of<PeopleProvider>(context, listen: false).fetchPeople());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   title:
-        //   iconTheme: Theme.of(context).appBarTheme.iconTheme,
-        //   backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        //   elevation: 1,
-        //   toolbarHeight: 50,
-        // ),
-        body: SafeArea(
-          child: Scrollbar(
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchPage()),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                          left: 12, top: 12, bottom: 12, right: 20),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 17, vertical: 3),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(.1),
-                                blurRadius: 20,
-                                spreadRadius: 20,
-                                offset: const Offset(0, 10))
+    return Consumer<PeopleProvider>(builder: (context, peopleProvider, child) {
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          // appBar: AppBar(
+          //   automaticallyImplyLeading: false,
+          //   title:
+          //   iconTheme: Theme.of(context).appBarTheme.iconTheme,
+          //   backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          //   elevation: 1,
+          //   toolbarHeight: 50,
+          // ),
+          body: SafeArea(
+            child: Scrollbar(
+                thumbVisibility: true,
+                child:
+                    //  Column(
+                    //   children: [
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const SearchPage()),
+                    //     );
+                    //   },
+                    //   child: Container(
+                    //     margin: const EdgeInsets.only(
+                    //         left: 12, top: 12, bottom: 12, right: 20),
+                    //     padding: const EdgeInsets.symmetric(
+                    //         horizontal: 17, vertical: 3),
+                    //     decoration: BoxDecoration(
+                    //         boxShadow: [
+                    //           BoxShadow(
+                    //               color: Theme.of(context)
+                    //                   .backgroundColor
+                    //                   .withOpacity(.1),
+                    //               blurRadius: 20,
+                    //               spreadRadius: 20,
+                    //               offset: const Offset(0, 10))
+                    //         ],
+                    //         borderRadius: BorderRadius.circular(13),
+                    //         // color:
+                    //         //     Theme.of(context).backgroundColor.withOpacity(.5),
+                    //         color: Theme.of(context).selectedRowColor),
+                    //     height: 38,
+                    //     child: Row(
+                    //       children: [
+                    //         const Icon(Icons.search),
+                    //         const SizedBox(
+                    //           width: 10,
+                    //         ),
+                    //         Text(
+                    //           'Search by name',
+                    //           style: Theme.of(context).textTheme.bodyText1,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 3),
+                    ListView(
+                  shrinkWrap: true,
+                  controller: peopleProvider.peopleScroller,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchPage()),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 12, top: 12, bottom: 12, right: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 17, vertical: 3),
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Theme.of(context)
+                                      .backgroundColor
+                                      .withOpacity(.1),
+                                  blurRadius: 20,
+                                  spreadRadius: 20,
+                                  offset: const Offset(0, 10))
+                            ],
+                            borderRadius: BorderRadius.circular(13),
+                            // color:
+                            //     Theme.of(context).backgroundColor.withOpacity(.5),
+                            color: Theme.of(context).selectedRowColor),
+                        height: 38,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.search),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Search by name',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ],
-                          borderRadius: BorderRadius.circular(13),
-                          // color:
-                          //     Theme.of(context).backgroundColor.withOpacity(.5),
-                          color: Theme.of(context).selectedRowColor),
-                      height: 38,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.search),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Search by name',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 3),
-                  const UserList(),
-                ],
-              ),
-            ),
+                    for (int i = 0; i < peopleProvider.peopleList.length; i++)
+                      UserCard(index: i, snapshot: peopleProvider.peopleList)
+                  ],
+                )
+                //   ],
+                // ),
+                ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -100,7 +160,7 @@ class _UserListState extends State<UserList> {
   @override
   void initState() {
     super.initState();
-    Provider.of<PeopleProvider>(context, listen: false).addPeopleScroller();
+    // Provider.of<PeopleProvider>(context, listen: false).addPeopleScroller();
   }
 
   @override
@@ -108,41 +168,37 @@ class _UserListState extends State<UserList> {
     return Consumer<PeopleProvider>(builder: (context, peopleProvider, child) {
       return Column(
         children: [
-          FutureBuilder(
-              future: peopleProvider.fetchPeople(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    child: const CircularProgressIndicator(),
-                  );
-                }
-                List<DocumentSnapshot> documentSnapshots =
-                    peopleProvider.peopleList;
-                return ListView.builder(
-                  shrinkWrap: true,
+          ListView(
+            shrinkWrap: true,
+            controller: peopleProvider.peopleScroller,
+            children: [
+              for (int i = 0; i < peopleProvider.peopleList.length; i++)
+                UserCard(index: i, snapshot: peopleProvider.peopleList)
+            ],
+          )
+          // ListView.builder(
+          //   shrinkWrap: true,
 
-                  // itemsPerPage: 10,
-                  //item builder type is compulsory.
-                  controller: peopleProvider.peopleScroller,
-                  itemCount: documentSnapshots.length,
-                  itemBuilder: (context, index) {
-                    final data = documentSnapshots[index].data() as Map?;
-                    log(data.toString());
-                    // doing this check so that current user is not shown
-                    if (data!['id'] != currentUser!.id) {
-                      return UserCard(
-                          index: index, snapshot: documentSnapshots);
-                    }
-                    return Container();
-                    // return userCard(index, documentSnapshots);
-                  },
-                  // query: userCollection.orderBy("updated_at", descending: true),
+          //   // itemsPerPage: 10,
+          //   //item builder type is compulsory.
+          //   itemCount: peopleProvider.peopleList.length,
+          //   itemBuilder: (context, index) {
+          //     final data = peopleProvider.peopleList[index].data() as Map?;
+          //     // log(data.toString());
+          //     // doing this check so that current user is not shown
+          //     if (data!['id'] != currentUser!.id) {
+          //       return UserCard(
+          //           index: index, snapshot: peopleProvider.peopleList);
+          //     }
+          //     return Container();
+          //     // return userCard(index, documentSnapshots);
+          //   },
+          //   // query: userCollection.orderBy("updated_at", descending: true),
 
-                  // itemBuilderType: PaginateBuilderType.listView,
+          //   // itemBuilderType: PaginateBuilderType.listView,
 
-                  // isLive: true,
-                );
-              }),
+          //   // isLive: true,
+          // ),
         ],
       );
     });

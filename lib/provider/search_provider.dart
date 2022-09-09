@@ -74,8 +74,7 @@ class SearchProvider with ChangeNotifier {
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-
-            // .limit(documentLimit)
+            .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
         querySnapshot = await userCollection
@@ -89,8 +88,7 @@ class SearchProvider with ChangeNotifier {
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-
-            // .limit(documentLimit)
+            .limit(documentLimit)
             .get();
       } else {
         querySnapshot = await userCollection
@@ -102,8 +100,7 @@ class SearchProvider with ChangeNotifier {
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
-
-            // .limit(documentLimit)
+            .limit(documentLimit)
             .get();
       }
     } else {
@@ -119,6 +116,7 @@ class SearchProvider with ChangeNotifier {
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
+            .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -133,6 +131,7 @@ class SearchProvider with ChangeNotifier {
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
+            .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
       } else {
@@ -145,6 +144,7 @@ class SearchProvider with ChangeNotifier {
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
             .orderBy('search_name', descending: true)
+            .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
       }
@@ -160,29 +160,37 @@ class SearchProvider with ChangeNotifier {
     _controller.sink.add(peopleList);
 
     isLoading = false;
+    notifyListeners();
   }
 
   addListenerToScrollController() {
-    _scrollController.addListener(() {
+    // _scrollController = ScrollController();
+    _scrollController.addListener(() async {
       double maxScroll = _scrollController.position.maxScrollExtent;
       double currentScroll = _scrollController.position.pixels;
       double delta = 200;
+      // print("scroll");
       if (maxScroll - currentScroll <= delta) {
-        fetchMore();
+        print("scrolled");
+        await fetchMore();
       }
     });
+    print(_scrollController.hasListeners);
   }
 
-  @override
+  // @override
   dispose() {
+    // super.dispose();
     defaultBranchValue = null;
     defaultSemesterValue = null;
     notifyListeners();
   }
 
   searchPeople() async {
-    peopleList = [];
     if (_searchController.text.isEmpty) {
+      if (peopleList.isNotEmpty) {
+        return;
+      }
       var query = await userCollection
           .where("semester",
               isEqualTo:
@@ -196,8 +204,10 @@ class SearchProvider with ChangeNotifier {
           .limit(documentLimit)
           .get();
       peopleList = query.docs;
+      lastDocument = query.docs.last;
       notifyListeners();
     } else {
+      peopleList = [];
       var query = await userCollection
           .where('search_name',
               isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
@@ -212,6 +222,7 @@ class SearchProvider with ChangeNotifier {
           .limit(documentLimit)
           .get();
       peopleList = query.docs;
+      lastDocument = query.docs.last;
       notifyListeners();
     }
   }

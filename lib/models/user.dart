@@ -54,7 +54,7 @@ class UserModel {
   int followingCount;
   int followerCount;
   int postCount;
-  Timestamp createdAt;
+  Timestamp? createdAt;
   String email;
   String id;
   Map linkToSocial;
@@ -68,7 +68,7 @@ class UserModel {
   List interests;
   List favoriteMusic;
   List favoriteShowsMovies;
-  Timestamp updatedAt;
+  Timestamp? updatedAt;
   bool admin;
   String semester;
   String branch;
