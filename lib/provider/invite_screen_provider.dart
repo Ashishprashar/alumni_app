@@ -18,7 +18,10 @@ class InviteProvider with ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Please enter a valid Email.",
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText1!
+            .copyWith(color: Colors.white),
       )));
       return;
     }
@@ -34,7 +37,10 @@ class InviteProvider with ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "That email is already on the invite list.",
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText1!
+            .copyWith(color: Colors.white),
       )));
       return;
     }
@@ -49,7 +55,8 @@ class InviteProvider with ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
       "Email has been added to the Invite List! Ask your friend to install the app and sign in.",
-      style: Theme.of(context).textTheme.bodyText1,
+      style:
+          Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
     )));
   }
 
@@ -60,7 +67,10 @@ class InviteProvider with ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Please enter all the fields",
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText1!
+            .copyWith(color: Colors.white),
       )));
       return;
     }

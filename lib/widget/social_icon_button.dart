@@ -65,7 +65,7 @@ class SocialIconButton extends StatelessWidget {
             icon: FaIcon(theicon),
             color: user.linkToSocial[socialName] == ''
                 ? Colors.grey
-                : Colors.black,
+                : Theme.of(context).appBarTheme.iconTheme!.color,
             onPressed: () async {
               print(_url);
               if (await canLaunchUrl(_url)) await launchUrl(_url);
