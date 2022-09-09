@@ -4,6 +4,7 @@ import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/services/navigator_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -193,7 +194,7 @@ class EditScreenProvider with ChangeNotifier {
       defaultBranchValue!,
       defaultSemesterValue!,
       linkToSocial,
-      currentUser!.createdAt,
+      currentUser!.createdAt ?? Timestamp.now(),
       currentUser!.email,
       null,
       null,

@@ -3,6 +3,7 @@ import 'package:alumni_app/provider/privacy_settings_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -298,7 +299,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         currentUser!.branch,
         currentUser!.semester,
         currentUser!.linkToSocial,
-        currentUser!.createdAt,
+        currentUser!.createdAt ?? Timestamp.now(),
         currentUser!.email,
         profilePrivacy,
         postPrivacy,

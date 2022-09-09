@@ -92,6 +92,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               body: SafeArea(
                 child: ListView(
+                  controller: searchProvider.scrollController,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

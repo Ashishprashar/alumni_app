@@ -3,84 +3,100 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PeopleProvider with ChangeNotifier {
-  ScrollController peopleScroller = ScrollController();
-  ScrollController searchScroller = ScrollController();
-  TextEditingController peopleController = TextEditingController();
-  final List<DocumentSnapshot> _peopleList = [];
-
+  List<DocumentSnapshot> peopleList = [];
   bool isLoading = false;
-
   bool hasMore = true;
 
-  int documentLimit = 1;
-
+  int documentLimit = 15;
   DocumentSnapshot? lastDocument;
-  addPeopleScroller() {
-    peopleScroller = ScrollController();
-  }
+  final ScrollController _peoplePageScroller = ScrollController();
+  ScrollController get peopleScroller => _peoplePageScroller;
 
-  loadMore() {
-    double maxScroll = peopleScroller.position.maxScrollExtent;
-    double currentScroll = peopleScroller.position.pixels;
-    double delta = 200;
-    if (maxScroll - currentScroll <= delta) {
-      fetchPeople();
-    }
-  }
+  // final StreamController<List<DocumentSnapshot>> _controller =
+  //     StreamController<List<DocumentSnapshot>>();
 
-  get peopleList {
-    return [..._peopleList];
-  }
+  // Stream<List<DocumentSnapshot>> get _streamController => _controller.stream;
 
-  fetchPeople() async {
+  fetchMore() async {
     if (!hasMore) {
       // print('No More Products');
       return;
     }
+    if (isLoading) {
+      return;
+    }
 
-    // isLoading = true;
-    // notifyListeners();
+    isLoading = true;
+
     QuerySnapshot querySnapshot;
+    // added limit to the case where lastdocument == null. limit was not there before
+    // if i should not have done that remove it.
     if (lastDocument == null) {
       querySnapshot = await userCollection
-          .orderBy('updated_at', descending: true)
+
+          // .where("sem",isEqualTo: defaultSemesterValue)
+          // .orderBy('updated_at', descending: true)
+          .orderBy('search_name', descending: true)
           .limit(documentLimit)
           .get();
     } else {
       querySnapshot = await userCollection
-          .orderBy('updated_at', descending: true)
+
+          // .orderBy('updated_at', descending: true)
+          .orderBy('search_name', descending: true)
           .startAfterDocument(lastDocument!)
           .limit(documentLimit)
           .get();
+
       // print(1);
     }
     if (querySnapshot.docs.length < documentLimit) {
       hasMore = false;
     }
-    lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
-    _peopleList.addAll(querySnapshot.docs);
-    peopleScroller.addListener(loadMore);
-    // isLoading = false;
+
+    lastDocument = querySnapshot.docs.last;
+
+    peopleList.addAll(querySnapshot.docs);
+    // _controller.sink.add(peopleList);
+
+    isLoading = false;
     notifyListeners();
   }
 
-  scrollUp() {
-    if (peopleScroller.hasClients) {
-      peopleScroller.animateTo(
-        peopleScroller.position.minScrollExtent,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
+  addListenerToScrollController() {
+    // _scrollController = ScrollController();
+
+    _peoplePageScroller.addListener(() async {
+      double maxScroll = _peoplePageScroller.position.maxScrollExtent;
+      double currentScroll = _peoplePageScroller.position.pixels;
+      double delta = 100;
+      print("scroll");
+      if (maxScroll - currentScroll <= delta) {
+        print("scrolled");
+        await fetchMore();
+      }
+    });
+    print(_peoplePageScroller.hasListeners);
   }
 
-  searchScrollUp() {
-    if (searchScroller.hasClients) {
-      searchScroller.animateTo(
-        searchScroller.position.minScrollExtent,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
+  // @override
+  dispose() {
+    // super.dispose();
+    notifyListeners();
   }
+
+  fetchPeople() async {
+    if (peopleList.isNotEmpty) {
+      return;
+    }
+    var query = await userCollection
+        .orderBy('search_name', descending: true)
+        .limit(documentLimit)
+        .get();
+    peopleList = query.docs;
+    lastDocument = query.docs.last;
+    notifyListeners();
+  }
+
+  clearSearchController() {}
 }
