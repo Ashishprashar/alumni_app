@@ -186,8 +186,8 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  searchPeople() async {
-    if (_searchController.text.isEmpty) {
+  searchPeople({bool? isFilter}) async {
+    if (_searchController.text.isEmpty && !(isFilter ?? false)) {
       if (peopleList.isNotEmpty) {
         return;
       }
@@ -203,6 +203,11 @@ class SearchProvider with ChangeNotifier {
           .orderBy('search_name', descending: true)
           .limit(documentLimit)
           .get();
+      if (!(query.docs.length < documentLimit)) {
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
       peopleList = query.docs;
       lastDocument = query.docs.last;
       notifyListeners();
@@ -221,6 +226,17 @@ class SearchProvider with ChangeNotifier {
           .orderBy('search_name', descending: true)
           .limit(documentLimit)
           .get();
+      if (!(query.docs.length < documentLimit)) {
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
+      if (query.docs.isEmpty) {
+        peopleList = [];
+        lastDocument = null;
+        notifyListeners();
+        return;
+      }
       peopleList = query.docs;
       lastDocument = query.docs.last;
       notifyListeners();

@@ -49,13 +49,17 @@ class _SearchPageState extends State<SearchPage> {
                     autofocus: true,
                     // style: TextStyle(backgroundColor: Colors.grey),
                     controller: searchProvider.searchController,
-                    // onChanged: (v) {
-                    //   searchProvider.searchPeople();
-                    // },
-                    onSubmitted: (value) => searchProvider.searchPeople(),
+                    onChanged: (v) {
+                      if (v.isEmpty) {
+                        searchProvider.searchPeople(isFilter: true);
+                      }
+                    },
+                    onSubmitted: (value) =>
+                        searchProvider.searchPeople(isFilter: true),
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).selectedRowColor,
                       filled: true,
+
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide.none,
@@ -76,9 +80,10 @@ class _SearchPageState extends State<SearchPage> {
                       //       )
                       //     : null,
                       hintText: 'Search by name',
+
                       suffixIcon: IconButton(
                         onPressed: () {
-                          searchProvider.searchPeople();
+                          searchProvider.searchPeople(isFilter: true);
                         },
                         icon: Icon(
                           Icons.search,
@@ -133,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
                                     searchProvider.defaultBranchValue =
                                         newValue == "All" ? null : newValue!;
                                   });
-                                  searchProvider.searchPeople();
+                                  searchProvider.searchPeople(isFilter: true);
                                 },
                               ),
                             ],
@@ -177,7 +182,7 @@ class _SearchPageState extends State<SearchPage> {
                                     searchProvider.defaultSemesterValue =
                                         newValue == "All" ? null : newValue!;
                                   });
-                                  searchProvider.searchPeople();
+                                  searchProvider.searchPeople(isFilter: true);
                                 },
                               ),
                             ],
