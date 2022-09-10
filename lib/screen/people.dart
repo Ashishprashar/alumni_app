@@ -43,6 +43,7 @@ class _PeopleState extends State<People> {
           body: SafeArea(
             child: Scrollbar(
                 thumbVisibility: true,
+                controller: peopleProvider.peopleScroller,
                 child:
                     //  Column(
                     //   children: [
