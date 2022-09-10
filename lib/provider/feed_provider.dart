@@ -35,6 +35,7 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  getPost() async {}
   // disposeAllControllers() {
   //   feedScroller.dispose();
   //   postTextContent.dispose();

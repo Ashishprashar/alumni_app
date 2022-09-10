@@ -22,15 +22,16 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   // late UserModel? currentUser;
   ScrollController feedScroller = ScrollController();
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
-  //   // setState(() {
-  //   // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
-  //   //     .getCurrentUser();
-  //   // });
-  // }
+  int count = 0;
+  @override
+  void initState() {
+    super.initState();
+    // Provider.of<FeedProvider>(context, listen: false).addFeedScroller();
+    // setState(() {
+    // currentUser = Provider.of<CurrentUserProvider>(context, listen: false)
+    //     .getCurrentUser();
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +101,13 @@ class _FeedScreenState extends State<FeedScreen> {
                   )
                 : PaginateFirestore(
                     allowImplicitScrolling: true,
+                    onReachedEnd: (loaded) {
+                      if (mounted)
+                        // setState(() {
+                        count += 1;
+                      print(count);
+                      // });
+                    },
                     listeners: [feedProvider.refreshChangeListener],
                     itemsPerPage: 10,
                     shrinkWrap: true,
@@ -111,15 +119,15 @@ class _FeedScreenState extends State<FeedScreen> {
                       return getPostList(documentSnapshots, index);
                     },
                     query: postCollection
-                        .where("owner_id",
-                            whereIn:
-                                // (currentUser == null)
-                                //     ? ['hello']
-                                //     :
-                                currentUser!.following.isEmpty
-                                    ? [currentUser!.id]
-                                    : currentUser!.following +
-                                        [currentUser!.id])
+                        // .where("owner_id",
+                        //     whereIn:
+                        //         // (currentUser == null)
+                        //         //     ? ['hello']
+                        //         //     :
+                        //         currentUser!.following.isEmpty
+                        //             ? [currentUser!.id]
+                        //             : (currentUser!.following +
+                        //                 [currentUser!.id]))
                         .orderBy("updated_at", descending: true),
                     itemBuilderType: PaginateBuilderType.listView,
                     isLive: false,
