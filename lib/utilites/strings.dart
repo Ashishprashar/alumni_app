@@ -16,3 +16,4 @@ enum ApplicationStatus {
   Pending,
   NotYetApplied, // show the  user the applcation is pending screen.
 }
+

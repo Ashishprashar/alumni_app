@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:alumni_app/widget/more_post_options.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +27,7 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  bool isLike = false;
+  bool? isLike;
   // User? firebaseCurrentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -44,9 +43,14 @@ class _PostWidgetState extends State<PostWidget> {
                   (futureSnap.data as DocumentSnapshot).data()
                       as Map<String, dynamic>);
               // setState(() {
-              isLike = widget.postModel.likes == null
-                  ? false
-                  : widget.postModel.likes!.contains(firebaseCurrentUser?.uid);
+              // need to change this here, this is causing likes to go to negative numbbers
+
+              isLike = isLike != null
+                  ? isLike
+                  : widget.postModel.likes == null
+                      ? false
+                      : widget.postModel.likes!
+                          .contains(firebaseCurrentUser?.uid);
               // });
               log(widget.postModel.attachments.length.toString());
               return Container(
@@ -234,26 +238,37 @@ class _PostWidgetState extends State<PostWidget> {
                                 padding: const EdgeInsets.only(top: 6),
                                 child: GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      isLike = !isLike;
-                                      Provider.of<FeedProvider>(context,
-                                              listen: false)
-                                          .refreshChangeListener
-                                          .refreshed = true;
-                                    });
-                                    if (isLike) {
-                                      feedProvider.addLike(
-                                          postId: widget.postModel.id,
-                                          ownerId: widget.postModel.ownerId);
+                                    // setState(() {
+                                    isLike = !isLike!;
+
+                                    // Provider.of<FeedProvider>(context,
+                                    //         listen: false)
+                                    //     .refreshChangeListener
+                                    //     .refreshed = true;
+                                    // });
+                                    if (isLike!) {
+                                      setState(() {
+                                        feedProvider.addLike(
+                                            postId: widget.postModel.id,
+                                            ownerId: widget.postModel.ownerId);
+
+                                        widget.postModel.likeCount =
+                                            widget.postModel.likeCount! + 1;
+                                      });
                                     } else {
-                                      feedProvider.removeLike(
-                                          postId: widget.postModel.id);
+                                      setState(() {
+                                        feedProvider.removeLike(
+                                            postId: widget.postModel.id);
+
+                                        widget.postModel.likeCount =
+                                            widget.postModel.likeCount! - 1;
+                                      });
                                     }
                                   },
                                   child: SizedBox(
                                     height: 30,
                                     width: 30,
-                                    child: isLike
+                                    child: isLike!
                                         ? FaIcon(
                                             FontAwesomeIcons.heart,
                                             color: Colors.red,
