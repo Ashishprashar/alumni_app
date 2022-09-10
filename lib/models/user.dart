@@ -133,7 +133,7 @@ class UserModel {
         followerCount: json["follower_count"] ?? 0,
         followingCount: json["following_count"] ?? 0,
         postCount: json["post_count"] ?? 0,
-        createdAt: json["created_at"],
+        createdAt: json["created_at"] ?? Timestamp.now(),
         unreadNotifications: json["unread_notifications"],
         fcmToken: json["fcmToken"],
         email: json["email"],
@@ -156,7 +156,7 @@ class UserModel {
         favoriteShowsMovies: json["favorite_shows_movies"] == null
             ? []
             : List<dynamic>.from(json["favorite_shows_movies"].map((x) => x)),
-        updatedAt: json["updated_at"],
+        updatedAt: json["updated_at"] ?? Timestamp.now(),
         admin: json["admin"] ?? false,
         semester: json["semester"] ?? "8",
         branch: json["branch"] ?? "CSE",
