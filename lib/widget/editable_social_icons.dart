@@ -75,76 +75,91 @@ class _EditableSocialIconsState extends State<EditableSocialIcons> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
         context: context,
         builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Add your $socialName profile link",
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                        Text(
-                          "(make sure you add the \"https://\" part too.)",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                  color: Theme.of(context).focusColor)),
-                          child: TextFormField(
-                            controller: temporaryController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Eg: https://website.com/myprofile",
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Padding(
+                  // this padding is for the keyboard to not cover the text field
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add your $socialName profile link",
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return null;
-                              }
-                              if (!(Uri.parse(value).isAbsolute)) {
-                                return 'invalid url';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
+                            Text(
+                              "(make sure you add the \"https://\" part too.)",
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                widget.onControllerChanged(temporaryController);
-                                // print(temporaryController.text);
-                                // if (mounted) {
-                                Navigator.pop(context);
-                                // }
-                              }
-                            },
-                            child: Text(
-                              'Submit',
-                              // style: Theme.of(context).textTheme.bodyText1,
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                      color: Theme.of(context).focusColor)),
+                              child: TextFormField(
+                                controller: temporaryController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Eg: https://website.com/myprofile",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return null;
+                                  }
+                                  if (!(Uri.parse(value.trim()).isAbsolute)) {
+                                    return 'invalid url';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Theme.of(context).primaryColor,
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    widget.onControllerChanged(
+                                        temporaryController);
+                                    // print(temporaryController.text);
+                                    // if (mounted) {
+                                    Navigator.pop(context);
+                                    // }
+                                  }
+                                },
+                                child: Text(
+                                  'Submit',
+                                  // style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           );

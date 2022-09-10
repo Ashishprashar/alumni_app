@@ -122,7 +122,8 @@ class _EditScreenState extends State<EditScreen> {
                                       children: [
                                         EditableSocialIcons(
                                           controllerText: editProvider
-                                              .twitterController.text,
+                                              .twitterController.text
+                                              .trim(),
                                           socialName: 'twitter',
                                           onControllerChanged:
                                               (TextEditingController
@@ -135,7 +136,8 @@ class _EditScreenState extends State<EditScreen> {
                                         ),
                                         EditableSocialIcons(
                                           controllerText: editProvider
-                                              .linkedinController.text,
+                                              .linkedinController.text
+                                              .trim(),
                                           socialName: 'linkedin',
                                           onControllerChanged:
                                               (TextEditingController
@@ -148,7 +150,8 @@ class _EditScreenState extends State<EditScreen> {
                                         ),
                                         EditableSocialIcons(
                                           controllerText: editProvider
-                                              .facebookController.text,
+                                              .facebookController.text
+                                              .trim(),
                                           socialName: 'facebook',
                                           onControllerChanged:
                                               (TextEditingController
@@ -161,7 +164,8 @@ class _EditScreenState extends State<EditScreen> {
                                         ),
                                         EditableSocialIcons(
                                           controllerText: editProvider
-                                              .instagramController.text,
+                                              .instagramController.text
+                                              .trim(),
                                           socialName: 'instagram',
                                           onControllerChanged:
                                               (TextEditingController
@@ -174,7 +178,8 @@ class _EditScreenState extends State<EditScreen> {
                                         ),
                                         EditableSocialIcons(
                                           controllerText: editProvider
-                                              .githubController.text,
+                                              .githubController.text
+                                              .trim(),
                                           socialName: 'github',
                                           onControllerChanged:
                                               (TextEditingController

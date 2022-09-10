@@ -131,11 +131,11 @@ class EditScreenProvider with ChangeNotifier {
   Future updateUserDetails() async {
     Map linkToSocial = {
       'email': currentUser!.email,
-      'twitter': twitterController.text,
-      'linkedin': linkedinController.text,
-      'facebook': facebookController.text,
-      'instagram': instagramController.text,
-      'github': githubController.text,
+      'twitter': twitterController.text.trim(),
+      'linkedin': linkedinController.text.trim(),
+      'facebook': facebookController.text.trim(),
+      'instagram': instagramController.text.trim(),
+      'github': githubController.text.trim(),
     };
 
     defaultBranchValue ??= currentUser!.branch;

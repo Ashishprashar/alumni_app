@@ -79,7 +79,10 @@ class UserCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle1)
-          : const Text("No skills added yet"),
+          : Text(
+              "No skills added yet",
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
       trailing: removeButton
           ? SizedBox(
               height: 35,

@@ -136,7 +136,15 @@ class _PostWidgetState extends State<PostWidget> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .caption),
-                                      ] else ...[
+                                      ] // case where user is alum
+                                      else if (user.semester.toString() ==
+                                          "") ...[
+                                        Text("",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                      ] // all numbers above 3
+                                      else ...[
                                         Text("th",
                                             style: Theme.of(context)
                                                 .textTheme

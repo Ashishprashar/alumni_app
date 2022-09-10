@@ -12,7 +12,7 @@ import '../screen/home.dart';
 class InviteProvider with ChangeNotifier {
   TextEditingController emailId = TextEditingController();
   inviteUser(BuildContext context) async {
-    String emailID = emailId.text;
+    String emailID = emailId.text.trim();
 
     if (!EmailValidator.validate(emailID)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

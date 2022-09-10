@@ -65,9 +65,10 @@ class SearchProvider with ChangeNotifier {
       if (defaultBranchValue != null && defaultSemesterValue != null) {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             .where("branch",
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
@@ -79,9 +80,10 @@ class SearchProvider with ChangeNotifier {
       } else if (defaultSemesterValue != null) {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             .where("sem",
                 isEqualTo:
@@ -93,9 +95,10 @@ class SearchProvider with ChangeNotifier {
       } else {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
@@ -107,9 +110,10 @@ class SearchProvider with ChangeNotifier {
       if (defaultBranchValue != null && defaultSemesterValue != null) {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             .where("branch", isEqualTo: defaultBranchValue)
             .where("semester",
                 isEqualTo:
@@ -122,9 +126,10 @@ class SearchProvider with ChangeNotifier {
       } else if (defaultSemesterValue != null) {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             .where("semester",
                 isEqualTo:
@@ -137,9 +142,10 @@ class SearchProvider with ChangeNotifier {
       } else {
         querySnapshot = await userCollection
             .where('search_name',
-                isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+                isGreaterThanOrEqualTo:
+                    _searchController.text.trim().toUpperCase())
             .where('search_name',
-                isLessThan: _searchController.text.toUpperCase() + 'z')
+                isLessThan: _searchController.text.trim().toUpperCase() + 'z')
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
@@ -187,7 +193,7 @@ class SearchProvider with ChangeNotifier {
   }
 
   searchPeople({bool? isFilter}) async {
-    if (_searchController.text.isEmpty && !(isFilter ?? false)) {
+    if (_searchController.text.trim().isEmpty && !(isFilter ?? false)) {
       if (peopleList.isNotEmpty) {
         return;
       }
@@ -197,9 +203,9 @@ class SearchProvider with ChangeNotifier {
                   defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
           .where("branch", isEqualTo: defaultBranchValue)
           // .where('search_name',
-          //     isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+          //     isGreaterThanOrEqualTo: _searchController.text.trim().toUpperCase())
           // .where('search_name',
-          //     isLessThan: _searchController.text.toUpperCase() + 'z')
+          //     isLessThan: _searchController.text.trim().toUpperCase() + 'z')
           .orderBy('search_name', descending: true)
           .limit(documentLimit)
           .get();
@@ -215,9 +221,10 @@ class SearchProvider with ChangeNotifier {
       peopleList = [];
       var query = await userCollection
           .where('search_name',
-              isGreaterThanOrEqualTo: _searchController.text.toUpperCase())
+              isGreaterThanOrEqualTo:
+                  _searchController.text.trim().toUpperCase())
           .where('search_name',
-              isLessThan: _searchController.text.toUpperCase() + 'z')
+              isLessThan: _searchController.text.trim().toUpperCase() + 'z')
           .where("semester",
               isEqualTo:
                   defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
