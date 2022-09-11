@@ -78,12 +78,14 @@ class _ApplicationCardState extends State<ApplicationCard> {
           SizedBox(height: 10),
           Text('Id Card Photo', style: Theme.of(context).textTheme.bodyText2),
           SizedBox(height: 20),
-          CachedNetworkImage(
-            placeholder: (context, url) =>
-                Center(child: const CircularProgressIndicator()),
-            imageUrl: individualApplication.downloadUrl,
-            width: SizeData.screenWidth,
-            height: 300,
+          InteractiveViewer(
+            child: CachedNetworkImage(
+              placeholder: (context, url) =>
+                  Center(child: const CircularProgressIndicator()),
+              imageUrl: individualApplication.downloadUrl,
+              width: SizeData.screenWidth,
+              height: 300,
+            ),
           ),
           SizedBox(height: 20),
           isLoading
