@@ -76,6 +76,21 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   alignment: Alignment.centerRight,
                   child: DoneButton(
                       onTap: () async {
+                        // dont allow the user to make the post empty and save
+                        if (feedProvider.postTextContent.text.trim() == "") {
+                          final _snackBar = SnackBar(
+                            content: Text(
+                              'Cannot leave the post empty. Consider deleting the post instead.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(color: Colors.white),
+                            ),
+                            duration: Duration(milliseconds: 1500),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                          return;
+                        }
                         feedProvider.updatePost(widget.postModel);
                         feedProvider.refreshChangeListener.refreshed = true;
                         //  Provider.of<FeedProvider>(context, listen: false)

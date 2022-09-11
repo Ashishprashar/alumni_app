@@ -188,8 +188,8 @@ class OnboardingProvider with ChangeNotifier {
           changeIsLoading();
           final fcmToken = await firebaseMessaging.getToken();
           await databaseService.createAccount(
-            nameController.text,
-            usnController.text,
+            nameController.text.trim(),
+            usnController.text.trim(),
             defaultGender!,
             defaultStatus!,
             defaultBranchValue!,
@@ -248,8 +248,8 @@ class OnboardingProvider with ChangeNotifier {
           String? fcmToken = await firebaseMessaging.getToken();
 
           await databaseService.pushApplicationToAdmins(
-            name: nameController.text,
-            usn: usnController.text,
+            name: nameController.text.trim(),
+            usn: usnController.text.trim(),
             semester: defaultSemesterValue,
             fcmToken: fcmToken,
             branch: defaultBranchValue!,

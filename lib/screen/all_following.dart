@@ -1,11 +1,8 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/following_provider.dart';
-import 'package:alumni_app/screen/faq_screen.dart';
 import 'package:alumni_app/screen/home.dart';
-import 'package:alumni_app/services/media_query.dart';
 import 'package:alumni_app/widget/user_card.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
 class AllFollowing extends StatefulWidget {

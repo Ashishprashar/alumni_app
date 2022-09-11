@@ -180,6 +180,23 @@ class UploadPostWidget extends StatelessWidget {
                         //     text: "format"),
                         DoneButton(
                             onTap: () async {
+                              if (feedProvider.postTextContent.text.trim() ==
+                                  "") {
+                                final _snackBar = SnackBar(
+                                  content: Text(
+                                    'Add some content to make a post.',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  duration: Duration(milliseconds: 1500),
+                                );
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(_snackBar);
+                                return;
+                              }
                               feedProvider.refreshChangeListener.refreshed =
                                   true;
                               await feedProvider.handlePostButton();

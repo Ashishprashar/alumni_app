@@ -36,7 +36,7 @@ class SearchProvider with ChangeNotifier {
     "All"
   ];
 
-  int documentLimit = 10;
+  int documentLimit = 15;
   DocumentSnapshot? lastDocument;
   final ScrollController _scrollController = ScrollController();
   ScrollController get scrollController => _scrollController;
