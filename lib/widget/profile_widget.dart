@@ -31,6 +31,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    log("post count check: " + widget.user!.postCount.toString());
     String profilePrivacySetting =
         widget.user!.profilePrivacySetting.toString();
     String postPrivacySetting = widget.user!.postPrivacySetting.toString();
@@ -119,6 +120,7 @@ Widget profileWidgetGetter(
   // privacy settings from here on
   if (_profilePrivacySetting == 'Only People In My Semester') {
     if (currentUser!.semester == user.semester) {
+      log((currentUser!.semester == user.semester).toString());
       return _isSliver
           ? SliverToBoxAdapter(
               child: UserProfile(user: user, index: index),
@@ -145,6 +147,7 @@ Widget profileWidgetGetter(
         : UserProfile(user: user, index: index, showProfile: false);
   }
   // This means that the user allows evreyone to view their profile
+  log('reached here, so lets see');
   return _isSliver
       ? SliverToBoxAdapter(
           child: UserProfile(user: user, index: index),

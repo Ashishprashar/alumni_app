@@ -128,6 +128,9 @@ class _ApplicationCardState extends State<ApplicationCard> {
                             applicationId: individualApplication.ownerId);
 
                         await db.increaseUserCount();
+                        setState(() {
+                          isLoading = false;
+                        });
                       },
                       text: 'Accept',
                       height: 40,
