@@ -18,7 +18,8 @@ class FollowingProvider with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    List followerList = user.following.isEmpty ? ['dummy list'] : user.follower;
+    List followerList =
+        user.following.isEmpty ? ['dummy list'] : user.following;
     List<DocumentSnapshot<Object?>> queryList = [];
     int count = followerList.length;
     int index = 0;
