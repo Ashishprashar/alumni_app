@@ -84,7 +84,7 @@ class _AllFollowingState extends State<AllFollowing> {
                     UserCard(
                       index: index,
                       snapshot: followingProvider.followingList,
-                      removeButton: widget.user.id == currentUser!.id,
+                      removeButton: false,
                       isFollowing: currentUser!.following.contains(
                           (UserModel.fromMap(
                                   followingProvider.followingList[index].data()
