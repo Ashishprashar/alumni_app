@@ -236,6 +236,7 @@ class _RejectionApplicationScreenState
                         height: 40,
                         width: 80,
                       ),
+                SizedBox(height: 20),
               ],
             ),
           ),

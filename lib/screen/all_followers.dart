@@ -24,7 +24,6 @@ class AllFollowers extends StatefulWidget {
 class _AllFollowersState extends State<AllFollowers> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<FollowerProvider>(context, listen: false)
         .addListenerToScrollController(widget.user);

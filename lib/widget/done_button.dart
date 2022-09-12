@@ -17,23 +17,32 @@ class DoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onTap(),
       child: Container(
-        height: height ?? 24,
-        width: width,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: color ?? Theme.of(context).primaryColor,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Container(
+            height: height ?? 24,
+            width: width,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: color ?? Theme.of(context).primaryColor,
 
-          // border: Border.all(color: Theme.of(context).hintColor)
+              // border: Border.all(color: Theme.of(context).hintColor)
+            ),
+            child: Center(
+                child: Text(
+              text,
+              style: Theme.of(context)
+                  .textTheme
+                  .button!
+                  .copyWith(color: Colors.white),
+            )),
+          ),
         ),
-        child: Center(
-            child: Text(
-          text,
-          style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
-        )),
       ),
     );
   }

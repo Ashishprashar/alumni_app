@@ -55,12 +55,13 @@ class _FeedScreenState extends State<FeedScreen> {
               toolbarHeight: 50,
               actions: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: ((context) => const NotificationScreen())));
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(left: 20, right: 20),
                     child: Stack(
                       children: [
                         Container(

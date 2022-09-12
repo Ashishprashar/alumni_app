@@ -24,7 +24,6 @@ class AllFollowing extends StatefulWidget {
 class _AllFollowingState extends State<AllFollowing> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero).then((value) =>
         Provider.of<FollowingProvider>(context, listen: false)

@@ -37,7 +37,7 @@ class FaqScreen extends StatelessWidget {
             CustomExpansionTile(
                 question: 'Who can see my posts?',
                 answer:
-                    'You can adjust post privacy in the settings screen, but this only affects what people see when they come to your profile. On the other hand, regardless of your post privacy, Everyone will recieve your post on the feed.'),
+                    'You can adjust post privacy in the settings screen, but this only affects what people see when they come to your profile. On the other hand, regardless of your post privacy, everyone will receive your post on their feed. Additionally your followers will get a notifcation whenever you make a post.'),
             CustomExpansionTile(
                 question: 'I can\'t seem to check who has liked my post.',
                 answer:

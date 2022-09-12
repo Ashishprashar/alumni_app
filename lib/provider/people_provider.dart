@@ -36,14 +36,14 @@ class PeopleProvider with ChangeNotifier {
 
           // .where("sem",isEqualTo: defaultSemesterValue)
           // .orderBy('updated_at', descending: true)
-          .orderBy('search_name', descending: true)
+          .orderBy('updated_at', descending: true)
           .limit(documentLimit)
           .get();
     } else {
       querySnapshot = await userCollection
 
           // .orderBy('updated_at', descending: true)
-          .orderBy('search_name', descending: true)
+          .orderBy('updated_at', descending: true)
           .startAfterDocument(lastDocument!)
           .limit(documentLimit)
           .get();
@@ -90,7 +90,7 @@ class PeopleProvider with ChangeNotifier {
       return;
     }
     var query = await userCollection
-        .orderBy('search_name', descending: true)
+        .orderBy('updated_at', descending: true)
         .limit(documentLimit)
         .get();
     peopleList = query.docs;

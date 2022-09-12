@@ -94,7 +94,7 @@ class _NotificationTileState extends State<NotificationTile> {
                                 .deleteNotification(notification.id);
                             // send a notification saying you accept their request
                           },
-                          text: "Accept",
+                          text: "Confirm",
                           height: 30,
                           width: 80,
                         ),
@@ -106,7 +106,7 @@ class _NotificationTileState extends State<NotificationTile> {
                             notificationProvider
                                 .deleteNotification(notification.id);
                           },
-                          text: "Decline",
+                          text: "Delete",
                           height: 30,
                           width: 80,
                         ),

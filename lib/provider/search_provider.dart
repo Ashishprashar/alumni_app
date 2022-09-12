@@ -74,7 +74,7 @@ class SearchProvider with ChangeNotifier {
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .limit(documentLimit)
             .get();
       } else if (defaultSemesterValue != null) {
@@ -89,7 +89,7 @@ class SearchProvider with ChangeNotifier {
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .limit(documentLimit)
             .get();
       } else {
@@ -102,7 +102,7 @@ class SearchProvider with ChangeNotifier {
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .limit(documentLimit)
             .get();
       }
@@ -119,7 +119,7 @@ class SearchProvider with ChangeNotifier {
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
@@ -135,7 +135,7 @@ class SearchProvider with ChangeNotifier {
                 isEqualTo:
                     defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
@@ -149,7 +149,7 @@ class SearchProvider with ChangeNotifier {
             // .where("branch",isEqualTo: defaultBranchValue)
             // .where("sem",isEqualTo: defaultSemesterValue)
             // .orderBy('updated_at', descending: true)
-            .orderBy('search_name', descending: true)
+            .orderBy('search_name', descending: false)
             .startAfterDocument(lastDocument!)
             .limit(documentLimit)
             .get();
@@ -206,7 +206,7 @@ class SearchProvider with ChangeNotifier {
           //     isGreaterThanOrEqualTo: _searchController.text.trim().toUpperCase())
           // .where('search_name',
           //     isLessThan: _searchController.text.trim().toUpperCase() + 'z')
-          .orderBy('search_name', descending: true)
+          .orderBy('search_name', descending: false)
           .limit(documentLimit)
           .get();
       if (!(query.docs.length < documentLimit)) {
@@ -230,7 +230,7 @@ class SearchProvider with ChangeNotifier {
                   defaultSemesterValue == 'Alum' ? '' : defaultSemesterValue)
           .where("branch", isEqualTo: defaultBranchValue)
           // .orderBy('updated_at', descending: true)
-          .orderBy('search_name', descending: true)
+          .orderBy('search_name', descending: false)
           .limit(documentLimit)
           .get();
       if (!(query.docs.length < documentLimit)) {

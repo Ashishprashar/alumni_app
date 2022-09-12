@@ -240,62 +240,64 @@ class _PostWidgetState extends State<PostWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // setState(() {
-                                    isLike = !isLike!;
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              // setState(() {
+                              isLike = !isLike!;
 
-                                    // Provider.of<FeedProvider>(context,
-                                    //         listen: false)
-                                    //     .refreshChangeListener
-                                    //     .refreshed = true;
-                                    // });
-                                    if (isLike!) {
-                                      setState(() {
-                                        feedProvider.addLike(
-                                            postId: widget.postModel.id,
-                                            ownerId: widget.postModel.ownerId);
+                              // Provider.of<FeedProvider>(context,
+                              //         listen: false)
+                              //     .refreshChangeListener
+                              //     .refreshed = true;
+                              // });
+                              if (isLike!) {
+                                setState(() {
+                                  feedProvider.addLike(
+                                      postId: widget.postModel.id,
+                                      ownerId: widget.postModel.ownerId);
 
-                                        widget.postModel.likeCount =
-                                            widget.postModel.likeCount! + 1;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        feedProvider.removeLike(
-                                            postId: widget.postModel.id);
+                                  widget.postModel.likeCount =
+                                      widget.postModel.likeCount! + 1;
+                                });
+                              } else {
+                                setState(() {
+                                  feedProvider.removeLike(
+                                      postId: widget.postModel.id);
 
-                                        widget.postModel.likeCount =
-                                            widget.postModel.likeCount! - 1;
-                                      });
-                                    }
-                                  },
+                                  widget.postModel.likeCount =
+                                      widget.postModel.likeCount! - 1;
+                                });
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6),
                                   child: SizedBox(
                                     height: 30,
                                     width: 30,
                                     child: isLike!
                                         ? FaIcon(
-                                            FontAwesomeIcons.heart,
-                                            color: Colors.red,
+                                            FontAwesomeIcons.solidHeart,
+                                            color: Colors.red[500],
                                           )
                                         : FaIcon(
                                             FontAwesomeIcons.heart,
                                           ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 8),
-                                child: Text(
-                                    (widget.postModel.likeCount ?? 0)
-                                        .toString(),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1!),
-                              ),
-                            ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                      (widget.postModel.likeCount ?? 0)
+                                          .toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!),
+                                ),
+                              ],
+                            ),
                           ),
                           Text(
                             DateFormat("dd-MMM-yyyy hh:mma")

@@ -1,10 +1,7 @@
-import 'dart:developer';
 import 'package:alumni_app/provider/people_provider.dart';
-import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/search_page.dart';
 import 'package:alumni_app/widget/user_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +15,6 @@ class People extends StatefulWidget {
 class _PeopleState extends State<People> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<PeopleProvider>(context, listen: false)
         .addListenerToScrollController();
