@@ -1,13 +1,10 @@
 import 'package:alumni_app/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 
 import '../screen/home.dart';
 
 class FollowerProvider extends ChangeNotifier {
-  PaginateRefreshedChangeListener refreshChangeListener =
-      PaginateRefreshedChangeListener();
   List<DocumentSnapshot> _peopleList = [];
   List<DocumentSnapshot<Object?>> queryList = [];
   bool isLoading = false;

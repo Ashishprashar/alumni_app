@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/follower_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
+import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/screen/individual_profile.dart';
 import 'package:alumni_app/screen/people.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -210,44 +211,82 @@ class _ConfirmationForRemovalState extends State<ConfirmationForRemoval> {
                         ),
                       ),
                       onPressed: () async {
+                        int count = 0;
                         setState(() {
                           isLoading = true;
                         });
+
+                        var docSnapshot = await userCollection
+                            .doc(widget.individualUser.id)
+                            .get();
+                        if (docSnapshot.exists) {
+                          Map<String, dynamic>? data = docSnapshot.data();
+                          List value = data?[
+                              'following']; // <-- The value you want to retrieve.
+                          print("the value: " + value.toString());
+                          if (value.contains(currentUser!.id)) {
+                            await Provider.of<ProfileProvider>(context,
+                                    listen: false)
+                                .removeFollowerOnMySide(
+                                    idOfOtherUser: widget.individualUser.id,
+                                    userModel: widget.individualUser,
+                                    context: context);
+                            // remove following from their side
+                            await Provider.of<ProfileProvider>(context,
+                                    listen: false)
+                                .removeFollowingFromTheirSide(
+                                    idOfTheOtherUser: widget.individualUser.id,
+                                    userModel: widget.individualUser,
+                                    context: context);
+
+                            // now remove follower from the list aswell
+                            Provider.of<FollowerProvider>(context,
+                                    listen: false)
+                                .removeFollower(widget.individualUser.id);
+
+                            final _snackBar = SnackBar(
+                              content: Text(
+                                'Removed.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.white),
+                              ),
+                              duration: Duration(milliseconds: 2000),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(_snackBar);
+                            Navigator.popUntil(context, (route) {
+                              return count++ == 2;
+                            });
+                          } else {
+                            // do not allow removing the user if he is not following you.
+                            // this can happen if he unfollowed you, but your state management did not update.
+                            // so dont remove him again or you will get negative followers
+                            final _snackBar = SnackBar(
+                              content: Text(
+                                'Something went wrong, please try again',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.white),
+                              ),
+                              duration: Duration(milliseconds: 2000),
+                            );
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(_snackBar);
+
+                            // remove ffrom the  list
+                            Provider.of<FollowerProvider>(context,
+                                    listen: false)
+                                .removeFollower(widget.individualUser.id);
+                            Navigator.popUntil(context, (route) {
+                              return count++ == 2;
+                            });
+                          }
+                        }
                         //remove follower from my side
-                        await Provider.of<ProfileProvider>(context,
-                                listen: false)
-                            .removeFollowerOnMySide(
-                                idOfOtherUser: widget.individualUser.id,
-                                userModel: widget.individualUser,
-                                context: context);
-                        // remove following from their side
-                        await Provider.of<ProfileProvider>(context,
-                                listen: false)
-                            .removeFollowingFromTheirSide(
-                                idOfTheOtherUser: widget.individualUser.id,
-                                userModel: widget.individualUser,
-                                context: context);
-                        // update the followers list (so make refresh change listner true)
-                        Provider.of<FollowerProvider>(context, listen: false)
-                            .refreshChangeListener
-                            .refreshed = true;
-                        // Navigator.of(context).pop();
-                        // popping twice here
-                        int count = 0;
-                        final _snackBar = SnackBar(
-                          content: Text(
-                            'Removed.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: Colors.white),
-                          ),
-                          duration: Duration(milliseconds: 2000),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                        Navigator.popUntil(context, (route) {
-                          return count++ == 2;
-                        });
                       },
                       child: Text(
                         'Remove',

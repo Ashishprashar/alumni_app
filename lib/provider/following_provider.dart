@@ -11,6 +11,11 @@ class FollowingProvider with ChangeNotifier {
     return _followingList;
   }
 
+  removeFollowing(userId) {
+    _followingList
+        .removeWhere((element) => (element.data() as Map)["id"] == userId);
+  }
+
   fetchPeople(UserModel user) async {
     if (followingList.isNotEmpty) {
       return;

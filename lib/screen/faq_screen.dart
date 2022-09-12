@@ -43,6 +43,10 @@ class FaqScreen extends StatelessWidget {
                 answer:
                     'Yes, you cannot see who has liked your post in the app. You just get the like count. But when someone likes your post you do get a notification with their name on it.'),
             CustomExpansionTile(
+                question:
+                    'Sometimes actions I perform are not reflected in the UI. How do I fix this?',
+                answer: 'Try restarting the app.'),
+            CustomExpansionTile(
                 question: 'Why can\'t I change my name and usn?',
                 answer:
                     'To make it easier for users to identify each other on the app we make the name and usn fields unchangeable.'),

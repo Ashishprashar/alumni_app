@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:alumni_app/models/user.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/following_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/screen/admin_screen.dart';
 import 'package:alumni_app/screen/all_followers.dart';
@@ -341,6 +342,10 @@ class _UserProfileState extends State<UserProfile> {
                       // for some reason are current user does not update with following
                       // unfollow
                       if (currentUser!.following.contains(widget.user.id)) {
+                        // remove the user from the following list
+                        Provider.of<FollowingProvider>(context, listen: false)
+                            .removeFollowing(widget.user.id);
+
                         log("remove following and follower relationship");
                         profileProvider.removeFollowing(
                             id: widget.user.id, context: context);
