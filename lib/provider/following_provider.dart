@@ -6,6 +6,8 @@ import '../screen/home.dart';
 
 class FollowingProvider with ChangeNotifier {
   bool isLoading = false;
+
+  bool isRequestAccepted = false;
   List<DocumentSnapshot> _followingList = [];
   get followingList {
     return _followingList;
@@ -16,8 +18,15 @@ class FollowingProvider with ChangeNotifier {
         .removeWhere((element) => (element.data() as Map)["id"] == userId);
   }
 
+  addFollowing(userId) async {
+    final documentSnapshot = await userCollection.doc(userId).get();
+    _followingList.add(documentSnapshot);
+    isRequestAccepted = true;
+    notifyListeners();
+  }
+
   fetchPeople(UserModel user) async {
-    if (followingList.isNotEmpty) {
+    if (followingList.isNotEmpty && !isRequestAccepted) {
       return;
     }
     isLoading = true;
@@ -49,6 +58,7 @@ class FollowingProvider with ChangeNotifier {
       isLoading = false;
       index += 1;
       count = count - 10;
+      isRequestAccepted = false;
       notifyListeners();
       await Future.delayed(Duration(milliseconds: 50));
     }
