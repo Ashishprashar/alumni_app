@@ -42,6 +42,7 @@ class ProfileProvider with ChangeNotifier {
     });
     await databaseService.addNotification(
         type: kNotificationKeyFollowAccepted, sentTo: id);
+
     // return userModel;s
   }
 
@@ -66,10 +67,12 @@ class ProfileProvider with ChangeNotifier {
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_currentUser);
       });
+      Provider.of<FollowingProvider>(context, listen: false).addFollowing(id);
       await databaseService.addNotification(
           type: kNotificationKeyFollowBack, sentTo: id);
       // update the other users follower list and count
       userModel.addFollower(currentUser!.id);
+
       addFollowerToOther(targetId: id, context: context);
       return userModel;
     } else {

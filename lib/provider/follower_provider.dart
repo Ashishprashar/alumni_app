@@ -9,6 +9,7 @@ class FollowerProvider extends ChangeNotifier {
   List<DocumentSnapshot<Object?>> queryList = [];
   bool isLoading = false;
   bool hasMore = true;
+  bool isRequestAccepted = false;
   get peopleList {
     return _peopleList.toList();
   }
@@ -16,6 +17,14 @@ class FollowerProvider extends ChangeNotifier {
   removeFollower(userId) {
     _peopleList
         .removeWhere((element) => (element.data() as Map)["id"] == userId);
+    notifyListeners();
+  }
+
+  addFollower(userId) async {
+    final documentSnapshot = await userCollection.doc(userId).get();
+    _peopleList.add(documentSnapshot);
+    isRequestAccepted = true;
+    notifyListeners();
   }
 
   fetchFollower() async {}
@@ -142,7 +151,7 @@ class FollowerProvider extends ChangeNotifier {
   }
 
   fetchPeople(UserModel user) async {
-    if (_peopleList.isNotEmpty) {
+    if (_peopleList.isNotEmpty && !isRequestAccepted) {
       return;
     }
     isLoading = true;
@@ -173,6 +182,7 @@ class FollowerProvider extends ChangeNotifier {
       isLoading = false;
       index += 1;
       count = count - 10;
+      isRequestAccepted = false;
       notifyListeners();
       await Future.delayed(Duration(milliseconds: 50));
     }

@@ -216,6 +216,7 @@ class SearchProvider with ChangeNotifier {
       }
       peopleList = query.docs;
       lastDocument = query.docs.last;
+      isLoading = false;
       notifyListeners();
     } else {
       peopleList = [];
@@ -246,6 +247,7 @@ class SearchProvider with ChangeNotifier {
       }
       peopleList = query.docs;
       lastDocument = query.docs.last;
+      isLoading = false;
       notifyListeners();
     }
   }
