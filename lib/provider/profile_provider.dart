@@ -1,5 +1,6 @@
 import 'package:alumni_app/models/notifications_model.dart';
 import 'package:alumni_app/provider/current_user_provider.dart';
+import 'package:alumni_app/provider/following_provider.dart';
 import 'package:alumni_app/screen/home.dart';
 import 'package:alumni_app/services/database_service.dart';
 import 'package:alumni_app/utilites/strings.dart';
@@ -48,7 +49,7 @@ class ProfileProvider with ChangeNotifier {
       {required String id,
       required UserModel userModel,
       required BuildContext context}) async {
-    // we are not adding to the followers of the other guy i think
+    // follow back (directly start following)
     if (currentUser!.follower.contains(id)) {
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
@@ -72,6 +73,7 @@ class ProfileProvider with ChangeNotifier {
       addFollowerToOther(targetId: id, context: context);
       return userModel;
     } else {
+      // follow request
       UserModel? _currentUser =
           Provider.of<CurrentUserProvider>(context, listen: false)
               .getCurrentUser();

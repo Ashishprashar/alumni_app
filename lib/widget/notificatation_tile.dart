@@ -1,4 +1,5 @@
 import 'package:alumni_app/models/notifications_model.dart';
+import 'package:alumni_app/provider/follower_provider.dart';
 import 'package:alumni_app/provider/notification_provider.dart';
 import 'package:alumni_app/provider/profile_provider.dart';
 import 'package:alumni_app/utilites/strings.dart';
@@ -83,6 +84,7 @@ class _NotificationTileState extends State<NotificationTile> {
                           kNotificationKeyFollowRequest) ...[
                         DoneButton(
                           onTap: () async {
+                            // adds follower to the follower list
                             profileProvider.addFollower(
                                 id: notification.sentBy, context: context);
                             profileProvider.addFollowingToOther(
