@@ -92,9 +92,9 @@ class _NotificationTileState extends State<NotificationTile> {
                             profileProvider.removeFollowRequest(
                                 idOfTheOneWhoSentRequest: notification.sentBy,
                                 context: context);
-                            Provider.of<FollowerProvider>(context,
-                                    listen: false)
-                                .addFollower(notification.sentBy);
+                            // Provider.of<FollowerProvider>(context,
+                            //         listen: false)
+                            //     .addFollower(notification.sentBy);
                             notificationProvider
                                 .deleteNotification(notification.id);
                             // send a notification saying you accept their request

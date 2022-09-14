@@ -18,17 +18,18 @@ class FollowingProvider with ChangeNotifier {
         .removeWhere((element) => (element.data() as Map)["id"] == userId);
   }
 
-  addFollowing(userId) async {
-    final documentSnapshot = await userCollection.doc(userId).get();
-    _followingList.add(documentSnapshot);
-    isRequestAccepted = true;
-    notifyListeners();
-  }
+  // addFollowing(userId) async {
+  //   final documentSnapshot = await userCollection.doc(userId).get();
+  //   _followingList.add(documentSnapshot);
+  //   isRequestAccepted = true;
+  //   notifyListeners();
+  // }
 
   fetchPeople(UserModel user) async {
-    if (followingList.isNotEmpty && !isRequestAccepted) {
-      return;
-    }
+    // if (followingList.isNotEmpty) {
+    //   return;
+    // }
+    _followingList = [];
     isLoading = true;
     notifyListeners();
 
