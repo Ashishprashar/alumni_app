@@ -67,7 +67,7 @@ class ProfileProvider with ChangeNotifier {
         Provider.of<CurrentUserProvider>(context, listen: false)
             .updateCurrentUser(_currentUser);
       });
-      Provider.of<FollowingProvider>(context, listen: false).addFollowing(id);
+      // Provider.of<FollowingProvider>(context, listen: false).addFollowing(id);
       await databaseService.addNotification(
           type: kNotificationKeyFollowBack, sentTo: id);
       // update the other users follower list and count

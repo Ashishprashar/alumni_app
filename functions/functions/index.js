@@ -92,21 +92,21 @@ exports.notificationFunction = functions.firestore.document("notification/{notif
 });
 
 
-exports.postFunction = functions.firestore.document("post/{post_id}").onCreate(async snap => {
-  let uploaded_by = snap.data()["owner_id"];
-  const userData = await admin.firestore().collection("user").doc(uploaded_by).get()
-  var followerList = userData.data()["follower"]
+// exports.postFunction = functions.firestore.document("post/{post_id}").onCreate(async snap => {
+//   let uploaded_by = snap.data()["owner_id"];
+//   const userData = await admin.firestore().collection("user").doc(uploaded_by).get()
+//   var followerList = userData.data()["follower"]
 
-  await admin.firestore().collection("user").doc(uploaded_by).collection("feed").doc(snap.data()["id"]).set({
-    id: snap.data()["id"]
-  })
+//   await admin.firestore().collection("user").doc(uploaded_by).collection("feed").doc(snap.data()["id"]).set({
+//     id: snap.data()["id"]
+//   })
 
-  for (let index = 0; index < followerList.length; index++) {
+//   for (let index = 0; index < followerList.length; index++) {
 
-    await admin.firestore().collection("user").doc(followerList[i]).collection("feed").doc(snap.data()["id"]).set({
-      id: snap.data()["id"]
-    })
-  }
+//     await admin.firestore().collection("user").doc(followerList[i]).collection("feed").doc(snap.data()["id"]).set({
+//       id: snap.data()["id"]
+//     })
+//   }
 
 
-})
+// })

@@ -20,12 +20,12 @@ class FollowerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addFollower(userId) async {
-    final documentSnapshot = await userCollection.doc(userId).get();
-    _peopleList.add(documentSnapshot);
-    isRequestAccepted = true;
-    notifyListeners();
-  }
+  // addFollower(userId) async {
+  //   final documentSnapshot = await userCollection.doc(userId).get();
+  //   _peopleList.add(documentSnapshot);
+  //   isRequestAccepted = true;
+  //   notifyListeners();
+  // }
 
   fetchFollower() async {}
 
@@ -151,7 +151,7 @@ class FollowerProvider extends ChangeNotifier {
   }
 
   fetchPeople(UserModel user) async {
-    if (_peopleList.isNotEmpty && !isRequestAccepted) {
+    if (_peopleList.isNotEmpty) {
       return;
     }
     isLoading = true;
