@@ -43,7 +43,7 @@ class FollowingProvider with ChangeNotifier {
       print(count);
       for (var i = index * 10;
           i <
-              (followerList.length < 10
+              (followerList.length < 10 * (index + 1)
                   ? followerList.length
                   : (index + 1) * 10);
           i++) {

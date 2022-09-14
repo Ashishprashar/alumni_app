@@ -164,10 +164,10 @@ class FollowerProvider extends ChangeNotifier {
     int index = 0;
 
     while (count > 0) {
-      print(count);
+      print("$count,${followerList.length},${index}");
       for (var i = index * 10;
           i <
-              (followerList.length < 10
+              (followerList.length < 10 * (index + 1)
                   ? followerList.length
                   : (index + 1) * 10);
           i++) {
