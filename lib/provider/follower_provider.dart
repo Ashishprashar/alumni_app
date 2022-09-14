@@ -151,9 +151,10 @@ class FollowerProvider extends ChangeNotifier {
   }
 
   fetchPeople(UserModel user) async {
-    if (_peopleList.isNotEmpty) {
-      return;
-    }
+    // if (_peopleList.isNotEmpty) {
+    //   return;
+    // }
+    _peopleList = [];
     isLoading = true;
     notifyListeners();
 

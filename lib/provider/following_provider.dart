@@ -26,9 +26,10 @@ class FollowingProvider with ChangeNotifier {
   // }
 
   fetchPeople(UserModel user) async {
-    if (followingList.isNotEmpty) {
-      return;
-    }
+    // if (followingList.isNotEmpty) {
+    //   return;
+    // }
+    _followingList = [];
     isLoading = true;
     notifyListeners();
 
