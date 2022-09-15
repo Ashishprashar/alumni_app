@@ -22,7 +22,7 @@ class FaqScreen extends StatelessWidget {
             CustomExpansionTile(
                 question: 'What is the Hive Net?',
                 answer:
-                    'The Hive Net is an archive that helps people connect through their social networks at college.'),
+                    'The Hive Net is an online archive that helps people connect through their social networks at college.'),
             CustomExpansionTile(
                 question: 'What is the social net?',
                 answer:
@@ -45,7 +45,8 @@ class FaqScreen extends StatelessWidget {
             CustomExpansionTile(
                 question:
                     'Sometimes actions I perform are not reflected in the UI. How do I fix this?',
-                answer: 'Try restarting the app.'),
+                answer:
+                    'You can simply switch to a different screen and back. If that does\'nt work, you can try restarting the app.'),
             CustomExpansionTile(
                 question: 'Why can\'t I change my name and usn?',
                 answer:
@@ -61,14 +62,15 @@ class FaqScreen extends StatelessWidget {
             CustomExpansionTile(
                 question: 'How can I search for something besides names?',
                 answer:
-                    'You can use filters in the search page to chain many fields to get more custom results. For now, you can filter by semester and branch.'),
+                    'You can use filters in the search page to chain multiple fields to get more custom results. For now, you can filter by semester and branch.'),
             CustomExpansionTile(
                 question: 'Who made the app?',
                 answer:
                     'You can see the about page. (Go to profile --> open the sidebar --> about us).'),
-            // CustomExpansionTile(
-            //     question: 'When was the app launched',
-            //     answer: 'It was launched on such and such day '),
+            CustomExpansionTile(
+                question: 'When was the app started?',
+                answer:
+                    'It was launched to the public on Sunday, September 18th, 2022.'),
             CustomExpansionTile(
                 question: 'Is this a final year project?',
                 answer: 'Nope just for fun.'),

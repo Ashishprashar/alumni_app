@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String hivenetappemailurl =
+        'mailto:${"hivenetapp@gmail.com"}?subject=&body=';
+    final Uri _hivenetappemailUrl = Uri.parse(hivenetappemailurl);
+
+    final String hivenetsuggestemailurl =
+        'mailto:${"hivenetsuggest@gmail.com"}?subject=&body=';
+    final Uri _hivenetsuggestemailUrl = Uri.parse(hivenetsuggestemailurl);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -47,7 +56,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Commander of the ship, enemy of the brigade. ',
+                    'Commander of the Ship, Enemy of the State. ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
@@ -63,7 +72,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'The Invincible engineering lead, Voodo programmer.',
+                    'The Invincible Engineering Lead, Voodo Programmer.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
@@ -79,7 +88,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Flexible(
                       child: Text(
-                    'Diplomacy and business stuff. Indian affairs.',
+                    'Diplomacy and Business stuff. Indian Affairs.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))
                 ],
@@ -110,15 +119,26 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Email 1: ',
+                    'Info/Support: ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(width: 20),
+                  // Flexible(
+                  //     child: )
                   Flexible(
+                    child: GestureDetector(
+                      onTap: () async {
+                        launchUrl(_hivenetappemailUrl);
+                      },
                       child: Text(
-                    'charsept04@gmail.com',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ))
+                        'hivenetapp@gmail.com',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 10),
@@ -126,14 +146,22 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Email 2: ',
+                    'Suggestions:  ',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(width: 20),
                   Flexible(
-                      child: Text(
-                    'ak2917065@gmail.com',
-                    style: Theme.of(context).textTheme.bodyText1,
+                      child: GestureDetector(
+                    onTap: () async {
+                      launchUrl(_hivenetsuggestemailUrl);
+                    },
+                    child: Text(
+                      'hivenetsuggest@gmail.com',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Theme.of(context).primaryColor),
+                    ),
                   ))
                 ],
               ),

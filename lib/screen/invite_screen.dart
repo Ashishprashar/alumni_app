@@ -38,7 +38,7 @@ class InviteScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'Remember to enter their google account email id. As they will need that to signup.',
+                          'Remember to enter their google account email ID. As they will need that to signup.',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         SizedBox(height: 20),
@@ -53,9 +53,9 @@ class InviteScreen extends StatelessWidget {
                     height: 20,
                   ),
                   CustomTextField(
-                    title: "Enter Google Account Email Id",
+                    title: "Enter Google Account Email ID",
                     controller: inviteUser.emailId,
-                    hint: 'Enter their google account email id',
+                    hint: 'Enter their google account email ID',
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 20),
