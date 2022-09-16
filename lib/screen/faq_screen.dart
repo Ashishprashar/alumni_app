@@ -61,7 +61,7 @@ class FaqScreen extends StatelessWidget {
                     'Nope their is absolutely no tracking anywhere in the app.'),
             CustomExpansionTile(
                 question:
-                    'Do people get a notification if I ignore their follow request, remove them from being my followers or unfollow them?',
+                    'Do people get a notification if I ignore their follow request, remove them from my followers or unfollow them?',
                 answer: 'No notification is sent to them.'),
             CustomExpansionTile(
                 question: 'How can I search for something besides names?',
