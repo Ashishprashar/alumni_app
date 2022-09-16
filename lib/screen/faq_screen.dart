@@ -35,6 +35,10 @@ class FaqScreen extends StatelessWidget {
                 answer:
                     'You can go to settings -> privacy and then adjust your privacy for different sections of your profile independently. '),
             CustomExpansionTile(
+                question: 'How do invites work?',
+                answer:
+                    'First, send them the app\'s Apk file, then for them to create an account, their google email ID needs to be invited by you. You can do that by going to the invite page and following the instructions.'),
+            CustomExpansionTile(
                 question: 'Who can see my posts?',
                 answer:
                     'You can adjust post privacy in the settings screen, but this only affects what people see when they come to your profile. On the other hand, regardless of your post privacy, everyone will receive your post on their feed. Additionally your followers will get a notifcation whenever you make a post.'),
