@@ -168,7 +168,7 @@ class IntroductionPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  'grug build app with tribe grug\'s so young grug can learn about other young grug in college. during grug time hard to know other grug interest and skill.',
+                  'grug build app with tribe grug\'s so young grug and old grug of college can learn about each other. during grug time hard to know other grug interest and skill.',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

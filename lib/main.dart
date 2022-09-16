@@ -66,6 +66,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: appTheme.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
+
             home: const Wrapper(),
           );
         },

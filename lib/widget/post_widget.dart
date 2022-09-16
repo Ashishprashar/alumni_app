@@ -206,6 +206,13 @@ class _PostWidgetState extends State<PostWidget> {
                         widget.postModel.textContent,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
+                      // child: SelectableLinkify(
+                      //   onOpen: _onOpen,
+                      //   // textScaleFactor: 4,
+                      //   text: widget.postModel.textContent,
+                      //   style: Theme.of(context).textTheme.bodyText1,
+                      //   linkStyle: TextStyle(color: Colors.blue),
+                      // ),
                     ),
                     // if (widget.postModel.attachments.isNotEmpty)
                     //   SizedBox(
