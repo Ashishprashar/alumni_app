@@ -187,13 +187,13 @@ class IntroductionPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                const SizedBox(height: 30),
-                Text(
-                  '(ps: but coding pay more, so grug stay)',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+                // const SizedBox(height: 30),
+                // Text(
+                //   '(ps: but coding pay more, so grug stay)',
+                //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                // ),
               ],
             ),
             decoration: const PageDecoration(),
@@ -210,14 +210,27 @@ class IntroductionPage extends StatelessWidget {
           ),
           PageViewModel(
             titleWidget: Text(
-              'many young grug think big brained in early years, make sour face at coding.',
+              '(ps: but coding pay more, so grug stay)',
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
+            // titleWidget: Text(
+            //   'many young grug think big brained in early years, make sour face at coding.',
+            //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            // ),
             bodyWidget: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'many young grug think big brained in early years, make sour face at coding.',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 30),
                 Text(
                   '(note: grug once think big brained, but learn hard way)',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
