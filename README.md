@@ -1,16 +1,23 @@
-# alumni_app
+# HiveNet
 
-A new Flutter project.
+The Hivenet is an online archive that helps people connect through social networks at their college.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Landing page
 
-A few resources to get you started if this is your first Flutter project:
+[https://hivenet.netlify.app](https://hivenet.netlify.app)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Main Features:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### You can use the HiveNet to:
+
+* Look up people at your college
+* Filter by semester, branch or name.
+* View profiles displaying people's interests, skills and a bunch of other stuff.
+* Global Feed page 
+
+### Secondary Features:
+
+* Notification tray - notifications for follow requests, likes, posts, and some admin notifications.
+
+![follow-request-notification](https://imgur.com/a/1Fdus77)
