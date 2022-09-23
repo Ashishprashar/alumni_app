@@ -89,23 +89,7 @@ You can download the app from the landing page.
     <a href="https://imgur.com/2HSitL0"><img src="https://i.imgur.com/2HSitL0.jpg" title="source: imgur.com" height="500"/></a>
 </p>
 
-<br>
 
-* Onboarding - Admin and regular access.
-
-<br>
-<p align="left">
-    <a href="https://imgur.com/cnYEOpZ"><img src="https://i.imgur.com/cnYEOpZ.jpg" title="source: imgur.com" height="500"/></a>
-</p>
-
-<br>
-
-* Admin Panel - Accept/Reject applications.
-
-<br>
-<p align="left">
-    <a href="https://imgur.com/cnYEOpZ"><img src="https://i.imgur.com/cnYEOpZ.jpg" title="source: imgur.com" height="500"/></a>
-</p>
 
 <br>
 
